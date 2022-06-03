@@ -6,20 +6,26 @@ using UnityEngine.UI;
 public class MenuHandler : MonoBehaviour
 {
     // Start is called before the first frame update
-    private MainButtons _MainButtons;
+    
     [SerializeField] private GameObject _MainHandler;
-
+    private MainButtons _MainButtons;
 
     [SerializeField] private GameObject _OptionsHandler;
 
 
     [SerializeField] private GameObject _CreditsHandler;
 
-    private enum gameMenus
+    void Start()
+    {
+        this._MainButtons = _MainHandler.GetComponent<MainButtons>();
+    }
+
+    public enum gameMenus
     {
         Main,
         Options,
-        Credits
+        Credits,
+        Quit
 
     }
 
@@ -40,7 +46,7 @@ public class MenuHandler : MonoBehaviour
             {
                 case (int)gameMenus.Main:
                     _MainHandler.SetActive(true);
-
+                    _MainButtons.EnableButtons();
                     break;
                 case (int)gameMenus.Options:
                     _OptionsHandler.SetActive(true);
@@ -50,6 +56,11 @@ public class MenuHandler : MonoBehaviour
                     _CreditsHandler.SetActive(true);
 
                     break;
+
+
+                case (int)gameMenus.Quit:
+                    Application.Quit();
+                    break;
             }
 
 
@@ -57,6 +68,7 @@ public class MenuHandler : MonoBehaviour
             {
                 case (int)gameMenus.Main:
                     _MainHandler.SetActive(false);
+                    _MainButtons.DisableButtons();
 
                     break;
                 case (int)gameMenus.Options:
@@ -77,10 +89,7 @@ public class MenuHandler : MonoBehaviour
 
     }
 
-    void Start()
-    {
-        
-    }
+
 
     // Update is called once per frame
     void Update()
@@ -88,3 +97,4 @@ public class MenuHandler : MonoBehaviour
         
     }
 }
+

@@ -7,21 +7,40 @@ using UnityEngine.UI;
 public class MainButtons : MonoBehaviour
 {
 
-    [SerializeField] private GameObject[] Buttons;
+    [SerializeField] private MenuHandler _menuHandler;
+    [SerializeField] private Button[] Buttons;
 
 
     public void DisableButtons()
     {
-        for (int i = 0; i <= this.Buttons.Length; i++)
+        foreach(Button _button in this.Buttons)
         {
-            Button TempButton = this.Buttons[i].GetComponent<Button>();
-            
-
+            _button.interactable = false;
         }
+
+       
     }
     public void EnableButtons()
     {
+        foreach (Button _button in this.Buttons)
+        {
+            _button.interactable = true;
+        }
+    }
 
+    public void PlayGame()
+    {
+        _menuHandler.SetMenuState((int)MenuHandler.gameMenus.Credits);
+    }
+
+    public void SettingsMenu()
+    {
+        _menuHandler.SetMenuState((int)MenuHandler.gameMenus.Main);
+    }
+
+    public void QuitGame()
+    {
+        _menuHandler.SetMenuState((int)MenuHandler.gameMenus.Main);
     }
     // Start is called before the first frame update
     void Start()
