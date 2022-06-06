@@ -8,49 +8,86 @@ public class MainButtons : MonoBehaviour
 {
 
     [SerializeField] private MenuHandler _menuHandler;
-    [SerializeField] private Button[] Buttons;
+
+    [SerializeField] private Button[] _menuButtons;
+    [SerializeField] private Button[] _optionsButtons;
+    [SerializeField] private Button[] _creditsButtons;
+    [SerializeField] private Button[] _quitButtons;
+    //[SerializeField] private Button[] _;
 
 
-    public void DisableButtons()
+
+    public void ToggleButtons(int WhichMenu, bool ButtonEnable)
     {
-        foreach(Button _button in this.Buttons)
+
+        Button[] _GameButtons = this._menuButtons;
+
+        switch (WhichMenu)
         {
-            _button.interactable = false;
+            case (int)MenuHandler.gameMenus.Main:
+                _GameButtons = this._menuButtons;
+                break;
+            case (int)MenuHandler.gameMenus.Credits:
+                _GameButtons = this._creditsButtons;
+                break;
+            case (int)MenuHandler.gameMenus.Options:
+                _GameButtons = this._optionsButtons;
+                break;
+            case (int)MenuHandler.gameMenus.Quit:
+                _GameButtons = this._quitButtons;
+                break;
+
+        }
+
+        foreach(Button _button in _GameButtons)
+        {
+            switch (ButtonEnable)
+            {
+                case true:
+                    _button.interactable = true;
+                    break;
+                case false:
+                    _button.interactable = false;
+                    break;
+
+            }
+            
         }
 
        
     }
-    public void EnableButtons()
-    {
-        foreach (Button _button in this.Buttons)
-        {
-            _button.interactable = true;
-        }
-    }
 
     public void PlayGame()
     {
-        _menuHandler.SetMenuState((int)MenuHandler.gameMenus.Credits);
+        _menuHandler.ChangeMenuState((int)MenuHandler.gameMenus.Credits);
     }
 
     public void SettingsMenu()
     {
-        _menuHandler.SetMenuState((int)MenuHandler.gameMenus.Main);
+        _menuHandler.ChangeMenuState((int)MenuHandler.gameMenus.Options);
     }
+    public void CreditsMenu()
+    {
+        _menuHandler.ChangeMenuState((int)MenuHandler.gameMenus.Credits);
+    }
+
 
     public void QuitGame()
     {
-        _menuHandler.SetMenuState((int)MenuHandler.gameMenus.Main);
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        _menuHandler.ChangeMenuState((int)MenuHandler.gameMenus.Quit);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GoBack()
     {
-        
+
+        _menuHandler.ReturnMenuState();
     }
+
+
+    public void ExitGame()
+    {
+        Application.Quit();
+
+    }
+     
 }

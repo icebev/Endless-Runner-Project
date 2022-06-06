@@ -7,6 +7,45 @@ public class MenuHandler : MonoBehaviour
 {
     // Start is called before the first frame update
     
+    
+    [SerializeField] private GameObject[] _menus;
+    [SerializeField] private Animator[] _menusAnimator;
+    [SerializeField] private MainButtons _buttonManager;
+    private int _menuState = (int)gameMenus.Main;
+    private int _previousMenu;
+
+    public enum gameMenus
+    {
+        Main,
+        Options,
+        Credits,
+        Quit,
+    }
+
+    public void ReturnMenuState()
+    {
+        ChangeMenuState(_previousMenu);
+    }
+
+    public void ChangeMenuState(int targetMenu)
+    {
+
+        if (_menuState != targetMenu)
+        {
+            
+            this._previousMenu = this._menuState;
+            this._menuState = targetMenu;
+            this._buttonManager.ToggleButtons(this._previousMenu, false);
+            this._menus[this._previousMenu].SetActive(false);  //Change this for animation
+            this._buttonManager.ToggleButtons(this._menuState, true);
+            this._menus[this._menuState].SetActive(true); //Change this for animation
+
+        }
+    }
+
+
+    /*
+
     [SerializeField] private GameObject _MainHandler;
     private MainButtons _MainButtons;
 
@@ -15,9 +54,10 @@ public class MenuHandler : MonoBehaviour
 
     [SerializeField] private GameObject _CreditsHandler;
 
+
     void Start()
     {
-        this._MainButtons = _MainHandler.GetComponent<MainButtons>();
+        this._MainButtons = this._MainHandler.GetComponent<MainButtons>();
     }
 
     public enum gameMenus
@@ -45,15 +85,15 @@ public class MenuHandler : MonoBehaviour
             switch (MenuState)
             {
                 case (int)gameMenus.Main:
-                    _MainHandler.SetActive(true);
-                    _MainButtons.EnableButtons();
+                    this._MainHandler.SetActive(true);
+                    this._MainButtons.EnableButtons();
                     break;
                 case (int)gameMenus.Options:
-                    _OptionsHandler.SetActive(true);
+                    this._OptionsHandler.SetActive(true);
 
                     break;
                 case (int)gameMenus.Credits:
-                    _CreditsHandler.SetActive(true);
+                    this._CreditsHandler.SetActive(true);
 
                     break;
 
@@ -67,16 +107,16 @@ public class MenuHandler : MonoBehaviour
             switch (this.CurrentState)
             {
                 case (int)gameMenus.Main:
-                    _MainHandler.SetActive(false);
-                    _MainButtons.DisableButtons();
+                    this._MainHandler.SetActive(false);
+                    this._MainButtons.DisableButtons();
 
                     break;
                 case (int)gameMenus.Options:
-                    _OptionsHandler.SetActive(false);
+                    this._OptionsHandler.SetActive(false);
 
                     break;
                 case (int)gameMenus.Credits:
-                    _CreditsHandler.SetActive(false);
+                    this._CreditsHandler.SetActive(false);
 
                     break;
 
@@ -98,3 +138,5 @@ public class MenuHandler : MonoBehaviour
     }
 }
 
+    */
+}
