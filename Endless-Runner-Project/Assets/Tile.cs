@@ -4,22 +4,11 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public float despawnZPosition;
-    public TileManager tileManager;
-    public float moveSpeed;
-
-    public float CurrentSpeed
-    {
-        get
-        {
-            return this.moveSpeed;
-        }
-    }
-
+    private TileManager tileManager;
+  
     private void Start()
     {
         this.tileManager = FindObjectOfType<TileManager>();
-
     }
 
     public void CorrectOffset()
@@ -63,70 +52,47 @@ public class Tile : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        // Check if the tile needs to be destroyed then move it using the run direction
         switch (this.tileManager.runDirection)
         {
             case TrackDirection.positiveZ:
                 {
-                    if (this.transform.position.z < -5)
+                    if (this.transform.position.z < -this.tileManager.despawnDistance)
                     {
                         this.tileManager.SpawnAdditionalTile();
                         Destroy(this.gameObject);
                     }
-                    this.transform.position = this.transform.position - new Vector3(0, 0, this.moveSpeed * Time.fixedDeltaTime);
-                    if (this.tileManager.runDirection == TrackDirection.positiveZ)
-                    {
-                        //this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
-                    }
+                    this.transform.position = this.transform.position - new Vector3(0, 0, this.tileManager.tileSpeed * Time.fixedDeltaTime);
                     break;
                 }
             case TrackDirection.negativeX:
                 {
-                    if (this.transform.position.x > 5)
+                    if (this.transform.position.x > this.tileManager.despawnDistance)
                     {
                         this.tileManager.SpawnAdditionalTile();
                         Destroy(this.gameObject);
                     }
-                    //this.transform.position = this.transform.position - new Vector3(0, 0, this.moveSpeed * Time.fixedDeltaTime);
-
-                    this.transform.position = this.transform.position - new Vector3(-this.moveSpeed * Time.fixedDeltaTime, 0, 0);
-                    if (this.tileManager.runDirection == TrackDirection.negativeX)
-                    {
-                        //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0);
-                    }
+                    this.transform.position = this.transform.position - new Vector3(-this.tileManager.tileSpeed * Time.fixedDeltaTime, 0, 0);
                     break;
                 }
             case TrackDirection.negativeZ:
                 {
-                    if (this.transform.position.z > 5)
+                    if (this.transform.position.z > this.tileManager.despawnDistance)
                     {
                         this.tileManager.SpawnAdditionalTile();
                         Destroy(this.gameObject);
                     }
-                    //this.transform.position = this.transform.position - new Vector3(0, 0, this.moveSpeed * Time.fixedDeltaTime);
-
-                    this.transform.position = this.transform.position - new Vector3(0, 0, -this.moveSpeed * Time.fixedDeltaTime);
-                    if (this.tileManager.runDirection == TrackDirection.negativeZ)
-                    {
-                        //this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
-                    }
+                    this.transform.position = this.transform.position - new Vector3(0, 0, -this.tileManager.tileSpeed * Time.fixedDeltaTime);
                     break;
                 }
             case TrackDirection.positiveX:
                 {
-                    if (this.transform.position.x < -5)
+                    if (this.transform.position.x < -this.tileManager.despawnDistance)
                     {
                         this.tileManager.SpawnAdditionalTile();
                         Destroy(this.gameObject);
                     }
-                    //this.transform.position = this.transform.position - new Vector3(0, 0, this.moveSpeed * Time.fixedDeltaTime);
-
-                    this.transform.position = this.transform.position - new Vector3(this.moveSpeed * Time.fixedDeltaTime, 0, 0);
-                    if (this.tileManager.runDirection == TrackDirection.positiveX)
-                    {
-                        //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0);
-                    }
-
+                    this.transform.position = this.transform.position - new Vector3(this.tileManager.tileSpeed * Time.fixedDeltaTime, 0, 0);
                     break;
                 }
         }

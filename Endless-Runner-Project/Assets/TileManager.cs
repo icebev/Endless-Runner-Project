@@ -3,71 +3,78 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-
-public enum TrackDirection
-{
-    positiveZ,
-    negativeX,
-    negativeZ,
-    positiveX
-
-}
-
+/// <summary>
+/// A class for spawning the tile pieces in the correct position and orientation and then managing them.
+/// </summary>
 public class TileManager : MonoBehaviour
 {
-    public GameObject tilePrefab;
-    public GameObject tileCornerLeft;
-    public GameObject tileCornerRight;
-    public GameObject tiles;
 
-    public TrackDirection spawnDirection = TrackDirection.positiveZ;
-    public TrackDirection runDirection = TrackDirection.positiveZ;
-    public int tileSpawnCount;
-    public float squareTileDimension;
+    [Header("Tile Prefabs")]
+    [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private GameObject tileCornerLeft;
+    [SerializeField] private GameObject tileCornerRight;
+    [SerializeField] private GameObject stairsTile;
+    
+    [Header("Parameters")]
+    [Tooltip("The number of tiles that exist in a given moment.")]
+    [SerializeField] private int tileSpawnCount;
+
+    [Tooltip("The square size of a single tile.")]
+    [SerializeField] private float squareTileDimension;
+
+    [Tooltip("The speed of tile movement opposing the run direction.")]
     public float tileSpeed;
 
+    [Tooltip("How far behind the player the tile is before being destroyed")]
+    public float despawnDistance;
+
+    [HideInInspector] public TrackDirection spawnDirection = TrackDirection.positiveZ;
+    [HideInInspector] public TrackDirection runDirection = TrackDirection.positiveZ;
+    [HideInInspector] public GameObject tilesContainer;
     private Transform finalTileTransform;
-
-    public UnityEvent createNewTile;
-
-    private float MaxTileDistance
-    {
-        get { return this.tileSpawnCount * this.squareTileDimension; }
-    }
+    private float spawnHeight = 0;
 
     private void Start()
     {
-        for (int z = this.tileSpawnCount; z >= 0; z--)
+        this.tilesContainer = GameObject.FindGameObjectWithTag("TilesContainer");
+
+        // Spawn in the starting tile sequence
+        for (int z = 0; z <= this.tileSpawnCount; z++)
         {
-            Vector3 tilePos = this.tilePrefab.transform.position + new Vector3(0, 0, this.MaxTileDistance - (z * this.squareTileDimension));
+            Vector3 tilePos = this.tilePrefab.transform.position + new Vector3(0, 0, (z * this.squareTileDimension));
             GameObject newTile = Instantiate(this.tilePrefab, tilePos, this.tilePrefab.transform.rotation);
-            newTile.transform.parent = this.tiles.transform;
-            if (z == 0)
+            newTile.transform.parent = this.tilesContainer.transform;
+            if (z == this.tileSpawnCount)
             {
                 this.finalTileTransform = newTile.transform;
             }
         }
     }
 
+    /// <summary>
+    /// Creates an additional tile at the end of the track
+    /// </summary>
     public void SpawnAdditionalTile()
     {
-        Vector3 newSpawnPos = new Vector3(0,0,0);
+        // Calculate where the new tile should spawn - at newSpawnPos
+        Vector3 newSpawnPos = new Vector3(0, 0, 0);
         switch (this.spawnDirection)
         {
             case TrackDirection.positiveZ:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(0, 0, this.squareTileDimension);
+                newSpawnPos = this.finalTileTransform.position + new Vector3(0, this.spawnHeight, this.squareTileDimension);
                 break;
             case TrackDirection.negativeX:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(-this.squareTileDimension, 0, 0);
+                newSpawnPos = this.finalTileTransform.position + new Vector3(-this.squareTileDimension, this.spawnHeight, 0);
                 break;
             case TrackDirection.negativeZ:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(0, 0, -this.squareTileDimension);
+                newSpawnPos = this.finalTileTransform.position + new Vector3(0, this.spawnHeight, -this.squareTileDimension);
                 break;
             case TrackDirection.positiveX:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(this.squareTileDimension, 0, 0);
+                newSpawnPos = this.finalTileTransform.position + new Vector3(this.squareTileDimension, this.spawnHeight, 0);
                 break;
         }
-
+        this.spawnHeight = 0;
+        // Account for frame delay caused offset
         switch (this.runDirection)
         {
             case TrackDirection.positiveZ:
@@ -84,67 +91,82 @@ public class TileManager : MonoBehaviour
                 break;
         }
 
+        // Rotation correction based on current track spawn direction
+        Quaternion newSpawnRot = Quaternion.AngleAxis(-90 * (int)this.spawnDirection, Vector3.up);
+
+        // Rudimentary random selection of a tile prefab to spawn
         int randInt = Random.Range(0, 11);
         GameObject newTile;
-        if (randInt > 8 && this.spawnDirection == this.runDirection)
+        if (randInt >= 9 && this.spawnDirection == this.runDirection)
         {
             newTile = Instantiate(this.tileCornerLeft, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
-            int currentDirInt = (int)this.spawnDirection;
-            if (currentDirInt == 3)
-            {
-                this.spawnDirection = (TrackDirection)(0);
-
-            }
-            else
-            {
-                this.spawnDirection = (TrackDirection)(currentDirInt + 1);
-
-            }
+            this.TrackSpawnLeftTurn();
         }
-        else if (randInt > 5 && this.spawnDirection == this.runDirection)
+        else if (randInt >= 7 && this.spawnDirection == this.runDirection)
         {
             newTile = Instantiate(this.tileCornerRight, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
-            int currentDirInt = (int)this.spawnDirection;
-            if (currentDirInt == 0)
-            {
-                this.spawnDirection = (TrackDirection)(3);
-
-            }
-            else
-            {
-                this.spawnDirection = (TrackDirection)(currentDirInt - 1);
-
-            }
+            this.TrackSpawnRightTurn();
+        }
+        else if (randInt == 0)
+        {
+            newTile = Instantiate(this.stairsTile, this.stairsTile.transform.position, this.stairsTile.transform.rotation);
+            this.spawnHeight += 0.5f;
         }
         else
         {
             newTile = Instantiate(this.tilePrefab, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
         }
-        newTile.transform.parent = this.tiles.transform;
-
-        Quaternion newSpawnRot;
-        if ((this.spawnDirection == TrackDirection.positiveX || this.spawnDirection == TrackDirection.negativeX) && newTile.CompareTag("CornerTile") == false)
-        {
-            newSpawnRot = Quaternion.AngleAxis(90, Vector3.up);
-            newTile.transform.rotation = newSpawnRot;
-        }
-        else if (newTile.CompareTag("CornerTile") == true)
-        {
-            switch (this.spawnDirection)
-            {
-                case TrackDirection.negativeZ:
-                {
-                    newSpawnRot = Quaternion.AngleAxis(90, Vector3.up);
-                    newTile.transform.rotation = newSpawnRot;
-                    break;
-                }
-
-
-            }
-
-        }
+        // Position and rotation are updated after the tile is instantiated but not calculated after since corners will change track spawn direction
         newTile.transform.position = newSpawnPos;
+        newTile.transform.rotation = newSpawnRot;
+
+        //if ((this.spawnDirection == TrackDirection.positiveX || this.spawnDirection == TrackDirection.negativeX) && newTile.CompareTag("CornerTile") == false)
+        //{
+        //    newSpawnRot = Quaternion.AngleAxis(90, Vector3.up);
+        //    newTile.transform.rotation = newSpawnRot;
+        //}
+        //else if (newTile.CompareTag("CornerTile") == true)
+        //{
+        //    switch (this.spawnDirection)
+        //    {
+        //        case TrackDirection.negativeZ:
+        //        {
+        //            newSpawnRot = Quaternion.AngleAxis(-90 * (int)this.spawnDirection, Vector3.up);
+        //            newTile.transform.rotation = newSpawnRot;
+        //            break;
+        //        }
+        //    }
+        //}
+
+        // Final new tile setup
+        // Set as a child of the container gameobject
+        newTile.transform.parent = this.tilesContainer.transform;
         this.finalTileTransform = newTile.transform;
     }
 
+    public void TrackSpawnLeftTurn()
+    {
+        int currentDirInt = (int)this.spawnDirection;
+        if (currentDirInt == 3)
+        {
+            this.spawnDirection = (TrackDirection)(0);
+        }
+        else
+        {
+            this.spawnDirection = (TrackDirection)(currentDirInt + 1);
+        }
+    }
+
+    public void TrackSpawnRightTurn()
+    {
+        int currentDirInt = (int)this.spawnDirection;
+        if (currentDirInt == 0)
+        {
+            this.spawnDirection = (TrackDirection)(3);
+        }
+        else
+        {
+            this.spawnDirection = (TrackDirection)(currentDirInt - 1);
+        }
+    }
 }
