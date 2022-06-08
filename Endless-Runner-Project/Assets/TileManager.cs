@@ -14,6 +14,7 @@ public class TileManager : MonoBehaviour
     [SerializeField] private GameObject tileCornerLeft;
     [SerializeField] private GameObject tileCornerRight;
     [SerializeField] private GameObject stairsTile;
+    [SerializeField] private GameObject raisedPillarTile;
     
     [Header("Parameters")]
     [Tooltip("The number of tiles that exist in a given moment.")]
@@ -111,6 +112,11 @@ public class TileManager : MonoBehaviour
         {
             newTile = Instantiate(this.stairsTile, this.stairsTile.transform.position, this.stairsTile.transform.rotation);
             this.spawnHeight += 0.5f;
+        }
+        else if (randInt == 1)
+        {
+            newTile = Instantiate(this.raisedPillarTile, this.raisedPillarTile.transform.position, this.raisedPillarTile.transform.rotation);
+
         }
         else
         {

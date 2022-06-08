@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CornerTile
   - TilesContainer
+  - CMCam
   layers:
   - Default
   - TransparentFX
