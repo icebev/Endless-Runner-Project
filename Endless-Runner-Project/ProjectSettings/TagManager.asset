@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - LoadManager
   layers:
   - Default
   - TransparentFX
@@ -12,8 +11,10 @@ TagManager:
   - PostProcessing
   - Water
   - UI
-  - 
-  - 
+  - LoadManager
+  - CornerTile
+  - TilesContainer
+  - CMCam
   - 
   - 
   - 
