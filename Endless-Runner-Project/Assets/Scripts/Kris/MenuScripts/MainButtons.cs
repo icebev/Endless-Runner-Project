@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class MainButtons : MonoBehaviour
@@ -59,7 +60,9 @@ public class MainButtons : MonoBehaviour
 
     public void PlayGame()
     {
-        _menuHandler.ChangeMenuState((int)MenuHandler.gameMenus.Credits);
+        GameObject _loadingManagerObject = GameObject.FindGameObjectWithTag("LoadManager");
+        LoadingManager _loadingManagerScript = _loadingManagerObject.GetComponent<LoadingManager>();
+        _loadingManagerScript.LoadGameScene1(3, true, 0);
     }
 
     public void SettingsMenu()
