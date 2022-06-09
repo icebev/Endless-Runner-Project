@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoadingManager : MonoBehaviour
 {
     private int targetScene = 2; //The scene the game will try to load.
     private int targetAnimationTrans = 0; //What transition animation will the game try to play
+    private Slider loadingBar;
 
     private enum SceneAnimationTypes //Insert *actual* animation types if there is time.
     {
@@ -27,7 +29,7 @@ public class LoadingManager : MonoBehaviour
         }
         else
         {
-            DontDestroyOnLoad(loadManagerObject);
+            DontDestroyOnLoad(this.gameObject);
         }
         
 
@@ -47,7 +49,7 @@ public class LoadingManager : MonoBehaviour
                 break;
 
             case true:
-                StartCoroutine(LoadGameScene2(2));
+                StartCoroutine(LoadGameScene2(1));
                 break;
 
         }
@@ -62,6 +64,12 @@ public class LoadingManager : MonoBehaviour
         while (!asyncLoading.isDone)
         {
             //Insert code to relay the % of loading
+            if(this.loadingBar != null)
+            {
+                this.loadingBar.value = 0.1f + asyncLoading.progress;
+            }
+
+            print(asyncLoading.progress);
             yield return null;
         }
         
@@ -69,7 +77,9 @@ public class LoadingManager : MonoBehaviour
 
     public void LoadGameScene3() //This is used by the script in the loading level. Loads the target scene.
     {
-
+        GameObject loadingBarObject = GameObject.Find("Loading Bar");
+        this.loadingBar = loadingBarObject.GetComponent<Slider>();
+        this.loadingBar.value = 0;
         StartCoroutine(LoadGameScene2(this.targetScene));
 
     }
