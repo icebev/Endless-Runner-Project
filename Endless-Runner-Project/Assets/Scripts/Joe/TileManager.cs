@@ -24,10 +24,14 @@ public class TileManager : MonoBehaviour
     [SerializeField] private float squareTileDimension;
 
     [Tooltip("The speed of tile movement opposing the run direction.")]
+    [SerializeField] private float startingTileSpeed;
     public float tileSpeed;
 
-    [Tooltip("How far behind the player the tile is before being destroyed")]
+    [Tooltip("How far behind the player the tile is before being destroyed.")]
     public float despawnDistance;
+
+    [Tooltip("Factor by which the speed increases (by a multiple of the start speed) over 1 minute of gameplay.")]
+    [SerializeField] private float speedIncrementFactor;
 
     [HideInInspector] public TrackDirection spawnDirection = TrackDirection.positiveZ;
     [HideInInspector] public TrackDirection runDirection = TrackDirection.positiveZ;
@@ -37,6 +41,7 @@ public class TileManager : MonoBehaviour
 
     private void Start()
     {
+        this.tileSpeed = this.startingTileSpeed;
         this.tilesContainer = GameObject.FindGameObjectWithTag("TilesContainer");
 
         // Spawn in the starting tile sequence
@@ -150,6 +155,10 @@ public class TileManager : MonoBehaviour
         this.finalTileTransform = newTile.transform;
     }
 
+    private void FixedUpdate()
+    {
+        this.tileSpeed += (Time.fixedDeltaTime / 60f) * this.startingTileSpeed * this.speedIncrementFactor;
+    }
     public void TrackSpawnLeftTurn()
     {
         int currentDirInt = (int)this.spawnDirection;

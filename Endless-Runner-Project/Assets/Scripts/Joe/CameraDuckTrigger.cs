@@ -12,9 +12,12 @@ public class CameraDuckTrigger : MonoBehaviour
         this.cam = GameObject.FindGameObjectWithTag("CMCam");
         this.duckAnimator = this.cam.GetComponent<Animator>();
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        this.duckAnimator.SetBool("CameraDuck", true);
+        if (this.duckAnimator.GetBool("CameraDuck") == false )
+        {
+            this.duckAnimator.SetBool("CameraDuck", true);
+        }
     }
 
     private void OnTriggerExit(Collider other)
