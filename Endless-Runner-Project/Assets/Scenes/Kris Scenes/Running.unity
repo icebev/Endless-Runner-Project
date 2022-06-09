@@ -615,6 +615,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ca2c9ebd-5549-4458-8681-94098dded8f8
     m_ActionName: PlayerCharacter/Move[/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1834119634}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: MoveRight
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c7fd5da8-f6e4-4940-9821-957846d1b7a1
+    m_ActionName: PlayerCharacter/Move Right[/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerCharacter

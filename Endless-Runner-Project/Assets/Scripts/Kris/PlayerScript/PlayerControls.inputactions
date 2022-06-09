@@ -6,48 +6,46 @@
             "id": "5676b5e3-07dd-46ca-b98f-1db5c006e9a8",
             "actions": [
                 {
-                    "name": "Move",
-                    "type": "Value",
+                    "name": "Move Left",
+                    "type": "Button",
                     "id": "ca2c9ebd-5549-4458-8681-94098dded8f8",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Move Right",
+                    "type": "PassThrough",
+                    "id": "c7fd5da8-f6e4-4940-9821-957846d1b7a1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
-                    "name": "1D Axis",
-                    "id": "aa2008f4-f2db-4f54-a242-afb0863e0b54",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "41fec8a5-9a76-48c0-83a6-e471ed862e49",
+                    "name": "",
+                    "id": "234bb726-7d5d-4e69-9872-84121f4c7f15",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Move Left",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
-                    "name": "positive",
-                    "id": "9dd0a18c-637c-4218-a9a4-44ded928a7bf",
+                    "name": "",
+                    "id": "53aca7a5-f1dc-4441-b457-9a63c9cea75c",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "Move Right",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 }
             ]
         }

@@ -9,14 +9,14 @@ public class CharacterController : MonoBehaviour
     private GameObject _playerCharacter;
     [SerializeField] private CharacterManager _characterManager;
 
-    public void MoveLeft(float test)
+    public void MoveLeft()
     {
         _characterManager.MoveLeft();
-        print(test);
+       
     }
     public void MoveRight()
     {
-        _characterManager.MoveLeft();
+        _characterManager.MoveRight();
 
     }
 
