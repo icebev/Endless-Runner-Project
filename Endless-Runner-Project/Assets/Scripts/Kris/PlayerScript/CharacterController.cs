@@ -9,14 +9,41 @@ public class CharacterController : MonoBehaviour
     private GameObject _playerCharacter;
     [SerializeField] private CharacterManager _characterManager;
 
-    public void MoveLeft()
+
+    public void RotateLeft(InputAction.CallbackContext press)
     {
-        _characterManager.MoveLeft();
+        if (press.performed)
+        {
+            _characterManager.Rotate(0);
+        }
+
+
+    }
+    public void RotateRight(InputAction.CallbackContext press)
+    {
+        if (press.performed)
+        {
+            _characterManager.Rotate(1);
+        }
+
+    }
+
+
+    public void MoveLeft(InputAction.CallbackContext press)
+    {
+        if (press.performed)
+        {
+            _characterManager.MoveLeft();
+        }
+        
        
     }
-    public void MoveRight()
+    public void MoveRight(InputAction.CallbackContext press)
     {
-        _characterManager.MoveRight();
+        if (press.performed)
+        {
+            _characterManager.MoveRight();
+        }
 
     }
 
