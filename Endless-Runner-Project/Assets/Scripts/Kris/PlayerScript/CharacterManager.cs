@@ -39,26 +39,27 @@ public class CharacterManager : MonoBehaviour
         print("Bloop! "+whichway);
         switch (whichway)
         {
+
+
             case 0:
-
-                this.direction -= 1;
-                this.yRotation -= 30f;
-                
-                if (this.direction < 0)
-                {
-                    this.direction = (int)directions.length - 1;
-                    
-                }
-
-                break;
-            case 1:
                 this.direction += 1;
-                //this.yRotation += 30;
+                this._character.transform.Rotate(0, -90, 0);
                 if (this.direction >= (int)directions.length)
                 {
                     this.direction = 0;
-                    
+
                 }
+                break;
+            case 1:
+                this.direction -= 1;
+                this._character.transform.Rotate(0, 90, 0);
+
+                if (this.direction < 0)
+                {
+                    this.direction = (int)directions.length - 1;
+
+                }
+
                 break;
 
         }
@@ -133,11 +134,11 @@ public class CharacterManager : MonoBehaviour
         }
 
 
-            Quaternion linearPlayerRotate = Quaternion.Lerp(this.currentrotation, this.targetrotation, 0.01f);
+           Quaternion linearPlayerRotate = Quaternion.Lerp(this.currentrotation, this.targetrotation, 0.01f);
             
            this.currentrotation = linearPlayerRotate;
-           this._character.transform.rotation = this.targetrotation;
-        print(this.targetrotation);
+        
+        //print(this.targetrotation);
 
 
         /*
