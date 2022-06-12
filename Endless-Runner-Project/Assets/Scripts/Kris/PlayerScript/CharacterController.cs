@@ -14,7 +14,7 @@ public class CharacterController : MonoBehaviour
     {
         if (press.performed)
         {
-            _characterManager.Rotate(0);
+            _characterManager.Rotate(0, false, 0);
         }
 
 
@@ -23,7 +23,7 @@ public class CharacterController : MonoBehaviour
     {
         if (press.performed)
         {
-            _characterManager.Rotate(1);
+            _characterManager.Rotate(1, false, 0);
         }
 
     }
