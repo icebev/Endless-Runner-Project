@@ -4,82 +4,163 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
+    //The character and Parent.
+    //Done this way because _characterParent can be rotated, which allows the _character's position to change 
+    //locally to the Parent's rotation. 
+    [SerializeField] private GameObject _characterParent;
     [SerializeField] private GameObject _character;
-    [SerializeField] private Camera _camera;
-    private AudioSource _playerAudio;
+
+    //The player's Audio source and AudioClips. Self-explanatory names.
+    private AudioSource _playerAudioS;
     private AudioClip _jumpAudio;
     private AudioClip _moveAudio;
     private AudioClip _deathFallAudio;
     private AudioClip _splatAudio;
     private AudioClip _SmackAudio;
 
-    private int direction = (int)directions.north;
-    private int currentLane;
-    private bool transitioning = true;
-    private float playerLanePos = 0;
-    private int targetLane = 0;
-    private Vector3 playerPosition = new Vector3(0,0,0);
-    private Vector3 playerTargetPosition = new Vector3(0, 0, 0);
-    private float interpolationSpeed = 0.25f;
-    private Quaternion currentrotation = Quaternion.Euler(0, 0, 0);
-    private Quaternion targetrotation = Quaternion.Euler(0, 0, 0);
-    private float yRotation = 0;
+    private int direction = (int)directions.north;                      //Player's current direction
 
+    private int currentLane;                                            //Player's current lane
+    private int targetLane = 0;                                         //Which lane the player is trying to switch to.
+    private bool transitioning = false;                                 //Used to know if the character is Switching Lanes (For Collision System).
+    private bool lockLaneSwitch = false;
+    private Vector3 playerPosition = new Vector3(0,0,0);                //Player's current position
+    private Vector3 playerTargetPosition = new Vector3(0, 0, 0);        //Which position the player is trying to reach.
+    
+    private Quaternion currentrotation = Quaternion.Euler(0, 0, 0);     //Where the character is currently rotated
+    private Quaternion targetrotation = Quaternion.Euler(0, 0, 0);      //The rotation the character is trying to reach.
+    
+    private int[] rotationIndex = new int[]                             //Index of all rotations. Used this to avoid an unnecessarily big Switch statement.
+    { 0, 90, 180, 270 };        
 
-    public enum directions{
+    private float[] interpolationSpeedIndex = new float[] 
+    { 0.125f, 0.25f, 0.5f };
+
+    private float interpolationSpeedLane = 0.25f;
+    private float interpolationSpeedRotate = 0.25f;                           //Used for Linear Interpolation for smooth Lane moving and smooth rotation
+
+    private int recentMove = (int)movementDirections.none;
+    private float recentMoveTimer = 0;
+
+    //Each possible player Direction
+    public enum directions
+    {
         north,       
         east,
         south,
         west,
-        length
+        length,
     }
 
-    public void Rotate(int whichway, bool setLane, int lanepos)
+    public enum movementDirections
     {
-        print("Bloop! "+whichway);
+        left,
+        right,
+        up,
+        down,
+        none,
+    }
+
+    public enum interpolationSpeeds
+    {
+        halfSpeed,
+        normalSpeed,
+        doubleSpeed,
+    }
+    private void Start()
+    {
+        this._playerAudioS = _character.GetComponent<AudioSource>();
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateCharacterData();
+
+        if (this.playerPosition != this.playerTargetPosition)
+        {
+            Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeedLane);
+            this.playerPosition = linearPlayerMove;
+            this._character.transform.localPosition = this.playerPosition;
+
+            this.transitioning = true;
+
+            if (this.currentLane < (this.targetLane - 1))
+            {
+                this.currentLane = this.targetLane - 1;
+            }
+            else if (this.currentLane > (this.targetLane + 1))
+            {
+                this.currentLane = this.targetLane + 1;
+            }
+        }
+
+        else
+        {
+            this.currentLane = this.targetLane;
+            this.transitioning = false;
+        }
+
+
+        if (this.currentrotation != this.targetrotation)
+        {
+            Quaternion linearPlayerRotate = Quaternion.Lerp(this.currentrotation, this.targetrotation, this.interpolationSpeedRotate);
+            this.currentrotation = linearPlayerRotate;
+            this._characterParent.transform.localRotation = this.currentrotation;
+        }
+    }
+    private void UpdateCharacterData()
+    {
+        this.playerTargetPosition = new Vector3(this.targetLane, 0, 0);
+        this.targetrotation = Quaternion.Euler(0, rotationIndex[this.direction], 0);
+    }
+
+    public void SetLane(int lanepos)
+    {
+        this.targetLane = lanepos;
+    }
+
+    public void LockLaneSwitching(bool LockLanes)
+    {
+        this.lockLaneSwitch = LockLanes;
+    }
+
+    public void Move(int Direction)
+    {
+        if (!this.lockLaneSwitch)
+        {
+            switch (Direction)
+            {
+                case (int)movementDirections.left:
+                    this.targetLane -= 1;
+                    break;
+
+                case (int)movementDirections.right:
+                    this.targetLane += 1;
+                    break;
+            }
+            this.recentMove = Direction;
+        }
+    }
+
+    public void Rotate(int whichway)
+    {
         switch (whichway)
         {
-            case 1:
-                this.direction += 1;
-                yRotation += 25;
-                //this._character.transform.Rotate(0, -90, 0);
-                if (this.direction >= (int)directions.length)
-                {
-                    this.direction = 0;
-
-                }
-
-                break;
-            case 0:
+            case (int)movementDirections.left:
                 this.direction -= 1;
-                //this._character.transform.Rotate(0, 90, 0);
-                yRotation -= 25;
-
-                if (this.direction < 0)
+                if (this.direction < (int)directions.north)
                 {
-                    this.direction = (int)directions.length - 1;
-
+                    this.direction = (int)directions.west;
+                }
+                break;
+            case (int)movementDirections.right:
+                this.direction += 1;
+                if (this.direction > (int)directions.west)
+                {
+                    this.direction = (int)directions.north;
                 }
                 break;
         }
-        switch (setLane)
-        {
-            case true:
-                this.targetLane = lanepos;
-                break;
-
-        }
-    }
-
-
-    public void MoveLeft()
-    {
-        targetLane -= 1;
-    }
-
-    public void MoveRight()
-    {
-        targetLane += 1;
     }
 
     public bool GetPlayerTransitioningState()
@@ -87,124 +168,19 @@ public class CharacterManager : MonoBehaviour
         return this.transitioning;
     }
 
-    private void UpdateLanesPos(int Direction)
+    public int GetPlayerLaneCurrent()
     {
-        switch (direction)
-        {
-            case (int)directions.north:
-                //this.playerPosition = new Vector3(this.playerLanePos, 0, 0);
-                this.playerTargetPosition = new Vector3(this.targetLane, 0, 0);
-
-                targetrotation = Quaternion.Euler(0, 0, 0);
-
-                break;
-            case (int)directions.south:
-                //this.playerPosition = new Vector3(-this.playerLanePos, 0, 0);
-                this.playerTargetPosition = new Vector3(-this.targetLane, 0, 0);
-                targetrotation = Quaternion.Euler(0, 180, 0);
-
-                break;
-            case (int)directions.east:
-                //this.playerPosition = new Vector3(0, 0, this.playerLanePos);
-                this.playerTargetPosition = new Vector3(0, 0, this.targetLane);
-                targetrotation = Quaternion.Euler(0, 90, 0);
-
-                break;
-            case (int)directions.west:
-                //this.playerPosition = new Vector3(0, 0, -this.playerLanePos);
-                this.playerTargetPosition = new Vector3(0, 0, -this.targetLane);
-                targetrotation = Quaternion.Euler(0, 270, 0);
-
-                break;
-
-             
-        }
-        //this.targetrotation = new Quaternion(0, yRotation, 0, 0);
-
+        return this.currentLane;
     }
 
-    private void FixedUpdate()
+    public int GetPlayerLaneTarget()
     {
-        UpdateLanesPos(this.direction);
-        
-        
-
-        if (this.playerPosition != this.playerTargetPosition)
-        {
-
-            Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeed);
-            this.playerPosition = linearPlayerMove;
-            this._character.transform.position = this.playerPosition;
-            
-            this.transitioning = true;
-
-        }
-        else
-        {
-            this.currentLane = this.targetLane;
-            this.transitioning = false;
-        }
-
-        this._camera.transform.localPosition = new Vector3(0 - this.currentLane, 1, -10);
-
-           Quaternion linearPlayerRotate = Quaternion.Lerp(this.currentrotation, this.targetrotation, this.interpolationSpeed);
-            
-           this.currentrotation = linearPlayerRotate;
-
-        this._character.transform.localRotation = this.currentrotation;
-
-        //print(this.targetrotation);
-
-
-        /*
-            print("PlayerPos: " + this.playerPosition);
-            print("TargetPos: " + this.playerTargetPosition);
-
-        switch (this.transitioning)
-        {
-            case true:
-                Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeed);
-                this.playerPosition = linearPlayerMove;
-                this._character.transform.position = this.playerPosition;
-
-                break;
-
-
-            case false:
-
-                break;
-        }
-        */
-        /*
-        if (this.currentLane != this.targetLane)
-        {
-            this.transitioning = true;
-            UpdateLanesPos(this.direction);
-            Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeed);
-            
-            this.playerPosition = linearPlayerMove;
-            this._character.transform.position = this.playerPosition;
-            if (this.playerPosition == this.playerTargetPosition)
-            {
-                this.transitioning = false;
-                this.currentLane = this.targetLane;
-                print(this.currentLane + " CurrentLane");
-                print(this.targetLane + " targetLane");
-                print(this.playerPosition);
-
-            }
-
-        }
-        */
+        return this.targetLane;
     }
 
-    private void Start()
+    public int GetPlayerDirection()
     {
-        _playerAudio = _character.GetComponent<AudioSource>();
-
+        return this.direction;
     }
-
-
-
 
 }

@@ -5,59 +5,44 @@ using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour
 {
-
     private GameObject _playerCharacter;
     [SerializeField] private CharacterManager _characterManager;
-
 
     public void RotateLeft(InputAction.CallbackContext press)
     {
         if (press.performed)
         {
-            _characterManager.Rotate(0, false, 0);
+            this._characterManager.Rotate((int)CharacterManager.movementDirections.left);
         }
-
-
     }
+
     public void RotateRight(InputAction.CallbackContext press)
     {
         if (press.performed)
         {
-            _characterManager.Rotate(1, false, 0);
+            this._characterManager.Rotate((int)CharacterManager.movementDirections.right);
         }
 
     }
-
 
     public void MoveLeft(InputAction.CallbackContext press)
     {
         if (press.performed)
         {
-            _characterManager.MoveLeft();
+            this._characterManager.Move((int)CharacterManager.movementDirections.left);
         }
-        
-       
     }
+
     public void MoveRight(InputAction.CallbackContext press)
     {
         if (press.performed)
         {
-            _characterManager.MoveRight();
+            this._characterManager.Move((int)CharacterManager.movementDirections.right);
         }
-
     }
-
 
     private void Start()
     {
-        _playerCharacter = this.gameObject;
-
+        this._playerCharacter = this.gameObject;
     }
-    private void Update()
-    {
-
-    }
-
-
-
 }
