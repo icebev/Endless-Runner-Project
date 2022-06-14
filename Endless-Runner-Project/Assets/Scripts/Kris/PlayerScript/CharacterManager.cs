@@ -9,6 +9,9 @@ public class CharacterManager : MonoBehaviour
     //locally to the Parent's rotation. 
     [SerializeField] private GameObject _characterParent;
     [SerializeField] private GameObject _character;
+    [SerializeField] private int numberOfLanes;
+
+    private int[] laneBoundaries;
 
     //The player's Audio source and AudioClips. Self-explanatory names.
     private AudioSource _playerAudioS;
@@ -70,6 +73,8 @@ public class CharacterManager : MonoBehaviour
     private void Start()
     {
         this._playerAudioS = _character.GetComponent<AudioSource>();
+        SetLaneLimit(this.numberOfLanes);
+
     }
 
     private void FixedUpdate()
@@ -114,7 +119,40 @@ public class CharacterManager : MonoBehaviour
         this.targetrotation = Quaternion.Euler(0, rotationIndex[this.direction], 0);
     }
 
-    public void SetLane(int lanepos)
+    private void CheckLaneBounds()
+    {
+        if (this.targetLane < this.laneBoundaries[(int)movementDirections.left])
+        {
+            this.targetLane = this.laneBoundaries[(int)movementDirections.left];
+        }
+        else if (this.targetLane > this.laneBoundaries[(int)movementDirections.right])
+        {
+            this.targetLane = this.laneBoundaries[(int)movementDirections.right];
+        }
+
+    }
+
+    public void SetLaneLimit(int LaneLimit)
+    {
+        this.numberOfLanes = LaneLimit;
+        if (this.numberOfLanes < 1)
+        {
+            this.numberOfLanes = 1;
+        }
+        if (this.numberOfLanes % 2 == 0)
+        {
+            int Boundary = this.numberOfLanes / 2;
+            this.laneBoundaries = new int[] { -(Boundary - 1), Boundary };
+        }
+        else if (this.numberOfLanes % 2 == 1)
+        {
+            int Boundary = ((this.numberOfLanes - 1) / 2);
+            this.laneBoundaries = new int[] { -Boundary, Boundary };
+        }
+        CheckLaneBounds();
+    }
+
+    public void SetLanePos(int lanepos)
     {
         this.targetLane = lanepos;
     }
@@ -128,6 +166,7 @@ public class CharacterManager : MonoBehaviour
     {
         if (!this.lockLaneSwitch)
         {
+            int previousTargetLane = this.targetLane;
             switch (Direction)
             {
                 case (int)movementDirections.left:
@@ -138,7 +177,11 @@ public class CharacterManager : MonoBehaviour
                     this.targetLane += 1;
                     break;
             }
-            this.recentMove = Direction;
+            CheckLaneBounds();
+            if(!(this.targetLane == previousTargetLane))
+            {
+                this.recentMove = Direction;
+            }
         }
     }
 

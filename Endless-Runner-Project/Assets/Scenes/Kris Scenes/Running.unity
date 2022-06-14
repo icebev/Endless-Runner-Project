@@ -588,7 +588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterParent: {fileID: 1880175334}
   _character: {fileID: 1834119629}
-  _camera: {fileID: 244499159}
+  numberOfLanes: 5
 --- !u!1 &1834119629
 GameObject:
   m_ObjectHideFlags: 0
