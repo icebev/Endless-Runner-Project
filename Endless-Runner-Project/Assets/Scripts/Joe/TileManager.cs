@@ -9,12 +9,13 @@ using UnityEngine.Events;
 public class TileManager : MonoBehaviour
 {
 
-    [Header("Tile Prefabs")]
-    [SerializeField] private GameObject tilePrefab;
-    [SerializeField] private GameObject tileCornerLeft;
-    [SerializeField] private GameObject tileCornerRight;
-    [SerializeField] private GameObject stairsTile;
-    [SerializeField] private GameObject raisedPillarTile;
+    [Header("Tile Scriptable Objects")]
+    public ScriptableTileObject[] scriptableTiles;
+
+    private List<ScriptableTileObject> easyTilesList;
+    private List<ScriptableTileObject> mediumTilesList;
+    private List<ScriptableTileObject> hardTilesList;
+    private List<ScriptableTileObject> cornerTilesList;
     
     [Header("Parameters")]
     [Tooltip("The number of tiles that exist in a given moment.")]
@@ -22,6 +23,7 @@ public class TileManager : MonoBehaviour
 
     [Tooltip("The square size of a single tile.")]
     [SerializeField] private float squareTileDimension;
+    private float nextTileSpawnGap;
 
     [Tooltip("The speed of tile movement opposing the run direction.")]
     [SerializeField] private float startingTileSpeed;
@@ -32,23 +34,57 @@ public class TileManager : MonoBehaviour
 
     [Tooltip("Factor by which the speed increases (by a multiple of the start speed) over 1 minute of gameplay.")]
     [SerializeField] private float speedIncrementFactor;
+    [SerializeField] private float cornerProbability;
 
     [HideInInspector] public TrackDirection spawnDirection = TrackDirection.positiveZ;
     [HideInInspector] public TrackDirection runDirection = TrackDirection.positiveZ;
     [HideInInspector] public GameObject tilesContainer;
+
     private Transform finalTileTransform;
-    private float spawnHeight = 0;
+    private float spawnHeightChange = 0;
 
     private void Start()
     {
+        // List instantiation
+        this.easyTilesList = new List<ScriptableTileObject>();
+        this.mediumTilesList = new List<ScriptableTileObject>();
+        this.hardTilesList = new List<ScriptableTileObject>();
+        this.cornerTilesList = new List<ScriptableTileObject>();
+
+        // Fill each list
+        foreach (ScriptableTileObject tileObject in this.scriptableTiles)
+        {
+            if (tileObject.hasCorner == false)
+            {
+                switch (tileObject.difficulty)
+                {
+                    case TileDifficulty.Easy:
+                        this.easyTilesList.Add(tileObject);
+                        break;
+                    case TileDifficulty.Medium:
+                        this.mediumTilesList.Add(tileObject);
+                        break;
+                    case TileDifficulty.Hard:
+                        this.hardTilesList.Add(tileObject);
+                        break;
+                }
+            }
+            else
+            {
+                this.cornerTilesList.Add(tileObject);
+            }
+        }
+
         this.tileSpeed = this.startingTileSpeed;
         this.tilesContainer = GameObject.FindGameObjectWithTag("TilesContainer");
+
+        this.nextTileSpawnGap = 3.0f;
 
         // Spawn in the starting tile sequence
         for (int z = 0; z <= this.tileSpawnCount; z++)
         {
-            Vector3 tilePos = this.tilePrefab.transform.position + new Vector3(0, 0, (z * this.squareTileDimension));
-            GameObject newTile = Instantiate(this.tilePrefab, tilePos, this.tilePrefab.transform.rotation);
+            Vector3 tilePos = this.easyTilesList[0].tilePrefab.transform.position + new Vector3(0, 0, (z * this.squareTileDimension));
+            GameObject newTile = Instantiate(this.easyTilesList[0].tilePrefab, tilePos, this.easyTilesList[0].tilePrefab.transform.rotation);
             newTile.transform.parent = this.tilesContainer.transform;
             if (z == this.tileSpawnCount)
             {
@@ -67,19 +103,21 @@ public class TileManager : MonoBehaviour
         switch (this.spawnDirection)
         {
             case TrackDirection.positiveZ:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(0, this.spawnHeight, this.squareTileDimension);
+                newSpawnPos = this.finalTileTransform.position + new Vector3(0, this.spawnHeightChange, this.nextTileSpawnGap);
                 break;
             case TrackDirection.negativeX:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(-this.squareTileDimension, this.spawnHeight, 0);
+                newSpawnPos = this.finalTileTransform.position + new Vector3(-this.nextTileSpawnGap, this.spawnHeightChange, 0);
                 break;
             case TrackDirection.negativeZ:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(0, this.spawnHeight, -this.squareTileDimension);
+                newSpawnPos = this.finalTileTransform.position + new Vector3(0, this.spawnHeightChange, -this.nextTileSpawnGap);
                 break;
             case TrackDirection.positiveX:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(this.squareTileDimension, this.spawnHeight, 0);
+                newSpawnPos = this.finalTileTransform.position + new Vector3(this.nextTileSpawnGap, this.spawnHeightChange, 0);
                 break;
+
         }
-        this.spawnHeight = 0;
+        this.nextTileSpawnGap = this.squareTileDimension;
+        this.spawnHeightChange = 0;
         // Account for frame delay caused offset
         switch (this.runDirection)
         {
@@ -100,60 +138,74 @@ public class TileManager : MonoBehaviour
         // Rotation correction based on current track spawn direction
         Quaternion newSpawnRot = Quaternion.AngleAxis(-90 * (int)this.spawnDirection, Vector3.up);
 
-        // Rudimentary random selection of a tile prefab to spawn
-        int randInt = Random.Range(0, 11);
+        // Semi randomised selection of a tile prefab to spawn
         GameObject newTile;
-        if (randInt >= 9 && this.spawnDirection == this.runDirection)
+        //if (randInt >= 9 && this.spawnDirection == this.runDirection)
+        //{
+        //    newTile = Instantiate(this.tileCornerLeft, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
+        //    this.TrackSpawnLeftTurn();
+        //}
+        //else if (randInt >= 7 && this.spawnDirection == this.runDirection)
+        //{
+        //    newTile = Instantiate(this.tileCornerRight, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
+        //    this.TrackSpawnRightTurn();
+        //}
+        //else if (randInt == 2)
+        //{
+        //    newTile = Instantiate(this.scriptableTiles[0].tilePrefab, this.scriptableTiles[0].tilePrefab.transform.position, this.scriptableTiles[0].tilePrefab.transform.rotation);
+        //    this.squareTileDimension = this.scriptableTiles[0].tileLength * 3;
+        //}
+        //else if (randInt == 0)
+        //{
+        //    newTile = Instantiate(this.stairsTile, this.stairsTile.transform.position, this.stairsTile.transform.rotation);
+        //    this.spawnHeight += 0.5f;
+        //}
+        //else if (randInt == 1)
+        //{
+        //    newTile = Instantiate(this.raisedPillarTile, this.raisedPillarTile.transform.position, this.raisedPillarTile.transform.rotation);
+        //}
+        //else
+        //{
+        //    newTile = Instantiate(this.tilePrefab, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
+        //}
+
+        // Position and rotation are updated after the tile is instantiated but not calculated after since corners will change track spawn direction
+        ScriptableTileObject chosenScriptableTile;
+        if (Random.Range(0.0f, 1.0f) < this.cornerProbability && this.spawnDirection == this.runDirection)
         {
-            newTile = Instantiate(this.tileCornerLeft, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
-            this.TrackSpawnLeftTurn();
-        }
-        else if (randInt >= 7 && this.spawnDirection == this.runDirection)
-        {
-            newTile = Instantiate(this.tileCornerRight, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
-            this.TrackSpawnRightTurn();
-        }
-        else if (randInt == 0)
-        {
-            newTile = Instantiate(this.stairsTile, this.stairsTile.transform.position, this.stairsTile.transform.rotation);
-            this.spawnHeight += 0.5f;
-        }
-        else if (randInt == 1)
-        {
-            newTile = Instantiate(this.raisedPillarTile, this.raisedPillarTile.transform.position, this.raisedPillarTile.transform.rotation);
+            chosenScriptableTile = this.SelectCornerTile();
+
+            TurnDirection tileTurnDirection = chosenScriptableTile.tilePrefab.GetComponent<CornerTileBehaviour>().turnDirection;
+            
+            switch (tileTurnDirection)
+            {
+                case TurnDirection.Left:
+                    TrackSpawnLeftTurn();
+                    break;
+                case TurnDirection.Right:
+                    TrackSpawnRightTurn();
+                    break;
+            }
 
         }
         else
         {
-            newTile = Instantiate(this.tilePrefab, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
+            chosenScriptableTile = this.SelectTileByDifficulty(TileDifficulty.Easy);
         }
-        // Position and rotation are updated after the tile is instantiated but not calculated after since corners will change track spawn direction
+        newTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
+        this.nextTileSpawnGap = chosenScriptableTile.tileLength * this.squareTileDimension;
+
+
         newTile.transform.position = newSpawnPos;
         newTile.transform.rotation = newSpawnRot;
-
-        //if ((this.spawnDirection == TrackDirection.positiveX || this.spawnDirection == TrackDirection.negativeX) && newTile.CompareTag("CornerTile") == false)
-        //{
-        //    newSpawnRot = Quaternion.AngleAxis(90, Vector3.up);
-        //    newTile.transform.rotation = newSpawnRot;
-        //}
-        //else if (newTile.CompareTag("CornerTile") == true)
-        //{
-        //    switch (this.spawnDirection)
-        //    {
-        //        case TrackDirection.negativeZ:
-        //        {
-        //            newSpawnRot = Quaternion.AngleAxis(-90 * (int)this.spawnDirection, Vector3.up);
-        //            newTile.transform.rotation = newSpawnRot;
-        //            break;
-        //        }
-        //    }
-        //}
 
         // Final new tile setup
         // Set as a child of the container gameobject
         newTile.transform.parent = this.tilesContainer.transform;
         this.finalTileTransform = newTile.transform;
     }
+
+
 
     private void FixedUpdate()
     {
@@ -184,4 +236,67 @@ public class TileManager : MonoBehaviour
             this.spawnDirection = (TrackDirection)(currentDirInt - 1);
         }
     }
+
+    private ScriptableTileObject SelectCornerTile()
+    {
+
+        float weightingsTotal = 0.0f;
+
+        foreach (ScriptableTileObject scriptableTile in this.cornerTilesList)
+        {
+            weightingsTotal += scriptableTile.spawnProbability;
+        }
+
+        float randomSelector = Random.Range(0.0f, weightingsTotal);
+        int selectedIndex = -1;
+
+        while (randomSelector > 0.0f && selectedIndex < this.cornerTilesList.Count - 1)
+        {
+            selectedIndex++;
+            randomSelector -= this.cornerTilesList[selectedIndex].spawnProbability;
+        }
+
+        Debug.Log(selectedIndex);
+
+        return this.cornerTilesList[selectedIndex];
+    }
+
+    private ScriptableTileObject SelectTileByDifficulty(TileDifficulty difficulty)
+    {
+        List<ScriptableTileObject> selectedList = null;
+
+        switch (difficulty)
+        {
+            case TileDifficulty.Easy:
+                selectedList = this.easyTilesList;
+                break;
+            case TileDifficulty.Medium:
+                selectedList = this.mediumTilesList;
+                break;
+            case TileDifficulty.Hard:
+                selectedList = this.hardTilesList;
+                break;
+        }
+
+        float weightingsTotal = 0.0f;
+
+        foreach (ScriptableTileObject scriptableTile in selectedList)
+        {
+            weightingsTotal += scriptableTile.spawnProbability;
+        }
+
+        float randomSelector = Random.Range(0.0f, weightingsTotal);
+        int selectedIndex = -1;
+
+        while (randomSelector > 0.0f && selectedIndex < selectedList.Count - 1)
+        {
+            selectedIndex++;
+            randomSelector -= selectedList[selectedIndex].spawnProbability;
+        }
+
+        Debug.Log(selectedIndex);
+
+        return selectedList[selectedIndex];
+    }
+
 }

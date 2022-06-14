@@ -1767,12 +1767,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7694302288358119212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27eca809e7b5a8544957b99993866977, type: 3}
+  m_Script: {fileID: 11500000, guid: 58ccc64ae77b6884e9f764b52efbbbd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  despawnZPosition: -20
-  tileManager: {fileID: 0}
-  moveSpeed: 8
 --- !u!114 &1345113189659873608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1786,5 +1783,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnDirection: 1
-  tiles: {fileID: 0}
   player: {fileID: 0}
