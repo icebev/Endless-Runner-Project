@@ -44,7 +44,10 @@ public class CharacterManager : MonoBehaviour
     private float interpolationSpeedRotate = 0.25f;                           //Used for Linear Interpolation for smooth Lane moving and smooth rotation
 
     private int recentMove = (int)movementDirections.none;
+    private int recentMovePrevious;
     private float recentMoveTimer = 0;
+    private float recentMoveMaxTime = 0.25f;
+    private float timerSpeed = 0.02f; //This equates to 1 second.
 
     //Each possible player Direction
     public enum directions
@@ -81,6 +84,10 @@ public class CharacterManager : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateCharacterData();
+        if (this.recentMoveTimer >= 0)
+        {
+            this.recentMoveTimer -= this.timerSpeed;
+        }
 
         if (this.playerPosition != this.playerTargetPosition)
         {
@@ -106,7 +113,6 @@ public class CharacterManager : MonoBehaviour
             this.transitioning = false;
         }
 
-
         if (this.currentrotation != this.targetrotation)
         {
             Quaternion linearPlayerRotate = Quaternion.Lerp(this.currentrotation, this.targetrotation, this.interpolationSpeedRotate);
@@ -120,6 +126,11 @@ public class CharacterManager : MonoBehaviour
         this.targetrotation = Quaternion.Euler(0, rotationIndex[this.direction], 0);
     }
 
+    public void SetEvenLaneBias(int Bias)
+    {
+        this.evenLaneBias = Bias;
+    }
+
     private void CheckLaneBounds()
     {
         if (this.targetLane < this.laneBoundaries[(int)movementDirections.left])
@@ -130,7 +141,6 @@ public class CharacterManager : MonoBehaviour
         {
             this.targetLane = this.laneBoundaries[(int)movementDirections.right];
         }
-
     }
 
     public void SetLaneLimit(int LaneLimit)
@@ -143,7 +153,17 @@ public class CharacterManager : MonoBehaviour
         if (this.numberOfLanes % 2 == 0)
         {
             int Boundary = this.numberOfLanes / 2;
-            this.laneBoundaries = new int[] { -(Boundary - 1), Boundary };
+
+            switch (evenLaneBias)
+            {
+                case (int)movementDirections.left:
+                    this.laneBoundaries = new int[] { -Boundary, (Boundary - 1)};
+                    break;
+
+                case (int)movementDirections.right:
+                    this.laneBoundaries = new int[] { -(Boundary - 1), Boundary };
+                    break;
+            }   
         }
         else if (this.numberOfLanes % 2 == 1)
         {
@@ -181,7 +201,18 @@ public class CharacterManager : MonoBehaviour
             CheckLaneBounds();
             if(!(this.targetLane == previousTargetLane))
             {
+                this.recentMovePrevious = this.recentMove;
                 this.recentMove = Direction;
+                if(this.recentMoveTimer > 0 && this.recentMove == this.recentMovePrevious)
+                {
+                    this.interpolationSpeedLane = this.interpolationSpeedIndex[(int)interpolationSpeeds.doubleSpeed];
+                    print("Roll!");
+                }
+                else
+                {
+                    this.interpolationSpeedLane = this.interpolationSpeedIndex[(int)interpolationSpeeds.normalSpeed];
+                    this.recentMoveTimer = this.recentMoveMaxTime;
+                }
             }
         }
     }
@@ -227,4 +258,13 @@ public class CharacterManager : MonoBehaviour
         return this.direction;
     }
 
+    public int GetEvenLaneBias()
+    {
+        return this.evenLaneBias;
+    }
+
+    public int GetNumberOfLanes()
+    {
+        return this.numberOfLanes;
+    }
 }
