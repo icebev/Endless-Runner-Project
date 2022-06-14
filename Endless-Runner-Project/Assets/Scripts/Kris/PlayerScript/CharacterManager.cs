@@ -12,6 +12,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private int numberOfLanes;
 
     private int[] laneBoundaries;
+    private int evenLaneBias = (int)movementDirections.left;
 
     //The player's Audio source and AudioClips. Self-explanatory names.
     private AudioSource _playerAudioS;
