@@ -98,7 +98,8 @@ public class CharacterManager : MonoBehaviour
     }
     private void UpdateCharacterData()
     {
-        this.playerTargetPosition = new Vector3(this.targetLane, this.playerPosition.y, 0);
+        this.playerTargetPosition = new Vector3(this.targetLane, this._character.transform.localPosition.y, 0);
+        //this.playerTargetPosition = new Vector3(this.targetLane, this.playerPosition.y, 0);
         this.targetrotation = Quaternion.Euler(0, rotationIndex[this.direction], 0);
     }
 
