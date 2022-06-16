@@ -21,7 +21,7 @@ public class CornerTileBehaviour : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float distanceFromOrigin = Vector3.Distance(this.transform.position, new Vector3(0, -0.25f + player.transform.position.y, 0));
+        float distanceFromOrigin = Vector3.Distance(this.transform.position, new Vector3(0, 4.5f, 0));
         if (distanceFromOrigin < this.turnDist)
         {
             if (this.hasRotated == false)

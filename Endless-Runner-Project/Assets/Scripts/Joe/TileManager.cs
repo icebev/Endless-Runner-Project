@@ -36,7 +36,7 @@ public class TileManager : MonoBehaviour
     [HideInInspector] private TileSpeedIncrementation tileSpeedIncrementation;
 
     private Transform finalTileTransform;
-    private float spawnHeightChange = 0;
+    private float spawnHeightChange = 4.5f;
 
     public float CurrentTileSpeed
     {
@@ -83,7 +83,7 @@ public class TileManager : MonoBehaviour
         // Spawn in the starting tile sequence
         for (int z = 0; z <= this.tileSpawnCount; z++)
         {
-            Vector3 tilePos = this.easyTilesList[0].tilePrefab.transform.position + new Vector3(0, 0, (z * this.squareTileDimension));
+            Vector3 tilePos = this.easyTilesList[0].tilePrefab.transform.position + new Vector3(0, this.spawnHeightChange, (z * this.squareTileDimension));
             GameObject newTile = Instantiate(this.easyTilesList[0].tilePrefab, tilePos, this.easyTilesList[0].tilePrefab.transform.rotation);
             newTile.transform.parent = this.tilesContainer.transform;
             if (z == this.tileSpawnCount)
@@ -91,6 +91,7 @@ public class TileManager : MonoBehaviour
                 this.finalTileTransform = newTile.transform;
             }
         }
+        this.spawnHeightChange = 0;
     }
 
     /// <summary>
@@ -116,6 +117,8 @@ public class TileManager : MonoBehaviour
                 break;
 
         }
+
+        newSpawnPos += new Vector3(0, 0, 0);
         this.nextTileSpawnGap = this.squareTileDimension;
         this.spawnHeightChange = 0;
         // Account for frame delay caused offset
