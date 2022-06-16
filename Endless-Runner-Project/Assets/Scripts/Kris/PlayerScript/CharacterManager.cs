@@ -30,9 +30,12 @@ public class CharacterManager : MonoBehaviour
     private bool transitioning = false;                                 //Used to know if the character is Switching Lanes (For Collision System).
     [SerializeField] private bool lockLaneSwitch;
     //private bool lockLaneSwitch = false;
-    private Vector3 playerPosition = new Vector3(0,0,0);                //Player's current position
-    private Vector3 playerTargetPosition = new Vector3(0, 0, 0);        //Which position the player is trying to reach.
-    
+    //private Vector3 playerPosition = new Vector3(0, 0, 0);                //Player's current position
+    //private Vector3 playerTargetPosition = new Vector3(0, 0, 0);        //Which position the player is trying to reach.
+
+    private Vector3 playerPosition = new Vector3(0, 0, 0);
+    private Vector3 playerTargetPosition = new Vector3(0, 0, 0);
+
     private Quaternion currentrotation = Quaternion.Euler(0, 0, 0);     //Where the character is currently rotated
     private Quaternion targetrotation = Quaternion.Euler(0, 0, 0);      //The rotation the character is trying to reach.
     
@@ -86,45 +89,16 @@ public class CharacterManager : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateCharacterData();
-        if (this.recentMoveTimer >= 0)
-        {
-            this.recentMoveTimer -= this.timerSpeed;
-        }
+        UpdateDoubleTapTimer();
+        UpdateLanePositionAndRotation();
 
-        if (this.playerPosition != this.playerTargetPosition)
-        {
-            Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeedLane);
-            this.playerPosition = linearPlayerMove;
-            this._character.transform.localPosition = this.playerPosition;
 
-            this.transitioning = true;
+        //GroundCheck();
 
-            if (this.currentLane < (this.targetLane - 1))
-            {
-                this.currentLane = this.targetLane - 1;
-            }
-            else if (this.currentLane > (this.targetLane + 1))
-            {
-                this.currentLane = this.targetLane + 1;
-            }
-        }
-
-        else
-        {
-            this.currentLane = this.targetLane;
-            this.transitioning = false;
-        }
-
-        if (this.currentrotation != this.targetrotation)
-        {
-            Quaternion linearPlayerRotate = Quaternion.Lerp(this.currentrotation, this.targetrotation, this.interpolationSpeedRotate);
-            this.currentrotation = linearPlayerRotate;
-            this._characterParent.transform.localRotation = this.currentrotation;
-        }
     }
     private void UpdateCharacterData()
     {
-        this.playerTargetPosition = new Vector3(this.targetLane, 0, 0);
+        this.playerTargetPosition = new Vector3(this.targetLane, this.playerPosition.y, 0);
         this.targetrotation = Quaternion.Euler(0, rotationIndex[this.direction], 0);
     }
 
@@ -240,6 +214,55 @@ public class CharacterManager : MonoBehaviour
                 break;
         }
     }
+
+    private void UpdateDoubleTapTimer()
+    {
+        if (this.recentMoveTimer >= 0)
+        {
+            this.recentMoveTimer -= this.timerSpeed;
+        }
+    }
+
+    private void UpdateLanePositionAndRotation()
+    {
+        if (this.playerPosition.x != this.playerTargetPosition.x)
+        {
+            Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeedLane);
+            this.playerPosition = linearPlayerMove;
+            this._character.transform.localPosition = this.playerPosition;
+
+            this.transitioning = true;
+
+            if (this.currentLane < (this.targetLane - 1))
+            {
+                this.currentLane = this.targetLane - 1;
+            }
+            else if (this.currentLane > (this.targetLane + 1))
+            {
+                this.currentLane = this.targetLane + 1;
+            }
+        }
+
+        else
+        {
+            this.currentLane = this.targetLane;
+            this.transitioning = false;
+        }
+
+        if (this.currentrotation != this.targetrotation)
+        {
+            Quaternion linearPlayerRotate = Quaternion.Lerp(this.currentrotation, this.targetrotation, this.interpolationSpeedRotate);
+            this.currentrotation = linearPlayerRotate;
+            this._characterParent.transform.localRotation = this.currentrotation;
+        }
+    }
+
+    private void GroundCheck()
+    {
+        this.playerPosition.y -= 0.2f;
+    }
+
+
 
     public bool GetPlayerTransitioningState()
     {
