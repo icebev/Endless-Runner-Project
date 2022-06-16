@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Path: {fileID: 826448151}
   m_PathPosition: 0
   m_PositionUnits: 1
-  m_PathOffset: {x: 0, y: 0, z: 0}
+  m_PathOffset: {x: 0, y: -0.00000011920929, z: 0}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -526,8 +526,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
-  m_LocalPosition: {x: 0, y: 0.35, z: -2.9999998}
+  m_LocalRotation: {x: -0.10648207, y: 0.0000000042771395, z: 4.5804283e-10, w: 0.9943147}
+  m_LocalPosition: {x: 0, y: 0.35, z: -2.9999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -688,8 +688,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232365246}
-  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
-  m_LocalPosition: {x: 0, y: 1, z: -3}
+  m_LocalRotation: {x: -0.10648207, y: 0.0000000042771395, z: 4.5804283e-10, w: 0.9943147}
+  m_LocalPosition: {x: 0, y: 0.35, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -941,6 +941,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2091495361}
   - component: {fileID: 2091495360}
+  - component: {fileID: 2091495362}
   m_Layer: 0
   m_Name: TileManager
   m_TagString: Untagged
@@ -960,17 +961,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 439d8ff8da455ab41953400f6d44b4d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 7694302288358119212, guid: 6c6e0dd71414fbc4c9668afcb27a2cf1, type: 3}
-  tileCornerLeft: {fileID: 7694302288358119212, guid: ed1f8a3806ebf6047ab3d6967c642ef2, type: 3}
-  tileCornerRight: {fileID: 7694302288358119212, guid: 552b550662b90be449591393464a74e5, type: 3}
-  stairsTile: {fileID: 8633521096481853474, guid: 3206bbb52004d71448558a1c3d51749f, type: 3}
-  raisedPillarTile: {fileID: 5519228238603177120, guid: 75a47698c3bf9f040bbc351282be78d3, type: 3}
+  scriptableTiles:
+  - {fileID: 11400000, guid: 1ec16c2e7dc45e549b05d6bcfc75ff26, type: 2}
   tileSpawnCount: 30
-  squareTileDimension: 3
-  startingTileSpeed: 4
-  tileSpeed: 8
+  squareTileDimension: 5
   despawnDistance: 5
-  speedIncrementFactor: 1
+  cornerProbability: 0
   spawnDirection: 0
   runDirection: 0
   tilesContainer: {fileID: 0}
@@ -989,6 +985,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2091495362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091495359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3825032b9c2b345927d83c380e5832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  incrementMode: 0
+  currentTileSpeed: 0
+  useSpeedLimit: 1
+  speedLimit: 10
+  startingTileSpeed: 6
+  linearIncrementFactor: 2
+  intervalTime: 5
+  intervalIncreaseFactor: 1
 --- !u!1 &3601772588306946
 GameObject:
   m_ObjectHideFlags: 0
@@ -2062,8 +2078,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4508538334191360216}
   - component: {fileID: 7525980546636759714}
-  - component: {fileID: 7525980546636759716}
   - component: {fileID: 7525980546636759715}
+  - component: {fileID: 7525980546636759716}
   m_Layer: 0
   m_Name: Sprint
   m_TagString: Untagged
@@ -2981,13 +2997,13 @@ Rigidbody:
   m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 122
   m_CollisionDetection: 0
---- !u!65 &7525980546636759716
-BoxCollider:
+--- !u!136 &7525980546636759716
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2996,9 +3012,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.85782385, z: 0.5790824}
-  m_Center: {x: 0, y: 1.3280253, z: 0.21045879}
+  m_Radius: 0.5
+  m_Height: 1.5993017
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.85378486, z: 0}
 --- !u!4 &7565230769076963931
 Transform:
   m_ObjectHideFlags: 0
