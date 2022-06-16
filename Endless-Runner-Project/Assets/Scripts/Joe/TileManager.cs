@@ -8,7 +8,6 @@ using UnityEngine.Events;
 /// </summary>
 public class TileManager : MonoBehaviour
 {
-
     [Header("Tile Scriptable Objects")]
     public ScriptableTileObject[] scriptableTiles;
 
@@ -25,26 +24,30 @@ public class TileManager : MonoBehaviour
     [SerializeField] private float squareTileDimension;
     private float nextTileSpawnGap;
 
-    [Tooltip("The speed of tile movement opposing the run direction.")]
-    [SerializeField] private float startingTileSpeed;
-    public float tileSpeed;
-
     [Tooltip("How far behind the player the tile is before being destroyed.")]
     public float despawnDistance;
 
-    [Tooltip("Factor by which the speed increases (by a multiple of the start speed) over 1 minute of gameplay.")]
-    [SerializeField] private float speedIncrementFactor;
+    [Tooltip("Chance of a corner tile being spawned when they are able to.")]
     [SerializeField] private float cornerProbability;
 
     [HideInInspector] public TrackDirection spawnDirection = TrackDirection.positiveZ;
     [HideInInspector] public TrackDirection runDirection = TrackDirection.positiveZ;
     [HideInInspector] public GameObject tilesContainer;
+    [HideInInspector] private TileSpeedIncrementation tileSpeedIncrementation;
 
     private Transform finalTileTransform;
     private float spawnHeightChange = 0;
 
+    public float CurrentTileSpeed
+    {
+        get { return this.tileSpeedIncrementation.currentTileSpeed; }
+    }
+
     private void Start()
     {
+        // Reference speed incrementation script
+        this.tileSpeedIncrementation = GetComponent<TileSpeedIncrementation>();
+
         // List instantiation
         this.easyTilesList = new List<ScriptableTileObject>();
         this.mediumTilesList = new List<ScriptableTileObject>();
@@ -74,10 +77,7 @@ public class TileManager : MonoBehaviour
                 this.cornerTilesList.Add(tileObject);
             }
         }
-
-        this.tileSpeed = this.startingTileSpeed;
         this.tilesContainer = GameObject.FindGameObjectWithTag("TilesContainer");
-
         this.nextTileSpawnGap = 3.0f;
 
         // Spawn in the starting tile sequence
@@ -122,16 +122,16 @@ public class TileManager : MonoBehaviour
         switch (this.runDirection)
         {
             case TrackDirection.positiveZ:
-                newSpawnPos += new Vector3(0, 0, -Time.fixedDeltaTime * this.tileSpeed);
+                newSpawnPos += new Vector3(0, 0, -Time.fixedDeltaTime * this.CurrentTileSpeed);
                 break;
             case TrackDirection.negativeX:
-                newSpawnPos += new Vector3(Time.fixedDeltaTime * this.tileSpeed, 0, 0);
+                newSpawnPos += new Vector3(Time.fixedDeltaTime * this.CurrentTileSpeed, 0, 0);
                 break;
             case TrackDirection.negativeZ:
-                newSpawnPos += new Vector3(0, 0, Time.fixedDeltaTime * this.tileSpeed);
+                newSpawnPos += new Vector3(0, 0, Time.fixedDeltaTime * this.CurrentTileSpeed);
                 break;
             case TrackDirection.positiveX:
-                newSpawnPos += new Vector3(-Time.fixedDeltaTime * this.tileSpeed, 0, 0);
+                newSpawnPos += new Vector3(-Time.fixedDeltaTime * this.CurrentTileSpeed, 0, 0);
                 break;
         }
 
@@ -140,34 +140,6 @@ public class TileManager : MonoBehaviour
 
         // Semi randomised selection of a tile prefab to spawn
         GameObject newTile;
-        //if (randInt >= 9 && this.spawnDirection == this.runDirection)
-        //{
-        //    newTile = Instantiate(this.tileCornerLeft, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
-        //    this.TrackSpawnLeftTurn();
-        //}
-        //else if (randInt >= 7 && this.spawnDirection == this.runDirection)
-        //{
-        //    newTile = Instantiate(this.tileCornerRight, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
-        //    this.TrackSpawnRightTurn();
-        //}
-        //else if (randInt == 2)
-        //{
-        //    newTile = Instantiate(this.scriptableTiles[0].tilePrefab, this.scriptableTiles[0].tilePrefab.transform.position, this.scriptableTiles[0].tilePrefab.transform.rotation);
-        //    this.squareTileDimension = this.scriptableTiles[0].tileLength * 3;
-        //}
-        //else if (randInt == 0)
-        //{
-        //    newTile = Instantiate(this.stairsTile, this.stairsTile.transform.position, this.stairsTile.transform.rotation);
-        //    this.spawnHeight += 0.5f;
-        //}
-        //else if (randInt == 1)
-        //{
-        //    newTile = Instantiate(this.raisedPillarTile, this.raisedPillarTile.transform.position, this.raisedPillarTile.transform.rotation);
-        //}
-        //else
-        //{
-        //    newTile = Instantiate(this.tilePrefab, this.tilePrefab.transform.position, this.tilePrefab.transform.rotation);
-        //}
 
         // Position and rotation are updated after the tile is instantiated but not calculated after since corners will change track spawn direction
         ScriptableTileObject chosenScriptableTile;
@@ -205,12 +177,6 @@ public class TileManager : MonoBehaviour
         this.finalTileTransform = newTile.transform;
     }
 
-
-
-    private void FixedUpdate()
-    {
-        this.tileSpeed += (Time.fixedDeltaTime / 60f) * this.startingTileSpeed * this.speedIncrementFactor;
-    }
     public void TrackSpawnLeftTurn()
     {
         int currentDirInt = (int)this.spawnDirection;
@@ -256,8 +222,6 @@ public class TileManager : MonoBehaviour
             randomSelector -= this.cornerTilesList[selectedIndex].spawnProbability;
         }
 
-        Debug.Log(selectedIndex);
-
         return this.cornerTilesList[selectedIndex];
     }
 
@@ -293,8 +257,6 @@ public class TileManager : MonoBehaviour
             selectedIndex++;
             randomSelector -= selectedList[selectedIndex].spawnProbability;
         }
-
-        Debug.Log(selectedIndex);
 
         return selectedList[selectedIndex];
     }

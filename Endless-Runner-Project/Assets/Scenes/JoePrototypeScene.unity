@@ -941,6 +941,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2091495361}
   - component: {fileID: 2091495360}
+  - component: {fileID: 2091495362}
   m_Layer: 0
   m_Name: TileManager
   m_TagString: Untagged
@@ -961,18 +962,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptableTiles:
-  - {fileID: 11400000, guid: f78cc313c2b295b47a43c127bf39995b, type: 2}
-  - {fileID: 11400000, guid: aaf405cbec822714ca8deaeb8a33497e, type: 2}
-  - {fileID: 11400000, guid: 1ab0f56937536af41919c10c1cdbb2fd, type: 2}
-  - {fileID: 11400000, guid: 5ccfea1ffdcab8a41b0c4f8bb44d18f2, type: 2}
-  - {fileID: 11400000, guid: 3fbd1cc5f294808419ae686240d7834f, type: 2}
+  - {fileID: 11400000, guid: 1ec16c2e7dc45e549b05d6bcfc75ff26, type: 2}
   tileSpawnCount: 30
-  squareTileDimension: 3
-  startingTileSpeed: 8
-  tileSpeed: 8
+  squareTileDimension: 5
   despawnDistance: 5
-  speedIncrementFactor: 1
-  cornerProbability: 0.2
+  cornerProbability: 0
   spawnDirection: 0
   runDirection: 0
   tilesContainer: {fileID: 0}
@@ -991,6 +985,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2091495362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091495359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3825032b9c2b345927d83c380e5832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  incrementMode: 0
+  currentTileSpeed: 0
+  useSpeedLimit: 1
+  speedLimit: 10
+  startingTileSpeed: 6
+  linearIncrementFactor: 2
+  intervalTime: 5
+  intervalIncreaseFactor: 1
 --- !u!1 &3601772588306946
 GameObject:
   m_ObjectHideFlags: 0

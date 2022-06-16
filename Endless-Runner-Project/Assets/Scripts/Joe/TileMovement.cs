@@ -62,7 +62,7 @@ public class TileMovement : MonoBehaviour
                         this.tileManager.SpawnAdditionalTile();
                         Destroy(this.gameObject);
                     }
-                    this.transform.position = this.transform.position - new Vector3(0, 0, this.tileManager.tileSpeed * Time.fixedDeltaTime);
+                    this.transform.position = this.transform.position - new Vector3(0, 0, this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime);
                     break;
                 }
             case TrackDirection.negativeX:
@@ -72,7 +72,7 @@ public class TileMovement : MonoBehaviour
                         this.tileManager.SpawnAdditionalTile();
                         Destroy(this.gameObject);
                     }
-                    this.transform.position = this.transform.position - new Vector3(-this.tileManager.tileSpeed * Time.fixedDeltaTime, 0, 0);
+                    this.transform.position = this.transform.position - new Vector3(-this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
                     break;
                 }
             case TrackDirection.negativeZ:
@@ -82,7 +82,7 @@ public class TileMovement : MonoBehaviour
                         this.tileManager.SpawnAdditionalTile();
                         Destroy(this.gameObject);
                     }
-                    this.transform.position = this.transform.position - new Vector3(0, 0, -this.tileManager.tileSpeed * Time.fixedDeltaTime);
+                    this.transform.position = this.transform.position - new Vector3(0, 0, -this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime);
                     break;
                 }
             case TrackDirection.positiveX:
@@ -92,7 +92,7 @@ public class TileMovement : MonoBehaviour
                         this.tileManager.SpawnAdditionalTile();
                         Destroy(this.gameObject);
                     }
-                    this.transform.position = this.transform.position - new Vector3(this.tileManager.tileSpeed * Time.fixedDeltaTime, 0, 0);
+                    this.transform.position = this.transform.position - new Vector3(this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
                     break;
                 }
         }
