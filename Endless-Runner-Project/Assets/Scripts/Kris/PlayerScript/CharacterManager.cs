@@ -12,7 +12,8 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private int numberOfLanes;
 
     private int[] laneBoundaries;
-    private int evenLaneBias = (int)movementDirections.left;
+    //private int evenLaneBias = (int)movementDirections.left;
+    [SerializeField] private int evenLaneBias;
 
     //The player's Audio source and AudioClips. Self-explanatory names.
     private AudioSource _playerAudioS;
@@ -27,7 +28,8 @@ public class CharacterManager : MonoBehaviour
     private int currentLane;                                            //Player's current lane
     private int targetLane = 0;                                         //Which lane the player is trying to switch to.
     private bool transitioning = false;                                 //Used to know if the character is Switching Lanes (For Collision System).
-    private bool lockLaneSwitch = false;
+    [SerializeField] private bool lockLaneSwitch;
+    //private bool lockLaneSwitch = false;
     private Vector3 playerPosition = new Vector3(0,0,0);                //Player's current position
     private Vector3 playerTargetPosition = new Vector3(0, 0, 0);        //Which position the player is trying to reach.
     
@@ -46,7 +48,7 @@ public class CharacterManager : MonoBehaviour
     private int recentMove = (int)movementDirections.none;
     private int recentMovePrevious;
     private float recentMoveTimer = 0;
-    private float recentMoveMaxTime = 0.25f;
+    private float recentMoveMaxTime = 0.18f;
     private float timerSpeed = 0.02f; //This equates to 1 second.
 
     //Each possible player Direction
@@ -176,6 +178,7 @@ public class CharacterManager : MonoBehaviour
     public void SetLanePos(int lanepos)
     {
         this.targetLane = lanepos;
+        CheckLaneBounds();
     }
 
     public void LockLaneSwitching(bool LockLanes)

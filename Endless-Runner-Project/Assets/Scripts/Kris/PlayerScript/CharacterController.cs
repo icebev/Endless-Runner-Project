@@ -22,7 +22,6 @@ public class CharacterController : MonoBehaviour
         {
             this._characterManager.Rotate((int)CharacterManager.movementDirections.right);
         }
-
     }
 
     public void MoveLeft(InputAction.CallbackContext press)
