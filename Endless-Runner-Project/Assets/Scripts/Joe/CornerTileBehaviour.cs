@@ -7,6 +7,7 @@ public class CornerTileBehaviour : MonoBehaviour
 {
     public TurnDirection turnDirection;
     private TileManager tileManager;
+    private CharacterManager characterManager;
     private bool hasRotated = false;
     private float turnDist = 0.1f;
     public GameObject player;
@@ -15,6 +16,7 @@ public class CornerTileBehaviour : MonoBehaviour
     void Start()
     {
         this.tileManager = FindObjectOfType<TileManager>();
+        this.characterManager = FindObjectOfType<CharacterManager>();
         this.player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -26,23 +28,28 @@ public class CornerTileBehaviour : MonoBehaviour
         {
             if (this.hasRotated == false)
             {
-                if (this.turnDirection == TurnDirection.Left)
-                {
-                    this.player.transform.eulerAngles = new Vector3(
-                        this.player.transform.eulerAngles.x,
-                        this.player.transform.eulerAngles.y - 90,
-                        this.player.transform.eulerAngles.z
-                    );
+                this.characterManager.Rotate(this.turnDirection);
+                this.characterManager.SetLanePos(0);
+                //if (this.turnDirection == TurnDirection.Left)
+                //{
 
-                }
-                else if (this.turnDirection == TurnDirection.Right)
-                {
-                    this.player.transform.eulerAngles = new Vector3(
-                        this.player.transform.eulerAngles.x,
-                        this.player.transform.eulerAngles.y + 90,
-                        this.player.transform.eulerAngles.z
-                    );
-                }
+                //    //this.player.transform.eulerAngles = new Vector3(
+                //    //    this.player.transform.eulerAngles.x,
+                //    //    this.player.transform.eulerAngles.y - 90,
+                //    //    this.player.transform.eulerAngles.z
+                //    //);
+
+                //}
+                //else if (this.turnDirection == TurnDirection.Right)
+                //{
+                //    //this.player.transform.eulerAngles = new Vector3(
+                //    //    this.player.transform.eulerAngles.x,
+                //    //    this.player.transform.eulerAngles.y + 90,
+                //    //    this.player.transform.eulerAngles.z
+                //    //);
+                //}
+
+
                 this.hasRotated = true;
                 this.tileManager.runDirection = this.tileManager.spawnDirection;
                 foreach (Transform child in this.tileManager.tilesContainer.transform)

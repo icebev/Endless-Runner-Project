@@ -12,7 +12,7 @@ public class CharacterController : MonoBehaviour
     {
         if (press.performed)
         {
-            this._characterManager.Rotate((int)CharacterManager.movementDirections.left);
+            this._characterManager.Rotate(TurnDirection.Left);
         }
     }
 
@@ -20,7 +20,7 @@ public class CharacterController : MonoBehaviour
     {
         if (press.performed)
         {
-            this._characterManager.Rotate((int)CharacterManager.movementDirections.right);
+            this._characterManager.Rotate(TurnDirection.Right);
         }
     }
 

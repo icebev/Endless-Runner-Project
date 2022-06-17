@@ -15,6 +15,6 @@ MonoBehaviour:
   tilePrefab: {fileID: 3292472900772340143, guid: ef93d9d0e2ddf4545aaee92418aaa772, type: 3}
   difficulty: 0
   tileLength: 1
-  spawnProbability: 1
+  spawnProbability: 3
   hasCorner: 0
   elevationChange: 0

@@ -195,18 +195,18 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    public void Rotate(int whichway)
+    public void Rotate(TurnDirection turnDirection)
     {
-        switch (whichway)
+        switch (turnDirection)
         {
-            case (int)movementDirections.left:
+            case TurnDirection.Left:
                 this.direction -= 1;
                 if (this.direction < (int)directions.north)
                 {
                     this.direction = (int)directions.west;
                 }
                 break;
-            case (int)movementDirections.right:
+            case TurnDirection.Right:
                 this.direction += 1;
                 if (this.direction > (int)directions.west)
                 {
