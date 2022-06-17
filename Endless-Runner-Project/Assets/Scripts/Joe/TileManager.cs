@@ -11,10 +11,15 @@ public class TileManager : MonoBehaviour
     [Header("Tile Scriptable Objects")]
     public ScriptableTileObject[] scriptableTiles;
 
+    public ScriptableTileObject junctionTile;
+
     private List<ScriptableTileObject> easyTilesList;
     private List<ScriptableTileObject> mediumTilesList;
     private List<ScriptableTileObject> hardTilesList;
     private List<ScriptableTileObject> cornerTilesList;
+
+    public bool spawningAfterJunction = false;
+    public List<GameObject> junctionSpawnedTilesList;
     
     [Header("Parameters")]
     [Tooltip("The number of tiles that exist in a given moment.")]
@@ -29,13 +34,16 @@ public class TileManager : MonoBehaviour
 
     [Tooltip("Chance of a corner tile being spawned when they are able to.")]
     [SerializeField] private float cornerProbability;
+    [Tooltip("Chance of a junction tile being spawned when they are able to.")]
+    [SerializeField] private float junctionProbability;
 
     [HideInInspector] public TrackDirection spawnDirection = TrackDirection.positiveZ;
     [HideInInspector] public TrackDirection runDirection = TrackDirection.positiveZ;
     [HideInInspector] public GameObject tilesContainer;
     [HideInInspector] private TileSpeedIncrementation tileSpeedIncrementation;
 
-    private Transform finalTileTransform;
+    private GameObject finalTile;
+    public GameObject currentJunctionTile;
     private float spawnHeightChange = 4.5f;
 
     public float CurrentTileSpeed
@@ -53,6 +61,8 @@ public class TileManager : MonoBehaviour
         this.mediumTilesList = new List<ScriptableTileObject>();
         this.hardTilesList = new List<ScriptableTileObject>();
         this.cornerTilesList = new List<ScriptableTileObject>();
+
+        this.junctionSpawnedTilesList = new List<GameObject>();
 
         // Fill each list
         foreach (ScriptableTileObject tileObject in this.scriptableTiles)
@@ -88,7 +98,7 @@ public class TileManager : MonoBehaviour
             newTile.transform.parent = this.tilesContainer.transform;
             if (z == this.tileSpawnCount)
             {
-                this.finalTileTransform = newTile.transform;
+                this.finalTile = newTile;
             }
         }
         this.spawnHeightChange = 0;
@@ -104,23 +114,23 @@ public class TileManager : MonoBehaviour
         switch (this.spawnDirection)
         {
             case TrackDirection.positiveZ:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(0, this.spawnHeightChange, this.nextTileSpawnGap);
+                newSpawnPos = this.finalTile.transform.position + new Vector3(0, this.spawnHeightChange, this.nextTileSpawnGap);
                 break;
             case TrackDirection.negativeX:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(-this.nextTileSpawnGap, this.spawnHeightChange, 0);
+                newSpawnPos = this.finalTile.transform.position + new Vector3(-this.nextTileSpawnGap, this.spawnHeightChange, 0);
                 break;
             case TrackDirection.negativeZ:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(0, this.spawnHeightChange, -this.nextTileSpawnGap);
+                newSpawnPos = this.finalTile.transform.position + new Vector3(0, this.spawnHeightChange, -this.nextTileSpawnGap);
                 break;
             case TrackDirection.positiveX:
-                newSpawnPos = this.finalTileTransform.position + new Vector3(this.nextTileSpawnGap, this.spawnHeightChange, 0);
+                newSpawnPos = this.finalTile.transform.position + new Vector3(this.nextTileSpawnGap, this.spawnHeightChange, 0);
                 break;
 
         }
 
-        newSpawnPos += new Vector3(0, 0, 0);
         this.nextTileSpawnGap = this.squareTileDimension;
         this.spawnHeightChange = 0;
+        
         // Account for frame delay caused offset
         switch (this.runDirection)
         {
@@ -137,6 +147,7 @@ public class TileManager : MonoBehaviour
                 newSpawnPos += new Vector3(-Time.fixedDeltaTime * this.CurrentTileSpeed, 0, 0);
                 break;
         }
+        
 
         // Rotation correction based on current track spawn direction
         Quaternion newSpawnRot = Quaternion.AngleAxis(-90 * (int)this.spawnDirection, Vector3.up);
@@ -146,7 +157,9 @@ public class TileManager : MonoBehaviour
 
         // Position and rotation are updated after the tile is instantiated but not calculated after since corners will change track spawn direction
         ScriptableTileObject chosenScriptableTile;
-        if (Random.Range(0.0f, 1.0f) < this.cornerProbability && this.spawnDirection == this.runDirection)
+
+        float randomVal = Random.Range(0.0f, 1.0f);
+        if (randomVal < this.cornerProbability && this.spawnDirection == this.runDirection)
         {
             chosenScriptableTile = this.SelectCornerTile();
 
@@ -163,6 +176,12 @@ public class TileManager : MonoBehaviour
             }
 
         }
+        else if (randomVal < this.junctionProbability && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false)
+        {
+            chosenScriptableTile = this.junctionTile;
+            this.spawningAfterJunction = true;
+
+        }
         else
         {
             chosenScriptableTile = this.SelectTileByDifficulty(TileDifficulty.Easy);
@@ -177,7 +196,16 @@ public class TileManager : MonoBehaviour
         // Final new tile setup
         // Set as a child of the container gameobject
         newTile.transform.parent = this.tilesContainer.transform;
-        this.finalTileTransform = newTile.transform;
+        if (this.spawningAfterJunction)
+        {
+            this.junctionSpawnedTilesList.Add(newTile);
+        }
+        
+        this.finalTile = newTile;
+        if(this.currentJunctionTile == null && this.spawningAfterJunction == true)
+        {
+            this.currentJunctionTile = newTile;
+        }
     }
 
     public void TrackSpawnLeftTurn()

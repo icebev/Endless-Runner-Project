@@ -21,6 +21,9 @@ public class ScriptableTileObject : ScriptableObject
     [Tooltip("Is this tile a corner tile?")]
     public bool hasCorner;
 
+    [Tooltip("Is this tile a junction tile?")]
+    public bool hasJunction;
+
     [Tooltip("The change in elevation over the length of the tile.")]
     public float elevationChange;
 }

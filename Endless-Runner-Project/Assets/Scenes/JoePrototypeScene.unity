@@ -526,7 +526,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.106482066, y: -0.0000000042771386, z: -4.580427e-10, w: 0.9943147}
+  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
   m_LocalPosition: {x: 0, y: 0.7, z: -5.9999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -688,7 +688,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232365246}
-  m_LocalRotation: {x: -0.106482066, y: -0.0000000042771386, z: -4.580427e-10, w: 0.9943147}
+  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
   m_LocalPosition: {x: 0, y: 0.35, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1123,13 +1123,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 79de4ed42a44c364bb90da587aec7ff2, type: 2}
   - {fileID: 11400000, guid: 354d7cf3532644d47b9adc4fccd79f99, type: 2}
   - {fileID: 11400000, guid: 8a0805fd3d7d81e4d8af227f2721bb90, type: 2}
+  junctionTile: {fileID: 11400000, guid: 9e32dea09a1059042a15663106f50de1, type: 2}
+  spawningAfterJunction: 0
+  junctionSpawnedTilesList: []
   tileSpawnCount: 30
   squareTileDimension: 7
-  despawnDistance: 15
-  cornerProbability: 0.1
+  despawnDistance: 30
+  cornerProbability: 0
+  junctionProbability: 0.2
   spawnDirection: 0
   runDirection: 0
   tilesContainer: {fileID: 0}
+  currentJunctionTile: {fileID: 0}
 --- !u!4 &2091495361
 Transform:
   m_ObjectHideFlags: 0
