@@ -294,4 +294,9 @@ public class CharacterManager : MonoBehaviour
     {
         return this.numberOfLanes;
     }
+
+    public int GetLaneBoundaries(int direction)
+    {
+        return this.laneBoundaries[direction];
+    }
 }
