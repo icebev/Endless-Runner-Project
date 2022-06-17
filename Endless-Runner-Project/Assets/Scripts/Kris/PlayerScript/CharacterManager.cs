@@ -184,7 +184,6 @@ public class CharacterManager : MonoBehaviour
                 if(this.recentMoveTimer > 0 && this.recentMove == this.recentMovePrevious)
                 {
                     this.interpolationSpeedLane = this.interpolationSpeedIndex[(int)interpolationSpeeds.doubleSpeed];
-                    print("Roll!");
                 }
                 else
                 {
