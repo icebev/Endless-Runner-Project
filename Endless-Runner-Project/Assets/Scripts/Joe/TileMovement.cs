@@ -57,7 +57,7 @@ public class TileMovement : MonoBehaviour
         {
             case TrackDirection.positiveZ:
                 {
-                    if (this.transform.position.z < -this.tileManager.despawnDistance)
+                    if (this.transform.position.z < -this.tileManager.despawnDistance )
                     {
                         this.tileManager.SpawnAdditionalTile();
                         Destroy(this.gameObject);
