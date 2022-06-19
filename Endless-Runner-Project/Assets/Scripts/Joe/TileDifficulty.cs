@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 public enum TileDifficulty
 {
+    VeryEasy,
     Easy,
     Medium,
     Hard
