@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -977,6 +977,7 @@ MonoBehaviour:
   _character: {fileID: 3880514182520848994}
   numberOfLanes: 5
   evenLaneBias: 0
+  LaneSize: 1.25
   lockLaneSwitch: 0
 --- !u!4 &1433925693
 Transform:
@@ -2238,7 +2239,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4508538334191360216}
   - component: {fileID: 7525980546636759714}
-  - component: {fileID: 7525980546636759715}
   - component: {fileID: 7525980546636759716}
   m_Layer: 0
   m_Name: Sprint
@@ -3148,22 +3148,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &7525980546636759715
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3880514182520848994}
-  serializedVersion: 2
-  m_Mass: 5
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 122
-  m_CollisionDetection: 0
 --- !u!136 &7525980546636759716
 CapsuleCollider:
   m_ObjectHideFlags: 0

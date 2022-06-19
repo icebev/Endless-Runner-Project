@@ -11,7 +11,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private GameObject _character;
     [SerializeField] private int numberOfLanes;
 
-    private int[] laneBoundaries;
+    private float[] laneBoundaries;
     //private int evenLaneBias = (int)movementDirections.left;
     [SerializeField] private int evenLaneBias;
 
@@ -25,8 +25,9 @@ public class CharacterManager : MonoBehaviour
 
     private int direction = (int)directions.north;                      //Player's current direction
 
-    private int currentLane;                                            //Player's current lane
-    private int targetLane = 0;                                         //Which lane the player is trying to switch to.
+    [SerializeField] private float LaneSize;
+    private float currentLane;                                            //Player's current lane
+    private float targetLane = 0;                                         //Which lane the player is trying to switch to.
     private bool transitioning = false;                                 //Used to know if the character is Switching Lanes (For Collision System).
     [SerializeField] private bool lockLaneSwitch;
     //private bool lockLaneSwitch = false;
@@ -129,23 +130,23 @@ public class CharacterManager : MonoBehaviour
         }
         if (this.numberOfLanes % 2 == 0)
         {
-            int Boundary = this.numberOfLanes / 2;
+            float Boundary = (this.numberOfLanes / 2) * this.LaneSize;
 
             switch (evenLaneBias)
             {
                 case (int)movementDirections.left:
-                    this.laneBoundaries = new int[] { -Boundary, (Boundary - 1)};
+                    this.laneBoundaries = new float[] { -Boundary, (Boundary - 1)};
                     break;
 
                 case (int)movementDirections.right:
-                    this.laneBoundaries = new int[] { -(Boundary - 1), Boundary };
+                    this.laneBoundaries = new float[] { -(Boundary - 1), Boundary };
                     break;
             }   
         }
         else if (this.numberOfLanes % 2 == 1)
         {
-            int Boundary = ((this.numberOfLanes - 1) / 2);
-            this.laneBoundaries = new int[] { -Boundary, Boundary };
+            float Boundary = ((this.numberOfLanes - 1) / 2) * this.LaneSize;
+            this.laneBoundaries = new float[] { -Boundary, Boundary };
         }
         CheckLaneBounds();
     }
@@ -165,15 +166,15 @@ public class CharacterManager : MonoBehaviour
     {
         if (!this.lockLaneSwitch)
         {
-            int previousTargetLane = this.targetLane;
+            float previousTargetLane = this.targetLane;
             switch (Direction)
             {
                 case (int)movementDirections.left:
-                    this.targetLane -= 1;
+                    this.targetLane -= this.LaneSize;
                     break;
 
                 case (int)movementDirections.right:
-                    this.targetLane += 1;
+                    this.targetLane += this.LaneSize;
                     break;
             }
             CheckLaneBounds();
@@ -233,13 +234,13 @@ public class CharacterManager : MonoBehaviour
 
             this.transitioning = true;
 
-            if (this.currentLane < (this.targetLane - 1))
+            if (this.currentLane < (this.targetLane - this.LaneSize))
             {
-                this.currentLane = this.targetLane - 1;
+                this.currentLane = this.targetLane - this.LaneSize;
             }
-            else if (this.currentLane > (this.targetLane + 1))
+            else if (this.currentLane > (this.targetLane + this.LaneSize))
             {
-                this.currentLane = this.targetLane + 1;
+                this.currentLane = this.targetLane + this.LaneSize;
             }
         }
 
@@ -257,6 +258,11 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
+    private void DoCollision()
+    {
+
+    }
+
     private void GroundCheck()
     {
         this.playerPosition.y -= 0.2f;
@@ -269,12 +275,12 @@ public class CharacterManager : MonoBehaviour
         return this.transitioning;
     }
 
-    public int GetPlayerLaneCurrent()
+    public float GetPlayerLaneCurrent()
     {
         return this.currentLane;
     }
 
-    public int GetPlayerLaneTarget()
+    public float GetPlayerLaneTarget()
     {
         return this.targetLane;
     }
@@ -294,7 +300,7 @@ public class CharacterManager : MonoBehaviour
         return this.numberOfLanes;
     }
 
-    public int GetLaneBoundaries(int direction)
+    public float GetLaneBoundaries(int direction)
     {
         return this.laneBoundaries[direction];
     }
