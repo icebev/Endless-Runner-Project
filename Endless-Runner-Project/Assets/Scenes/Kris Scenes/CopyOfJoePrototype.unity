@@ -526,7 +526,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.106482066, y: -0.0000000042771386, z: -4.580427e-10, w: 0.9943147}
+  m_LocalRotation: {x: 0.004666514, y: -2.688467e-10, z: 1.2545907e-12, w: 0.99998915}
   m_LocalPosition: {x: 0, y: 0.7, z: -5.9999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -688,7 +688,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232365246}
-  m_LocalRotation: {x: -0.106482066, y: -0.0000000042771386, z: -4.580427e-10, w: 0.9943147}
+  m_LocalRotation: {x: 0.004666514, y: -2.688467e-10, z: 1.2545907e-12, w: 0.99998915}
   m_LocalPosition: {x: 0, y: 0.35, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -977,7 +977,7 @@ MonoBehaviour:
   _character: {fileID: 3880514182520848994}
   numberOfLanes: 5
   evenLaneBias: 0
-  LaneSize: 1.25
+  LaneSize: 1
   lockLaneSwitch: 0
 --- !u!4 &1433925693
 Transform:
@@ -1081,7 +1081,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1999505767}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.644, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1128,9 +1128,13 @@ MonoBehaviour:
   squareTileDimension: 7
   despawnDistance: 15
   cornerProbability: 0.1
+  junctionProbability: 0
+  spawningAfterJunction: 0
+  junctionSpawnedTilesList: []
   spawnDirection: 0
   runDirection: 0
   tilesContainer: {fileID: 0}
+  currentJunctionTile: {fileID: 0}
 --- !u!4 &2091495361
 Transform:
   m_ObjectHideFlags: 0

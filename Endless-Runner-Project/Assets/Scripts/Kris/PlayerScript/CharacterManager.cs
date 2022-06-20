@@ -55,6 +55,8 @@ public class CharacterManager : MonoBehaviour
     private float recentMoveMaxTime = 0.18f;
     private float timerSpeed = 0.02f; //This equates to 1 second.
 
+    private float playerYVelocity = 0;
+
     //Each possible player Direction
     public enum directions
     {
@@ -80,6 +82,14 @@ public class CharacterManager : MonoBehaviour
         normalSpeed,
         doubleSpeed,
     }
+
+    public enum playerStates
+    {
+        grounded,
+        jumping,
+        quickfall,
+    }
+
     private void Start()
     {
         this._playerAudioS = _character.GetComponent<AudioSource>();
@@ -263,9 +273,9 @@ public class CharacterManager : MonoBehaviour
 
     }
 
-    private void GroundCheck()
+    private void ApplyGravity()
     {
-        this.playerPosition.y -= 0.2f;
+        this.playerYVelocity -= 0.2f;
     }
 
 
