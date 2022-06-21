@@ -55,7 +55,11 @@ public class CharacterManager : MonoBehaviour
     private float recentMoveMaxTime = 0.18f;
     private float timerSpeed = 0.02f; //This equates to 1 second.
 
+    private bool doPhysics = true;
+    private bool enableGravity = true;
     private float playerYVelocity = 0;
+    private float gravity = 0.01f;
+    private float jumpHeight = 0.25f;
 
     //Each possible player Direction
     public enum directions
@@ -88,6 +92,18 @@ public class CharacterManager : MonoBehaviour
         grounded,
         jumping,
         quickfall,
+        
+    }
+
+    public enum AnimationState
+    {
+        Roll,
+        Fall,
+        Jump,
+        LaneSwitch,
+        RegularRun,
+
+
     }
 
     private void Start()
@@ -102,14 +118,14 @@ public class CharacterManager : MonoBehaviour
         UpdateCharacterData();
         UpdateDoubleTapTimer();
         UpdateLanePositionAndRotation();
-
+        UpdatePhysics();
 
         //GroundCheck();
 
     }
     private void UpdateCharacterData()
     {
-        this.playerTargetPosition = new Vector3(this.targetLane, this._character.transform.localPosition.y, 0);
+        //this.playerTargetPosition = new Vector3(this.targetLane, this._character.transform.localPosition.y, 0);
         //this.playerTargetPosition = new Vector3(this.targetLane, this.playerPosition.y, 0);
         this.targetrotation = Quaternion.Euler(0, rotationIndex[this.direction], 0);
     }
@@ -172,7 +188,7 @@ public class CharacterManager : MonoBehaviour
         this.lockLaneSwitch = LockLanes;
     }
 
-    public void Move(int Direction)
+    public void Move(int Direction, int Amount)
     {
         if (!this.lockLaneSwitch)
         {
@@ -180,11 +196,11 @@ public class CharacterManager : MonoBehaviour
             switch (Direction)
             {
                 case (int)movementDirections.left:
-                    this.targetLane -= this.LaneSize;
+                    this.targetLane -= this.LaneSize * Amount;
                     break;
 
                 case (int)movementDirections.right:
-                    this.targetLane += this.LaneSize;
+                    this.targetLane += this.LaneSize * Amount;
                     break;
             }
             CheckLaneBounds();
@@ -236,11 +252,14 @@ public class CharacterManager : MonoBehaviour
 
     private void UpdateLanePositionAndRotation()
     {
-        if (this.playerPosition.x != this.playerTargetPosition.x)
+        if (this.playerPosition.x != this.targetLane)
         {
-            Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeedLane);
-            this.playerPosition = linearPlayerMove;
-            this._character.transform.localPosition = this.playerPosition;
+            //Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeedLane);
+
+            float linearPlayerXMove = Mathf.Lerp(this.playerPosition.x, this.targetLane, this.interpolationSpeedLane);
+            this.playerPosition.x = linearPlayerXMove;
+            //this.playerPosition.x = linearPlayerXMove;
+            
 
             this.transitioning = true;
 
@@ -266,19 +285,54 @@ public class CharacterManager : MonoBehaviour
             this.currentrotation = linearPlayerRotate;
             this._characterParent.transform.localRotation = this.currentrotation;
         }
+        
     }
 
-    private void DoCollision()
+    private void UpdatePhysics()
     {
-
+        if (doPhysics) { 
+            
+            ApplyGravity();
+            
+            this.playerPosition.y += this.playerYVelocity;
+            
+            Vector3 relativePlayerPos = this._characterParent.transform.InverseTransformPoint(this.playerPosition);
+            print(this.playerPosition + " " + relativePlayerPos);
+            RaycastHit GroundHit;
+            Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.4f);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.4f, Color.red) ;
+            if (GroundHit.collider != null)
+            {
+                this.enableGravity = false;
+                if (this.playerYVelocity < 0)
+                {
+                    this.playerYVelocity = 0;
+                }
+                this.playerPosition.y = GroundHit.point.y; //+ 0.35f ;
+                //this.playerYVelocity = 0;
+            }
+            else 
+            {
+                this.enableGravity = true;
+            }
+            
+            
+            this._character.transform.localPosition = this.playerPosition;
+        }
     }
 
     private void ApplyGravity()
     {
-        this.playerYVelocity -= 0.2f;
+        if (this.enableGravity)
+        {
+            this.playerYVelocity -= gravity;
+        }
     }
 
-
+    public void Jump()
+    {
+        this.playerYVelocity = jumpHeight;
+    }
 
     public bool GetPlayerTransitioningState()
     {

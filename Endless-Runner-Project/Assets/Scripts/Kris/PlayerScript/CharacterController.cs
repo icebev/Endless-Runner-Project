@@ -28,7 +28,14 @@ public class CharacterController : MonoBehaviour
     {
         if (press.performed)
         {
-            this._characterManager.Move((int)CharacterManager.movementDirections.left);
+            this._characterManager.Move((int)CharacterManager.movementDirections.left, 1);
+        }
+    }
+    public void RollLeft(InputAction.CallbackContext press)
+    {
+        if (press.performed)
+        {
+            this._characterManager.Move((int)CharacterManager.movementDirections.left, 2);
         }
     }
 
@@ -36,9 +43,25 @@ public class CharacterController : MonoBehaviour
     {
         if (press.performed)
         {
-            this._characterManager.Move((int)CharacterManager.movementDirections.right);
+            this._characterManager.Move((int)CharacterManager.movementDirections.right, 1);
         }
     }
+    public void RollRight(InputAction.CallbackContext press)
+    {
+        if (press.performed)
+        {
+            this._characterManager.Move((int)CharacterManager.movementDirections.right, 2);
+        }
+    }
+
+    public void Jump(InputAction.CallbackContext press)
+    {
+        if (press.performed)
+        {
+            this._characterManager.Jump();
+        }
+    }
+
 
     private void Start()
     {
