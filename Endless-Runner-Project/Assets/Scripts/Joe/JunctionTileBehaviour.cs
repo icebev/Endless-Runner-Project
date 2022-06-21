@@ -26,7 +26,7 @@ public class JunctionTileBehaviour : MonoBehaviour
         float distanceFromOrigin = Vector3.Distance(this.transform.position, new Vector3(0, 4.5f, 0));
         if (distanceFromOrigin < this.turnDist)
         {
-            if (this.hasRotated == false && this.characterManager.GetPlayerLaneTarget() == 2)
+            if (this.hasRotated == false && this.characterManager.GetPlayerLaneTarget() == 2 && this.hasRightTurn)
             {
                 this.characterManager.Rotate(TurnDirection.Right);
                 this.tileManager.TrackSpawnRightTurn();
@@ -36,14 +36,15 @@ public class JunctionTileBehaviour : MonoBehaviour
                 foreach (GameObject tileObject in this.tileManager.junctionSpawnedTilesList)
                 {
                     tileObject.transform.RotateAround(this.transform.position, Vector3.up, 90);
+                    tileObject.GetComponent<TileMovement>().CorrectOffset();
                 }
-                foreach (Transform child in this.tileManager.tilesContainer.transform)
-                {
-                    child.GetComponent<TileMovement>().CorrectOffset();
-                }
+                //foreach (Transform child in this.tileManager.tilesContainer.transform)
+                //{
+                //    child.GetComponent<TileMovement>().CorrectOffset();
+                //}
 
             }
-            else if (this.hasRotated == false && this.characterManager.GetPlayerLaneTarget() == -2)
+            else if (this.hasRotated == false && this.characterManager.GetPlayerLaneTarget() == -2 && this.hasLeftTurn)
             {
                 this.characterManager.Rotate(TurnDirection.Left);
                 this.tileManager.TrackSpawnLeftTurn();
@@ -53,11 +54,8 @@ public class JunctionTileBehaviour : MonoBehaviour
                 foreach (GameObject tileObject in this.tileManager.junctionSpawnedTilesList)
                 {
                     tileObject.transform.RotateAround(this.transform.position, Vector3.up, -90);
+                    tileObject.GetComponent<TileMovement>().CorrectOffset();
 
-                }
-                foreach (Transform child in this.tileManager.tilesContainer.transform)
-                {
-                    child.GetComponent<TileMovement>().CorrectOffset();
                 }
             }
 

@@ -3069,6 +3069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1579042374205558073}
   - component: {fileID: -7175117629848670378}
+  - component: {fileID: 2561043342314893001}
   m_Layer: 0
   m_Name: Segment 2
   m_TagString: Untagged
@@ -3110,6 +3111,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ccc64ae77b6884e9f764b52efbbbd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &2561043342314893001
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579042374205558074}
+  serializedVersion: 2
+  m_Mass: 5
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1
 --- !u!1 &4086281397780598245
 GameObject:
   m_ObjectHideFlags: 0

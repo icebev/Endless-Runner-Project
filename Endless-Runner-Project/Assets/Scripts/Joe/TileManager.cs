@@ -48,7 +48,7 @@ public class TileManager : MonoBehaviour
     #region Private Variables
     private TileSpeedIncrementation tileSpeedIncrementation;
     private GameObject finalTile;
-    private float spawnHeightChange = 4.5f;
+    private float spawnHeightChange;
     private float nextTileSpawnGap;
     #endregion
 
@@ -105,18 +105,21 @@ public class TileManager : MonoBehaviour
         this.tilesContainer = GameObject.FindGameObjectWithTag("TilesContainer");
         this.nextTileSpawnGap = this.squareTileDimension;
 
+        this.finalTile = InstantiateSemiRandomTile();
+        this.finalTile.transform.Translate(new Vector3(0, 4.5f, 0));
         // Spawn in the starting tile sequence
         for (int z = 0; z <= this.tileSpawnCount; z++)
         {
-            Vector3 tilePos = this.veryEasyTilesList[0].tilePrefab.transform.position + new Vector3(0, this.spawnHeightChange, (z * this.squareTileDimension));
-            GameObject newTile = Instantiate(this.veryEasyTilesList[0].tilePrefab, tilePos, this.veryEasyTilesList[0].tilePrefab.transform.rotation);
-            newTile.transform.parent = this.tilesContainer.transform;
-            if (z == this.tileSpawnCount)
-            {
-                this.finalTile = newTile;
-            }
+            this.SpawnAdditionalTile();
+            //Vector3 tilePos = this.veryEasyTilesList[0].tilePrefab.transform.position + new Vector3(0, this.spawnHeightChange, (z * this.squareTileDimension));
+            //GameObject newTile = Instantiate(this.veryEasyTilesList[0].tilePrefab, tilePos, this.veryEasyTilesList[0].tilePrefab.transform.rotation);
+            //newTile.transform.parent = this.tilesContainer.transform;
+            //if (z == this.tileSpawnCount)
+            //{
+            //    this.finalTile = newTile;
+            //}
         }
-        this.spawnHeightChange = 0;
+        //this.spawnHeightChange = 0;
     }
 
 
@@ -162,7 +165,7 @@ public class TileManager : MonoBehaviour
     public GameObject InstantiateSemiRandomTile()
     {
         ScriptableTileObject chosenScriptableTile;
-
+        GameObject spawnedTile;
         float randomVal = Random.Range(0.0f, 1.0f);
         if (randomVal < this.cornerProbability && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false)
         {
@@ -184,7 +187,9 @@ public class TileManager : MonoBehaviour
         else if (randomVal < (this.junctionProbability + this.cornerProbability) && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false)
         {
             chosenScriptableTile = this.SelectJunctionTile();
+            spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
             this.spawningAfterJunction = true;
+            return spawnedTile;
 
         }
         else
@@ -192,12 +197,31 @@ public class TileManager : MonoBehaviour
             chosenScriptableTile = this.SelectTileByDifficulty(TileDifficulty.VeryEasy);
         }
 
-        GameObject spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
+        spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
         this.nextTileSpawnGap = chosenScriptableTile.tileLength * this.squareTileDimension;
+
+        if (this.spawningAfterJunction)
+        {
+            this.junctionSpawnedTilesList.Add(spawnedTile);
+        }
+        else
+        {
+            spawnedTile.transform.parent = this.tilesContainer.transform;
+        }
+
+
 
         return spawnedTile;
     }
 
+    public void ResetTilesContainer()
+    {
+        foreach (Transform child in this.transform)
+        {
+            SpawnAdditionalTile();
+            Destroy(child);
+        }
+    }
     /// <summary>
     /// Creates an additional tile at the end of the track
     /// </summary>
@@ -221,16 +245,18 @@ public class TileManager : MonoBehaviour
 
         // Final new tile setup
         // Set as a child of the container gameobject
-        newTile.transform.parent = this.tilesContainer.transform;
-        if (this.spawningAfterJunction)
-        {
-            this.junctionSpawnedTilesList.Add(newTile);
-        }
+    
+
         
         this.finalTile = newTile;
         if(this.currentJunctionTile == null && this.spawningAfterJunction == true)
         {
             this.currentJunctionTile = newTile;
+        }
+
+        if (newTile.GetComponent<TileMovement>() == null)
+        {
+            newTile.AddComponent<TileMovement>();
         }
     }
 
