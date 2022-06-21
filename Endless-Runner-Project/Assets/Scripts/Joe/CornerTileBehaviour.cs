@@ -33,7 +33,7 @@ public class CornerTileBehaviour : MonoBehaviour
                 this.tileManager.runDirection = this.tileManager.spawnDirection;
                 foreach (Transform child in this.tileManager.tilesContainer.transform)
                 {
-                    child.GetComponent<TileMovement>().CorrectOffset();
+                    //child.GetComponent<TileMovement>().CorrectOffset();
                 }
             }
         }

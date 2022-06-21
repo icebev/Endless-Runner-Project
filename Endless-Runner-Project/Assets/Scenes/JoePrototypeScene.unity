@@ -526,7 +526,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
+  m_LocalRotation: {x: -0.106482066, y: -0.0000000042771386, z: -4.580427e-10, w: 0.9943147}
   m_LocalPosition: {x: 0, y: 0.7, z: -5.9999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -688,7 +688,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232365246}
-  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
+  m_LocalRotation: {x: -0.106482066, y: -0.0000000042771386, z: -4.580427e-10, w: 0.9943147}
   m_LocalPosition: {x: 0, y: 0.35, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1127,9 +1127,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9e32dea09a1059042a15663106f50de1, type: 2}
   tileSpawnCount: 30
   squareTileDimension: 7
-  despawnDistance: 30
+  despawnDistance: 20
   cornerProbability: 0.2
-  junctionProbability: 0
+  junctionProbability: 0.2
   spawningAfterJunction: 0
   junctionSpawnedTilesList: []
   spawnDirection: 0
@@ -3133,6 +3133,7 @@ GameObject:
   - component: {fileID: 7525980546636759714}
   - component: {fileID: 7525980546636759715}
   - component: {fileID: 7525980546636759716}
+  - component: {fileID: 7525980546636759717}
   m_Layer: 0
   m_Name: Sprint
   m_TagString: Untagged
@@ -5265,11 +5266,25 @@ CapsuleCollider:
   m_GameObject: {fileID: 3880514182520848994}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 1.5993017
   m_Direction: 1
   m_Center: {x: 0, y: 0.85378486, z: 0}
+--- !u!114 &7525980546636759717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3880514182520848994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e43b2aa277ee04784b8670c48811f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raycastDistance: 0.5
+  transformChangeRate: 0.3
 --- !u!4 &7565230769076963931
 Transform:
   m_ObjectHideFlags: 0

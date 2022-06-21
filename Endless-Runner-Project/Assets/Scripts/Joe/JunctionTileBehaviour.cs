@@ -36,7 +36,7 @@ public class JunctionTileBehaviour : MonoBehaviour
                 foreach (GameObject tileObject in this.tileManager.junctionSpawnedTilesList)
                 {
                     tileObject.transform.RotateAround(this.transform.position, Vector3.up, 90);
-                    tileObject.GetComponent<TileMovement>().CorrectOffset();
+                    //tileObject.GetComponent<TileMovement>().CorrectOffset();
                 }
                 //foreach (Transform child in this.tileManager.tilesContainer.transform)
                 //{
@@ -54,7 +54,7 @@ public class JunctionTileBehaviour : MonoBehaviour
                 foreach (GameObject tileObject in this.tileManager.junctionSpawnedTilesList)
                 {
                     tileObject.transform.RotateAround(this.transform.position, Vector3.up, -90);
-                    tileObject.GetComponent<TileMovement>().CorrectOffset();
+                    //tileObject.GetComponent<TileMovement>().CorrectOffset();
 
                 }
             }

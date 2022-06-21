@@ -6,11 +6,60 @@ public class TileMovement : MonoBehaviour
 {
     private TileManager tileManager;
     private Rigidbody tileRigidbody;
-    private float offesetCorrectionThreshold = 1.5f;
+    private float offesetCorrectionThreshold = 0.5f;
+    private float correctionMaxVal = 1.0f;
+
     private void Start()
     {
         this.tileManager = FindObjectOfType<TileManager>();
         this.tileRigidbody = this.GetComponent<Rigidbody>();
+    }
+
+
+    public void InLineCorrectOffset()
+    {
+        switch (this.tileManager.runDirection)
+        {
+            case TrackDirection.positiveZ:
+                {
+                    if (Mathf.Abs(this.transform.position.x) < this.correctionMaxVal && Mathf.Abs(this.transform.position.x) > 0)
+                    {
+                        //this.tileRigidbody.MovePosition(new Vector3(0, this.tileRigidbody.position.y, this.tileRigidbody.position.z));
+                        this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
+                    }
+                    break;
+                }
+            case TrackDirection.negativeX:
+                {
+                    if (Mathf.Abs(this.transform.position.z) < this.correctionMaxVal && Mathf.Abs(this.transform.position.z) > 0)
+                    {
+                        //this.tileRigidbody.MovePosition(new Vector3(this.tileRigidbody.position.x, this.tileRigidbody.position.y, 0));
+
+                        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0);
+                    }
+                    break;
+                }
+            case TrackDirection.negativeZ:
+                {
+                    if (Mathf.Abs(this.transform.position.x) < this.correctionMaxVal && Mathf.Abs(this.transform.position.x) > 0)
+                    {
+                        //this.tileRigidbody.MovePosition(new Vector3(0, this.tileRigidbody.position.y, this.tileRigidbody.position.z));
+
+                        this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
+                    }
+                    break;
+                }
+            case TrackDirection.positiveX:
+                {
+                    if (Mathf.Abs(this.transform.position.z) < this.correctionMaxVal && Mathf.Abs(this.transform.position.z) > 0)
+                    {
+                        //this.tileRigidbody.MovePosition(new Vector3(this.tileRigidbody.position.x, this.tileRigidbody.position.y, 0));
+
+                        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0);
+                    }
+                    break;
+                }
+        }
     }
 
     public void CorrectOffset()
@@ -68,6 +117,7 @@ public class TileMovement : MonoBehaviour
         //}
 
         // Check if the tile needs to be destroyed then move it using the run direction
+        this.InLineCorrectOffset();
         switch (this.tileManager.runDirection)
         {
             case TrackDirection.positiveZ:
@@ -78,7 +128,7 @@ public class TileMovement : MonoBehaviour
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
-                    newTargetPosition = this.tileRigidbody.position - new Vector3(0, 0, this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime);
+                    newTargetPosition = this.transform.position - new Vector3(0, 0, this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime);
                     this.tileRigidbody.MovePosition(newTargetPosition);
                     break;
                 }
@@ -90,7 +140,7 @@ public class TileMovement : MonoBehaviour
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
-                    newTargetPosition = this.tileRigidbody.position - new Vector3(-this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
+                    newTargetPosition = this.transform.position - new Vector3(-this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
                     this.tileRigidbody.MovePosition(newTargetPosition);
 
                     break;
@@ -103,7 +153,7 @@ public class TileMovement : MonoBehaviour
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
-                    newTargetPosition = this.tileRigidbody.position - new Vector3(0, 0, -this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime);
+                    newTargetPosition = this.transform.position - new Vector3(0, 0, -this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime);
                     this.tileRigidbody.MovePosition(newTargetPosition);
 
                     break;
@@ -116,7 +166,7 @@ public class TileMovement : MonoBehaviour
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
-                    newTargetPosition = this.tileRigidbody.position - new Vector3(this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
+                    newTargetPosition = this.transform.position - new Vector3(this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
                     this.tileRigidbody.MovePosition(newTargetPosition);
 
                     break;
