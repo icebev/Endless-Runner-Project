@@ -526,7 +526,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.106482066, y: -0.0000000042771386, z: -4.580427e-10, w: 0.9943147}
+  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
   m_LocalPosition: {x: 0, y: 0.7, z: -5.9999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -688,7 +688,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232365246}
-  m_LocalRotation: {x: -0.106482066, y: -0.0000000042771386, z: -4.580427e-10, w: 0.9943147}
+  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
   m_LocalPosition: {x: 0, y: 0.35, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -943,6 +943,30 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1fadd9de-7e56-4b2a-91a9-0deb06f39ded
     m_ActionName: PlayerCharacter/RotateRight[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1433925691}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0f4eab3d-552b-4556-927a-77d347b5e6c5
+    m_ActionName: PlayerCharacter/Jump[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5ced2d30-0d27-47ff-917a-1c5ddfbbe6a4
+    m_ActionName: PlayerCharacter/DashLeft[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bbdc087e-3a94-4884-92cb-855d95ea61b6
+    m_ActionName: PlayerCharacter/DashRight[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerCharacter
@@ -3131,9 +3155,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4508538334191360216}
   - component: {fileID: 7525980546636759714}
-  - component: {fileID: 7525980546636759715}
-  - component: {fileID: 7525980546636759716}
-  - component: {fileID: 7525980546636759717}
   m_Layer: 0
   m_Name: Sprint
   m_TagString: Untagged
@@ -5241,50 +5262,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &7525980546636759715
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3880514182520848994}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 2
-  m_Constraints: 122
-  m_CollisionDetection: 1
---- !u!136 &7525980546636759716
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3880514182520848994}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 1.5993017
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.85378486, z: 0}
---- !u!114 &7525980546636759717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3880514182520848994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3e43b2aa277ee04784b8670c48811f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raycastDistance: 0.5
-  transformChangeRate: 0.3
 --- !u!4 &7565230769076963931
 Transform:
   m_ObjectHideFlags: 0
