@@ -56,7 +56,7 @@ public class CharacterManager : MonoBehaviour
     private float timerSpeed = 0.02f; //This equates to 1 second.
 
     private bool doPhysics = true;
-    private bool enableGravity = true;
+    private bool isGrounded = true;
     private float playerYVelocity = 0;
     private float gravity = 0.01f;
     private float jumpHeight = 0.25f;
@@ -297,23 +297,24 @@ public class CharacterManager : MonoBehaviour
             this.playerPosition.y += this.playerYVelocity;
             
             Vector3 relativePlayerPos = this._characterParent.transform.InverseTransformPoint(this.playerPosition);
-            print(this.playerPosition + " " + relativePlayerPos);
             RaycastHit GroundHit;
-            Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.4f);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.4f, Color.red) ;
+            Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red) ;
             if (GroundHit.collider != null)
             {
-                this.enableGravity = false;
+                print("grounded");
+                this.isGrounded = true;
                 if (this.playerYVelocity < 0)
                 {
                     this.playerYVelocity = 0;
                 }
-                this.playerPosition.y = GroundHit.point.y; //+ 0.35f ;
+                this.playerPosition.y = GroundHit.point.y - 0.02f ;
                 //this.playerYVelocity = 0;
             }
             else 
             {
-                this.enableGravity = true;
+                print("airbourne");
+                this.isGrounded = false;
             }
             
             
@@ -323,7 +324,7 @@ public class CharacterManager : MonoBehaviour
 
     private void ApplyGravity()
     {
-        if (this.enableGravity)
+        if (!this.isGrounded)
         {
             this.playerYVelocity -= gravity;
         }
@@ -331,7 +332,11 @@ public class CharacterManager : MonoBehaviour
 
     public void Jump()
     {
-        this.playerYVelocity = jumpHeight;
+        if (this.isGrounded)
+        {
+            
+            this.playerYVelocity += jumpHeight;
+        }
     }
 
     public bool GetPlayerTransitioningState()
