@@ -40,6 +40,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "0f4eab3d-552b-4556-927a-77d347b5e6c5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DashLeft",
+                    "type": "Button",
+                    "id": "5ced2d30-0d27-47ff-917a-1c5ddfbbe6a4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DashRight",
+                    "type": "Value",
+                    "id": "bbdc087e-3a94-4884-92cb-855d95ea61b6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -68,7 +95,7 @@
                 {
                     "name": "",
                     "id": "ba86a2a5-2814-4b2e-877c-d8d95ca1d0dc",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -79,11 +106,44 @@
                 {
                     "name": "",
                     "id": "864f3430-23a4-41ca-8947-f9fe46ea9f3f",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "RotateRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5477fa0c-09b7-4caf-9e1b-89b512d68749",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aa61b852-5949-4f2e-96b9-1f971811f1e9",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DashLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c1ce6bc-8da2-4fcd-8b3d-cdcd26911b7b",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DashRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
