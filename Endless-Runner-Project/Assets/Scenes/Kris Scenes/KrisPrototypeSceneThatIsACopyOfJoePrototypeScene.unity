@@ -316,7 +316,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
+  m_LocalRotation: {x: -0.106482066, y: -0.0000000042771386, z: -4.580427e-10, w: 0.9943147}
   m_LocalPosition: {x: 0, y: 0.7, z: -5.9999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -697,7 +697,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterParent: {fileID: 1688633160}
   _character: {fileID: 3880514182520848994}
-  numberOfLanes: 5
+  numberOfLanes: 8
   evenLaneBias: 0
   LaneSize: 1
   lockLaneSwitch: 0
@@ -847,6 +847,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3974564808489116751, guid: 2a347ad87498ec04c8aed4ad1b4a6834, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0000000042771386
+      objectReference: {fileID: 0}
+    - target: {fileID: 3974564808489116751, guid: 2a347ad87498ec04c8aed4ad1b4a6834, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -4.580427e-10
+      objectReference: {fileID: 0}
     - target: {fileID: 3974564808963997112, guid: 2a347ad87498ec04c8aed4ad1b4a6834, type: 3}
       propertyPath: m_Name
       value: Player
