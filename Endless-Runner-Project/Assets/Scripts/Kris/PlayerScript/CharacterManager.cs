@@ -35,7 +35,7 @@ public class CharacterManager : MonoBehaviour
     //private Vector3 playerTargetPosition = new Vector3(0, 0, 0);        //Which position the player is trying to reach.
 
     private Vector3 playerPosition = new Vector3(0, 0, 0);
-    private Vector3 playerTargetPosition = new Vector3(0, 0, 0);
+    //private Vector3 playerTargetPosition = new Vector3(0, 0, 0);
 
     private Quaternion currentrotation = Quaternion.Euler(0, 0, 0);     //Where the character is currently rotated
     private Quaternion targetrotation = Quaternion.Euler(0, 0, 0);      //The rotation the character is trying to reach.
@@ -252,6 +252,7 @@ public class CharacterManager : MonoBehaviour
 
     private void UpdateLanePositionAndRotation()
     {
+        
         if (this.playerPosition.x != this.targetLane)
         {
             //Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeedLane);
@@ -283,7 +284,7 @@ public class CharacterManager : MonoBehaviour
         {
             Quaternion linearPlayerRotate = Quaternion.Lerp(this.currentrotation, this.targetrotation, this.interpolationSpeedRotate);
             this.currentrotation = linearPlayerRotate;
-            this._characterParent.transform.localRotation = this.currentrotation;
+            this._characterParent.transform.rotation = this.currentrotation;
         }
         
     }
@@ -296,13 +297,16 @@ public class CharacterManager : MonoBehaviour
             
             this.playerPosition.y += this.playerYVelocity;
             
-            Vector3 relativePlayerPos = this._characterParent.transform.InverseTransformPoint(this.playerPosition);
+            Vector3 relativePlayerPos = this._characterParent.transform.InverseTransformDirection(this.playerPosition);  
             RaycastHit GroundHit;
-            Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red) ;
+            Vector3 relativeRayCastX = this._characterParent.transform.InverseTransformDirection(Vector3.left);
+            Vector3 relativeRayCastXa = this._characterParent.transform.InverseTransformDirection(Vector3.right);
+            Vector3 relativeRayCastZ = this._characterParent.transform.InverseTransformDirection(Vector3.forward);
+
+            Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red);
             if (GroundHit.collider != null)
             {
-                print("grounded");
                 this.isGrounded = true;
                 if (this.playerYVelocity < 0)
                 {
@@ -313,11 +317,35 @@ public class CharacterManager : MonoBehaviour
             }
             else 
             {
-                print("airbourne");
                 this.isGrounded = false;
             }
+
+
             
-            
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), Vector3.left * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), Vector3.left * 0.42f, Color.red);
+
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), Vector3.right * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), Vector3.right * 0.42f, Color.red);
+
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), Vector3.forward * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), Vector3.forward * 0.42f, Color.red);
+
+            if (this.transitioning)
+            {
+                RaycastHit SideHit;
+                switch (this.recentMove)
+                {
+                    case (int)movementDirections.left:
+                        Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.left), out SideHit, 0.42f);
+                        break;
+
+                    case (int)movementDirections.right:
+                        
+                        
+                        break;
+                }
+            }
             this._character.transform.localPosition = this.playerPosition;
         }
     }
