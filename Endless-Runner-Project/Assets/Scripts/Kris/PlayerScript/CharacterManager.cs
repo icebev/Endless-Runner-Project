@@ -41,16 +41,19 @@ public class CharacterManager : MonoBehaviour
     private Quaternion targetrotation = Quaternion.Euler(0, 0, 0);      //The rotation the character is trying to reach.
     
     private int[] rotationIndex = new int[]                             //Index of all rotations. Used this to avoid an unnecessarily big Switch statement.
-    { 0, 90, 180, 270 };        
+    { 0, 90, 180, 270 };
 
-    private float[] interpolationSpeedIndex = new float[] 
-    { 0.125f, 0.25f, 0.5f };
+    private float[] interpolationSpeedIndex = new float[] { 0.125f, 0.25f, 0.5f };
 
     private float interpolationSpeedLane = 0.25f;
     private float interpolationSpeedRotate = 0.25f;                           //Used for Linear Interpolation for smooth Lane moving and smooth rotation
 
-    private int recentMove = (int)movementDirections.none;
-    private int recentMovePrevious;
+    private Vector3[] LeftLocal = new Vector3[] {new Vector3(1, 0, 0), new Vector3(0, 0, -1), new Vector3(-1, 0, 0), new Vector3(0, 0, 1)};
+    private Vector3[] RightLocal = new Vector3[] { new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(1, 0, 0), new Vector3(0, 0, -1) };
+    private Vector3[] ForwardLocal = new Vector3[] { new Vector3(0, 0, 1), new Vector3(1, 0, 0), new Vector3(0, 0, -1), new Vector3(-1, 0, 0) };
+
+    private movementDirections recentMove = movementDirections.none;
+    private movementDirections recentMovePrevious;
     private float recentMoveTimer = 0;
     private float recentMoveMaxTime = 0.18f;
     private float timerSpeed = 0.02f; //This equates to 1 second.
@@ -188,18 +191,18 @@ public class CharacterManager : MonoBehaviour
         this.lockLaneSwitch = LockLanes;
     }
 
-    public void Move(int Direction, int Amount)
+    public void Move(movementDirections Direction, int Amount)
     {
         if (!this.lockLaneSwitch)
         {
             float previousTargetLane = this.targetLane;
             switch (Direction)
             {
-                case (int)movementDirections.left:
+                case movementDirections.left:
                     this.targetLane -= this.LaneSize * Amount;
                     break;
 
-                case (int)movementDirections.right:
+                case movementDirections.right:
                     this.targetLane += this.LaneSize * Amount;
                     break;
             }
@@ -240,6 +243,7 @@ public class CharacterManager : MonoBehaviour
                 }
                 break;
         }
+
     }
 
     private void UpdateDoubleTapTimer()
@@ -299,9 +303,9 @@ public class CharacterManager : MonoBehaviour
             
             Vector3 relativePlayerPos = this._characterParent.transform.InverseTransformDirection(this.playerPosition);  
             RaycastHit GroundHit;
-            Vector3 relativeRayCastX = this._characterParent.transform.InverseTransformDirection(Vector3.left);
-            Vector3 relativeRayCastXa = this._characterParent.transform.InverseTransformDirection(Vector3.right);
-            Vector3 relativeRayCastZ = this._characterParent.transform.InverseTransformDirection(Vector3.forward);
+            //Vector3 relativeRayCastX = this._characterParent.transform.InverseTransformDirection(Vector3.left);
+            //Vector3 relativeRayCastXa = this._characterParent.transform.InverseTransformDirection(Vector3.right);
+            //Vector3 relativeRayCastZ = this._characterParent.transform.InverseTransformDirection(Vector3.forward);
 
             Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
             Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red);
@@ -322,25 +326,25 @@ public class CharacterManager : MonoBehaviour
 
 
             
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), relativeRayCastX * 0.42f, Color.red);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), relativeRayCastX * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.LeftLocal[this.direction] * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.LeftLocal[this.direction] * 0.42f, Color.red);
 
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), relativeRayCastXa * 0.42f, Color.red);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), relativeRayCastXa * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.RightLocal[this.direction] * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.RightLocal[this.direction] * 0.42f, Color.red);
 
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), relativeRayCastZ * 0.42f, Color.red);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), relativeRayCastZ * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.ForwardLocal[this.direction] * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.ForwardLocal[this.direction] * 0.42f, Color.red);
 
             if (this.transitioning)
             {
                 RaycastHit SideHit;
                 switch (this.recentMove)
                 {
-                    case (int)movementDirections.left:
+                    case movementDirections.left:
                         Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.left), out SideHit, 0.42f);
                         break;
 
-                    case (int)movementDirections.right:
+                    case movementDirections.right:
                         
                         
                         break;
