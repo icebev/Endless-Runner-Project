@@ -43,14 +43,14 @@ public class PlayerController : MonoBehaviour
     {
         if (press.performed)
         {
-            this._characterManager.Move((int)CharacterManager.movementDirections.right, 1);
+            this._characterManager.Move(CharacterManager.movementDirections.right, 1);
         }
     }
     public void RollRight(InputAction.CallbackContext press)
     {
         if (press.performed)
         {
-            this._characterManager.Move((int)CharacterManager.movementDirections.right, 2);
+            this._characterManager.Move(CharacterManager.movementDirections.right, 2);
         }
     }
 
@@ -61,19 +61,6 @@ public class PlayerController : MonoBehaviour
             this._characterManager.Jump();
         }
     }
-
-    public void Sprint(InputAction.CallbackContext press)
-    {
-        if (press.performed)
-        {
-            
-        }
-        if (press.canceled)
-        {
-
-        }
-    }
-
 
     private void Start()
     {
