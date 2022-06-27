@@ -307,8 +307,8 @@ public class CharacterManager : MonoBehaviour
             //Vector3 relativeRayCastXa = this._characterParent.transform.InverseTransformDirection(Vector3.right);
             //Vector3 relativeRayCastZ = this._characterParent.transform.InverseTransformDirection(Vector3.forward);
 
-            Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red);
+            Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red);
             if (GroundHit.collider != null)
             {
                 this.isGrounded = true;
