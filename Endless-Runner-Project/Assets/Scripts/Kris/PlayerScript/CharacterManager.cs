@@ -322,14 +322,14 @@ public class CharacterManager : MonoBehaviour
 
 
             
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), Vector3.left * 0.42f, Color.red);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), Vector3.left * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), relativeRayCastX * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), relativeRayCastX * 0.42f, Color.red);
 
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), Vector3.right * 0.42f, Color.red);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), Vector3.right * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), relativeRayCastXa * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), relativeRayCastXa * 0.42f, Color.red);
 
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), Vector3.forward * 0.42f, Color.red);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), Vector3.forward * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, relativePlayerPos.z), relativeRayCastZ * 0.42f, Color.red);
+            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, relativePlayerPos.z), relativeRayCastZ * 0.42f, Color.red);
 
             if (this.transitioning)
             {

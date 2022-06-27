@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private GameObject _playerCharacter;
     [SerializeField] private CharacterManager _characterManager;
@@ -59,6 +59,18 @@ public class CharacterController : MonoBehaviour
         if (press.performed)
         {
             this._characterManager.Jump();
+        }
+    }
+
+    public void Sprint(InputAction.CallbackContext press)
+    {
+        if (press.performed)
+        {
+            
+        }
+        if (press.canceled)
+        {
+
         }
     }
 

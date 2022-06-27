@@ -16,7 +16,7 @@ public class CharacterManagerOld : MonoBehaviour
     private int direction = (int)directions.north;
     private int currentLane;
     private bool transitioning = true;
-    private float playerLanePos = 0;
+    //private float playerLanePos = 0;
     private int targetLane = 0;
     private Vector3 playerPosition = new Vector3(0,0,0);
     private Vector3 playerTargetPosition = new Vector3(0, 0, 0);
