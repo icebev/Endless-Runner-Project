@@ -21,6 +21,7 @@ public class SprintSystem : MonoBehaviour
 
     [SerializeField] private float runAnimSpeedNormal;
     [SerializeField] private float runAnimSpeedSprinting;
+    [SerializeField] private float runAnimSpeedCurrent;
     [SerializeField] private float runAnimSpeedTarget;
 
     public float tileSpeedChange;
@@ -50,7 +51,7 @@ public class SprintSystem : MonoBehaviour
         this.fovTarget = this.fovNormal;
         this.camZTarget = this.camZNormal;
         this.runAnimSpeedTarget = this.runAnimSpeedNormal;
-
+        this.runAnimSpeedCurrent = this.runAnimSpeedNormal;
     }
 
 
@@ -78,9 +79,15 @@ public class SprintSystem : MonoBehaviour
         this.cameraHolder.transform.localPosition = new Vector3(0, 0, currentZPos);
 
         // Run Animation speed lerp
-        float currentAnimSpeed = this.playerAnimator.GetFloat("RunSpeed");
-        currentAnimSpeed = Mathf.Lerp(currentAnimSpeed, this.runAnimSpeedTarget, this.interpolationSpeed);
-        this.playerAnimator.SetFloat("RunSpeed", currentAnimSpeed);
+        if (this.runAnimSpeedCurrent != this.runAnimSpeedTarget)
+        {
+            if (Mathf.Abs(this.runAnimSpeedCurrent - this.runAnimSpeedTarget) < 0.01f)
+            {
+                this.runAnimSpeedCurrent = this.runAnimSpeedTarget;
+            }
+            this.runAnimSpeedCurrent = Mathf.Lerp(this.runAnimSpeedCurrent, this.runAnimSpeedTarget, this.interpolationSpeed);
+            this.playerAnimator.SetFloat("RunSpeed", this.runAnimSpeedCurrent);
+        }
     }
 
     public void StartSprinting()
