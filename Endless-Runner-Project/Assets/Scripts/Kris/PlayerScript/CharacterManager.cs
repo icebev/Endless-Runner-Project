@@ -48,12 +48,13 @@ public class CharacterManager : MonoBehaviour
     private float interpolationSpeedLane = 0.25f;
     private float interpolationSpeedRotate = 0.25f;                           //Used for Linear Interpolation for smooth Lane moving and smooth rotation
 
-    private Vector3[] LeftLocal = new Vector3[] {new Vector3(1, 0, 0), new Vector3(0, 0, -1), new Vector3(-1, 0, 0), new Vector3(0, 0, 1)};
-    private Vector3[] RightLocal = new Vector3[] { new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(1, 0, 0), new Vector3(0, 0, -1) };
+    private Vector3[] LeftLocal = new Vector3[] { new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(1, 0, 0), new Vector3(0, 0, -1) };
+    private Vector3[] RightLocal = new Vector3[] { new Vector3(1, 0, 0), new Vector3(0, 0, -1), new Vector3(-1, 0, 0), new Vector3(0, 0, 1) };
     private Vector3[] ForwardLocal = new Vector3[] { new Vector3(0, 0, 1), new Vector3(1, 0, 0), new Vector3(0, 0, -1), new Vector3(-1, 0, 0) };
 
     private movementDirections recentMove = movementDirections.none;
     private movementDirections recentMovePrevious;
+
     private float recentMoveTimer = 0;
     private float recentMoveMaxTime = 0.18f;
     private float timerSpeed = 0.02f; //This equates to 1 second.
@@ -63,6 +64,7 @@ public class CharacterManager : MonoBehaviour
     private float playerYVelocity = 0;
     private float gravity = 0.01f;
     private float jumpHeight = 0.25f;
+    private float playerRaycastSize = 0.42f; 
 
     //Each possible player Direction
     public enum directions
@@ -200,13 +202,16 @@ public class CharacterManager : MonoBehaviour
             {
                 case movementDirections.left:
                     this.targetLane -= this.LaneSize * Amount;
+                    
                     break;
 
                 case movementDirections.right:
                     this.targetLane += this.LaneSize * Amount;
                     break;
             }
+            this.recentMove = Direction;
             CheckLaneBounds();
+            /*
             if(!(this.targetLane == previousTargetLane))
             {
                 this.recentMovePrevious = this.recentMove;
@@ -221,6 +226,7 @@ public class CharacterManager : MonoBehaviour
                     this.recentMoveTimer = this.recentMoveMaxTime;
                 }
             }
+            */
         }
     }
 
@@ -256,7 +262,7 @@ public class CharacterManager : MonoBehaviour
 
     private void UpdateLanePositionAndRotation()
     {
-        
+
         if (this.playerPosition.x != this.targetLane)
         {
             //Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeedLane);
@@ -275,6 +281,11 @@ public class CharacterManager : MonoBehaviour
             else if (this.currentLane > (this.targetLane + this.LaneSize))
             {
                 this.currentLane = this.targetLane + this.LaneSize;
+            }
+
+            if (Mathf.Abs(this.playerPosition.x - this.targetLane) < 0.01f)
+            {
+                this.playerPosition.x = this.targetLane;
             }
         }
 
@@ -307,8 +318,11 @@ public class CharacterManager : MonoBehaviour
             //Vector3 relativeRayCastXa = this._characterParent.transform.InverseTransformDirection(Vector3.right);
             //Vector3 relativeRayCastZ = this._characterParent.transform.InverseTransformDirection(Vector3.forward);
 
-            Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red);
+            //Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
+            //Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red);
+
+            Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, this.playerRaycastSize);
+            
             if (GroundHit.collider != null)
             {
                 this.isGrounded = true;
@@ -317,39 +331,47 @@ public class CharacterManager : MonoBehaviour
                     this.playerYVelocity = 0;
                 }
                 this.playerPosition.y = GroundHit.point.y - 0.02f ;
+                Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * this.playerRaycastSize, Color.green);
                 //this.playerYVelocity = 0;
             }
             else 
             {
                 this.isGrounded = false;
+                Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * this.playerRaycastSize, Color.red);
             }
 
+            if (this.transitioning)
+            {
+                RaycastHit SideHitUpper;
+                RaycastHit SideHitLower;
 
-            
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.LeftLocal[this.direction] * 0.42f, Color.red);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.LeftLocal[this.direction] * 0.42f, Color.red);
+                switch (this.recentMove)
+                {
+                    case movementDirections.left:
+                        Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.LeftLocal[this.direction], out SideHitUpper, this.playerRaycastSize);
+                        Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.LeftLocal[this.direction], out SideHitLower, this.playerRaycastSize);
 
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.RightLocal[this.direction] * 0.42f, Color.red);
-            Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.RightLocal[this.direction] * 0.42f, Color.red);
+                        Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.LeftLocal[this.direction] * this.playerRaycastSize, Color.yellow);
+                        Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.LeftLocal[this.direction] * this.playerRaycastSize, Color.yellow);
+
+                        break;
+
+                    case movementDirections.right:
+
+                        Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.RightLocal[this.direction], out SideHitUpper, this.playerRaycastSize);
+                        Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.RightLocal[this.direction], out SideHitLower, this.playerRaycastSize);
+
+                        Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.RightLocal[this.direction] * this.playerRaycastSize, Color.blue);
+                        Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.RightLocal[this.direction] * this.playerRaycastSize, Color.blue);
+
+                        break;
+                }
+            }
+           
 
             Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.ForwardLocal[this.direction] * 0.42f, Color.red);
             Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.ForwardLocal[this.direction] * 0.42f, Color.red);
 
-            if (this.transitioning)
-            {
-                RaycastHit SideHit;
-                switch (this.recentMove)
-                {
-                    case movementDirections.left:
-                        Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.left), out SideHit, 0.42f);
-                        break;
-
-                    case movementDirections.right:
-                        
-                        
-                        break;
-                }
-            }
             this._character.transform.localPosition = this.playerPosition;
         }
     }
