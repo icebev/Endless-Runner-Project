@@ -394,6 +394,50 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!1 &793299506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 793299508}
+  - component: {fileID: 793299507}
+  m_Layer: 0
+  m_Name: GameStateController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &793299507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793299506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: babd26a24ea96e547b35bad6b3c7aed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &793299508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793299506}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &829037745
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,7 +967,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982186476}
-  m_LocalRotation: {x: -0.028536515, y: -0.0000000010749608, z: -3.0688126e-11, w: 0.9995928}
+  m_LocalRotation: {x: -0.028536515, y: 0.0000000010749613, z: 3.068814e-11, w: 0.9995928}
   m_LocalPosition: {x: 0, y: 0.35, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1101,8 +1145,11 @@ MonoBehaviour:
   fovNormal: 60
   fovSprinting: 70
   fovTarget: 0
+  runAnimSpeedNormal: 0
+  runAnimSpeedSprinting: 0
+  runAnimSpeedTarget: 0
   tileSpeedChange: 2
-  inerpolationSpeed: 0.05
+  interpolationSpeed: 0
 --- !u!1 &3880514182520848994 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 212274686987468946, guid: 2a347ad87498ec04c8aed4ad1b4a6834, type: 3}

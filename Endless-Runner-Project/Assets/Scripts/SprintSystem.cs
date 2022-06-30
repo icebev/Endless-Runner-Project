@@ -81,6 +81,7 @@ public class SprintSystem : MonoBehaviour
         float currentAnimSpeed = this.playerAnimator.GetFloat("RunSpeed");
         currentAnimSpeed = Mathf.Lerp(currentAnimSpeed, this.runAnimSpeedTarget, this.interpolationSpeed);
         this.playerAnimator.SetFloat("RunSpeed", currentAnimSpeed);
+
     }
 
     public void StartSprinting()
