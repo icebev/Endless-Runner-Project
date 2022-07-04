@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/* TILE MANAGER CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 03/07/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Added a filler tile list.
+ * 
+ */
 /// <summary>
 /// A class for spawning the tile pieces in the correct position and orientation and then managing them.
 /// </summary>
@@ -28,6 +36,7 @@ public class TileManager : MonoBehaviour
     #endregion
 
     #region Tile Lists
+    private List<ScriptableTileObject> fillerTilesList;
     private List<ScriptableTileObject> veryEasyTilesList;
     private List<ScriptableTileObject> easyTilesList;
     private List<ScriptableTileObject> mediumTilesList;
@@ -63,12 +72,14 @@ public class TileManager : MonoBehaviour
         this.tileSpeedIncrementation = GetComponent<TileSpeedIncrementation>();
 
         // List instantiation
+        this.fillerTilesList = new List<ScriptableTileObject>();
         this.veryEasyTilesList = new List<ScriptableTileObject>();
         this.easyTilesList = new List<ScriptableTileObject>();
         this.mediumTilesList = new List<ScriptableTileObject>();
         this.hardTilesList = new List<ScriptableTileObject>();
         this.cornerTilesList = new List<ScriptableTileObject>();
         this.junctionTilesList = new List<ScriptableTileObject>();
+
         this.junctionSpawnedTilesList = new List<GameObject>();
 
         // Fill each list
@@ -199,15 +210,13 @@ public class TileManager : MonoBehaviour
 
         spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
         this.nextTileSpawnGap = chosenScriptableTile.tileLength * this.squareTileDimension;
+        spawnedTile.transform.parent = this.tilesContainer.transform;
 
         if (this.spawningAfterJunction)
         {
             this.junctionSpawnedTilesList.Add(spawnedTile);
         }
-        else
-        {
-            spawnedTile.transform.parent = this.tilesContainer.transform;
-        }
+
 
 
 
@@ -316,7 +325,7 @@ public class TileManager : MonoBehaviour
         float randomSelector = Random.Range(0.0f, weightingsTotal);
 
         int selectedIndex = -1;
-        while (randomSelector > 0.0f && selectedIndex < scriptableTilesList.Count - 1)
+        while (randomSelector >= 0.0f && selectedIndex < scriptableTilesList.Count - 1)
         {
             selectedIndex++;
             randomSelector -= scriptableTilesList[selectedIndex].spawnProbability;
@@ -331,6 +340,9 @@ public class TileManager : MonoBehaviour
 
         switch (difficulty)
         {
+            case TileDifficulty.Filler:
+                selectedList = this.veryEasyTilesList;
+                break;
             case TileDifficulty.VeryEasy:
                 selectedList = this.veryEasyTilesList;
                 break;

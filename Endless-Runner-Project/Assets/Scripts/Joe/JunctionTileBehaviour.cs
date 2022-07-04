@@ -2,6 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/* JUNCTION TILE BEHAVIOUR CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 03/07/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * 
+ * 
+ */
+
+/// <summary>
+/// Defines behaviour of turning at a junction tile.
+/// </summary>
 public class JunctionTileBehaviour : MonoBehaviour
 {
 

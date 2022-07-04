@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Segment2Tile
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1579042374205558074, guid: d8de65c86b57af442aeab4b2d9e7a8c0, type: 3}
-  difficulty: 0
+  difficulty: 1
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0
+  hasJunction: 0
   elevationChange: 0

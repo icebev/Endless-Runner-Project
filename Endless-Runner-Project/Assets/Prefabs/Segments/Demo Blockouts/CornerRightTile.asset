@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: CornerRightTile
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 8727408801127256061, guid: 848c982791f3e5a48ab6c1b9446f34ea, type: 3}
-  difficulty: 0
+  difficulty: 1
   tileLength: 1
   spawnProbability: 1
   hasCorner: 1
+  hasJunction: 0
   elevationChange: 0
