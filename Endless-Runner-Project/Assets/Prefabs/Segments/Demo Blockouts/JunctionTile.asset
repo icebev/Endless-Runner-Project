@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: JunctionTile
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 5177902491353947526, guid: 3e2566d47f29f054cb1e2510dd9de7b4, type: 3}
-  difficulty: 0
+  difficulty: 1
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0

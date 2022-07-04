@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: BlankTile
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 3292472900772340143, guid: ef93d9d0e2ddf4545aaee92418aaa772, type: 3}
-  difficulty: 0
+  difficulty: 1
   tileLength: 1
   spawnProbability: 3
   hasCorner: 0
+  hasJunction: 0
   elevationChange: 0

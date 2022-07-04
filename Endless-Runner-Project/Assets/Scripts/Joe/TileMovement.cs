@@ -2,6 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* TILE MOVEMENT CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 03/07/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Script that is added to each tile object to move it towards the origin over time.
+ * 
+ */
+/// <summary>
+/// To be added to each tile prefab to make it move.
+/// </summary>
 public class TileMovement : MonoBehaviour
 {
     private TileManager tileManager;
@@ -125,6 +136,10 @@ public class TileMovement : MonoBehaviour
                     if (this.transform.position.z < -this.tileManager.despawnDistance )
                     {
                         this.tileManager.SpawnAdditionalTile();
+                        if (this.GetComponent<TileCoinSpawn>())
+                        {
+                            this.GetComponent<TileCoinSpawn>().ReleaseCoins();
+                        }
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
@@ -137,6 +152,10 @@ public class TileMovement : MonoBehaviour
                     if (this.transform.position.x > this.tileManager.despawnDistance)
                     {
                         this.tileManager.SpawnAdditionalTile();
+                        if (this.GetComponent<TileCoinSpawn>())
+                        {
+                            this.GetComponent<TileCoinSpawn>().ReleaseCoins();
+                        }
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
@@ -150,6 +169,10 @@ public class TileMovement : MonoBehaviour
                     if (this.transform.position.z > this.tileManager.despawnDistance)
                     {
                         this.tileManager.SpawnAdditionalTile();
+                        if (this.GetComponent<TileCoinSpawn>())
+                        {
+                            this.GetComponent<TileCoinSpawn>().ReleaseCoins();
+                        }
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
@@ -163,7 +186,12 @@ public class TileMovement : MonoBehaviour
                     if (this.transform.position.x < -this.tileManager.despawnDistance)
                     {
                         this.tileManager.SpawnAdditionalTile();
+                        if (this.GetComponent<TileCoinSpawn>())
+                        {
+                            this.GetComponent<TileCoinSpawn>().ReleaseCoins();
+                        }
                         Destroy(this.gameObject);
+
                     }
                     Vector3 newTargetPosition = new Vector3();
                     newTargetPosition = this.transform.position - new Vector3(this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime, 0, 0);

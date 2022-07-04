@@ -4,6 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - CMCam
+  - TilesContainer
+  - GUI
   layers:
   - Default
   - TransparentFX
@@ -15,9 +18,7 @@ TagManager:
   - CornerTile
   - TilesContainer
   - CMCam
-  - 
-  - 
-  - 
+  - GUIRendering
   - 
   - 
   - 
