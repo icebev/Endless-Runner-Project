@@ -307,6 +307,8 @@ public class CharacterManager : MonoBehaviour
 
     private void UpdatePhysics()
     {
+
+        print(targetLane);
         if (doPhysics) { 
             
             ApplyGravity();
@@ -362,8 +364,8 @@ public class CharacterManager : MonoBehaviour
                         Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.RightLocal[this.direction], out SideHitUpper, this.playerRaycastSizeSide);
                         Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.RightLocal[this.direction], out SideHitLower, this.playerRaycastSizeSide);
 
-                        Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.RightLocal[this.direction] * this.playerRaycastSizeDown, Color.blue);
-                        Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.RightLocal[this.direction] * this.playerRaycastSizeDown, Color.blue);
+                        Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 1.2f, -relativePlayerPos.z), this.RightLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
+                        Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), this.RightLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
 
                         break;
                     default:
@@ -374,8 +376,11 @@ public class CharacterManager : MonoBehaviour
 
                 if(SideHitUpper.collider != null)
                 {
-                    this._characterParent.gameObject.SetActive(false);
-                    this.gameObject.SetActive(false);
+                    
+                    
+                    
+                    //this._characterParent.gameObject.SetActive(false);
+                    //this.gameObject.SetActive(false);
                 }
 
 
@@ -413,12 +418,22 @@ public class CharacterManager : MonoBehaviour
 
     public float GetPlayerLaneCurrent()
     {
-        return this.currentLane;
+        return (this.currentLane / this.LaneSize);
     }
 
     public float GetPlayerLaneTarget()
     {
-        return this.targetLane;
+        return (this.targetLane / this.LaneSize);
+    }
+
+    public float GetPlayerPositionXCurrent()
+    {
+        return (this.currentLane);
+    }
+
+    public float GetPlayerPositionXTarget()
+    {
+        return (this.targetLane);
     }
 
     public int GetPlayerDirection()
