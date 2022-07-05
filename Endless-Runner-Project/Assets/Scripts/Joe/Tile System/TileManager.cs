@@ -117,7 +117,7 @@ public class TileManager : MonoBehaviour
         this.nextTileSpawnGap = this.squareTileDimension;
 
         this.finalTile = InstantiateSemiRandomTile();
-        this.finalTile.transform.Translate(new Vector3(0, 4.5f, 0));
+        ///this.finalTile.transform.Translate(new Vector3(0, 4.5f, 0));
         // Spawn in the starting tile sequence
         for (int z = 0; z <= this.tileSpawnCount; z++)
         {

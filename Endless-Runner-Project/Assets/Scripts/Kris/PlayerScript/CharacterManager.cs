@@ -392,6 +392,11 @@ public class CharacterManager : MonoBehaviour
                         break;
                 }
 
+                //if(SideHitUpper.collider != null)
+                //{
+                //    this._characterParent.gameObject.SetActive(false);
+                //    this.gameObject.SetActive(false);
+                //}
                 if(SideHitUpper.collider != null)
                 {
                     if(SideHitUpper.transform.tag == "Untagged")
