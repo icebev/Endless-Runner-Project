@@ -404,7 +404,7 @@ public class CharacterManager : MonoBehaviour
 
                     }
 
-                    print(SideHitUpper.collider);
+                    
                     
                     //this._characterParent.gameObject.SetActive(false);
                     //this.gameObject.SetActive(false);
