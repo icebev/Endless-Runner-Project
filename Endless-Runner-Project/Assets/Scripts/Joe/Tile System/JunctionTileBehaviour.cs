@@ -36,10 +36,47 @@ public class JunctionTileBehaviour : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        float distanceFromOrigin = Vector3.Distance(this.transform.position, new Vector3(0, 4.5f, 0));
-        if (distanceFromOrigin < this.turnDist)
+        bool turnReady = false;
+
+        switch (this.tileManager.runDirection)
         {
-            if (this.hasRotated == false && this.characterManager.GetPlayerLaneTarget() == 2 && this.hasRightTurn)
+            case (TrackDirection.negativeX):
+                {
+                    if (this.transform.position.x >= 0.0f)
+                    {
+                        turnReady = true;
+                    }
+                    break;
+                }
+            case (TrackDirection.positiveX):
+                {
+                    if (this.transform.position.x <= 0.0f)
+                    {
+                        turnReady = true;
+                    }
+                    break;
+                }
+            case (TrackDirection.negativeZ):
+                {
+                    if (this.transform.position.z >= 0.0f)
+                    {
+                        turnReady = true;
+                    }
+                    break;
+                }
+            case (TrackDirection.positiveZ):
+                {
+                    if (this.transform.position.z <= 0.0f)
+                    {
+                        turnReady = true;
+                    }
+                    break;
+                }
+        }
+
+        if (turnReady == true && this.hasRotated == false)
+        {
+            if (this.characterManager.GetPlayerLaneTarget() == 4 && this.hasRightTurn)
             {
                 this.characterManager.Rotate(TurnDirection.Right);
                 this.tileManager.TrackSpawnRightTurn();
@@ -57,7 +94,7 @@ public class JunctionTileBehaviour : MonoBehaviour
                 //}
 
             }
-            else if (this.hasRotated == false && this.characterManager.GetPlayerLaneTarget() == -2 && this.hasLeftTurn)
+            else if (this.characterManager.GetPlayerLaneTarget() == -4 && this.hasLeftTurn)
             {
                 this.characterManager.Rotate(TurnDirection.Left);
                 this.tileManager.TrackSpawnLeftTurn();

@@ -5189,6 +5189,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6457794106042632698}
+  - component: {fileID: -6712091605152105903}
+  - component: {fileID: 3522421591983952597}
+  - component: {fileID: 193828143359184808}
   m_Layer: 0
   m_Name: 16x16x10 2 Way Left Junction
   m_TagString: Untagged
@@ -5231,6 +5234,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-6712091605152105903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6457794106042632697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58ccc64ae77b6884e9f764b52efbbbd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &3522421591983952597
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6457794106042632697}
+  serializedVersion: 2
+  m_Mass: 5
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &193828143359184808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6457794106042632697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4efd4ea4833a6424a8148800ea48ca75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasLeftTurn: 1
+  hasRightTurn: 0
+  hasCenterCorridor: 1
 --- !u!1 &6457794106348562341
 GameObject:
   m_ObjectHideFlags: 0

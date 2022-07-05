@@ -395,9 +395,9 @@ MonoBehaviour:
   m_PathPosition: 0
   m_PositionUnits: 1
   m_PathOffset: {x: 0, y: -0.00000011920929, z: 0}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 0
+  m_YDamping: 0
+  m_ZDamping: 0
   m_CameraUp: 0
   m_PitchDamping: 0
   m_YawDamping: 0
@@ -1273,7 +1273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &829037746
 Transform:
   m_ObjectHideFlags: 0
@@ -1281,9 +1281,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829037745}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0.75}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1982186477}
@@ -1396,6 +1396,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
+      propertyPath: LaneSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
       propertyPath: _character
       value: 
       objectReference: {fileID: 1719365278}
@@ -1496,7 +1500,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1023
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1515,8 +1519,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.106482066, y: 0.0000000042771395, z: 4.5804277e-10, w: 0.9943147}
-  m_LocalPosition: {x: 0, y: 0.7, z: -5.9999995}
+  m_LocalRotation: {x: -0.24878114, y: 0, z: 0, w: 0.96855974}
+  m_LocalPosition: {x: 0, y: 0.35, z: -2.9999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2024,7 +2028,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1358922595}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.99086, y: -50.67782, z: 22.729965}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2417,7 +2421,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982186476}
-  m_LocalRotation: {x: -0.028536515, y: -0.0000000010749608, z: -3.0688126e-11, w: 0.9995928}
+  m_LocalRotation: {x: -0.24878114, y: -0, z: -0, w: 0.96855974}
   m_LocalPosition: {x: 0, y: 0.35, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2462,7 +2466,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 11
+  m_Priority: 20
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 1999505768}
   m_Follow: {fileID: 0}
@@ -2650,18 +2654,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptableTiles:
-  - {fileID: 11400000, guid: 0910b2831dccf0b4e82eb3becbcbd6e0, type: 2}
-  - {fileID: 11400000, guid: 34a74c3d5f1ce3a4d9c649f335429733, type: 2}
-  - {fileID: 11400000, guid: 79de4ed42a44c364bb90da587aec7ff2, type: 2}
-  - {fileID: 11400000, guid: 354d7cf3532644d47b9adc4fccd79f99, type: 2}
-  - {fileID: 11400000, guid: 8a0805fd3d7d81e4d8af227f2721bb90, type: 2}
-  - {fileID: 11400000, guid: 9e32dea09a1059042a15663106f50de1, type: 2}
-  - {fileID: 11400000, guid: 3141723ea3ba817458cebf3bdd761a89, type: 2}
+  - {fileID: 11400000, guid: edcf3faf4e301ce47b2fc45bc18188e7, type: 2}
+  - {fileID: 11400000, guid: ac92e4f78873be745a65bc7eac43a8ac, type: 2}
+  - {fileID: 11400000, guid: abf8844042309694ba1bff270d45eb84, type: 2}
+  - {fileID: 11400000, guid: 612c8403c5376ad49a9744114eceac5c, type: 2}
+  - {fileID: 11400000, guid: 42bc124b4e71ab343aef6cda48dcd5ca, type: 2}
+  - {fileID: 11400000, guid: 4f7a63348b3e7d647965dd7b636fd5f7, type: 2}
   tileSpawnCount: 30
-  squareTileDimension: 7
+  squareTileDimension: 16
   despawnDistance: 20
-  cornerProbability: 0.2
-  junctionProbability: 0.2
+  cornerProbability: 0
+  junctionProbability: 0.3
   spawningAfterJunction: 0
   junctionSpawnedTilesList: []
   spawnDirection: 0
@@ -2698,8 +2701,8 @@ MonoBehaviour:
   incrementMode: 0
   currentTileSpeed: 0
   useSpeedLimit: 1
-  speedLimit: 10
-  startingTileSpeed: 6
+  speedLimit: 20
+  startingTileSpeed: 10
   linearIncrementFactor: 2
   intervalTime: 5
   intervalIncreaseFactor: 1
@@ -11971,6 +11974,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb413b62a2171046b33fee420573fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spinSpeed: 0
+  spinAxis: {x: 0, y: 0, z: 0}
 --- !u!1 &8194205578798633364
 GameObject:
   m_ObjectHideFlags: 0
