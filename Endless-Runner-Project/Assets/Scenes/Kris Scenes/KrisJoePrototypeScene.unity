@@ -1396,6 +1396,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
+      propertyPath: LaneSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
       propertyPath: _character
       value: 
       objectReference: {fileID: 1719365278}
@@ -1664,7 +1668,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-18982
+  m_Name: pb_Mesh47966
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11971,6 +11975,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb413b62a2171046b33fee420573fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spinSpeed: 0
+  spinAxis: {x: 0, y: 0, z: 0}
 --- !u!1 &8194205578798633364
 GameObject:
   m_ObjectHideFlags: 0
