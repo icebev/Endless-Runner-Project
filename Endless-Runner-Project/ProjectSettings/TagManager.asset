@@ -7,6 +7,7 @@ TagManager:
   - CMCam
   - TilesContainer
   - GUI
+  - LoadManager
   layers:
   - Default
   - TransparentFX
