@@ -2727,6 +2727,7 @@ MonoBehaviour:
   fovTarget: 0
   runAnimSpeedNormal: 1.5
   runAnimSpeedSprinting: 2.25
+  runAnimSpeedCurrent: 0
   runAnimSpeedTarget: 0
   tileSpeedChange: 2
   interpolationSpeed: 0.05
