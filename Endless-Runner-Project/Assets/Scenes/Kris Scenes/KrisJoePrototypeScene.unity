@@ -1096,8 +1096,12 @@ MonoBehaviour:
   fovNormal: 60
   fovSprinting: 70
   fovTarget: 0
+  runAnimSpeedNormal: 0
+  runAnimSpeedSprinting: 0
+  runAnimSpeedCurrent: 0
+  runAnimSpeedTarget: 0
   tileSpeedChange: 2
-  inerpolationSpeed: 0.05
+  interpolationSpeed: 0
 --- !u!1 &3880514182520848994 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 212274686987468946, guid: 2a347ad87498ec04c8aed4ad1b4a6834, type: 3}
