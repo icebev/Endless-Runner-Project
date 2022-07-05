@@ -28,6 +28,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private float LaneSize;
     private float currentLane;                                            //Player's current lane
     private float targetLane = 0;                                         //Which lane the player is trying to switch to.
+    private float previousLane = 0;
     private bool transitioning = false;                                 //Used to know if the character is Switching Lanes (For Collision System).
     [SerializeField] private bool lockLaneSwitch;
     //private bool lockLaneSwitch = false;
@@ -221,7 +222,7 @@ public class CharacterManager : MonoBehaviour
         if (!this.lockLaneSwitch)
         {
 
-            float previousTargetLane = this.targetLane;
+            this.previousLane = this.targetLane;
             switch (Direction)
             {
                 case movementDirections.left:
@@ -391,11 +392,13 @@ public class CharacterManager : MonoBehaviour
             }
             */
 
+
+
             if (this.transitioning)
             {
                 RaycastHit SideHitUpper;
                 RaycastHit SideHitLower;
-
+                
                 switch (this.recentMove)
                 {
                     case movementDirections.left:
@@ -427,25 +430,50 @@ public class CharacterManager : MonoBehaviour
                 //    this._characterParent.gameObject.SetActive(false);
                 //    this.gameObject.SetActive(false);
                 //}
-                if(SideHitUpper.collider != null)
+
+                
+
+                if((SideHitUpper.collider != null) && (SideHitLower.collider != null))
                 {
-                    if(SideHitUpper.transform.tag == "Untagged")
-                    {
-
-                    }
-
-                    
-                    
-                    //this._characterParent.gameObject.SetActive(false);
-                    //this.gameObject.SetActive(false);
+                    this.HandleCollision(SideHitUpper, this.GetDirectionRay(2));
                 }
-
+                else if ((SideHitUpper.collider != null) && (SideHitLower.collider == null))
+                {
+                    this.HandleCollision(SideHitLower, this.GetDirectionRay(0));
+                }
+                else if ((SideHitUpper.collider == null) && (SideHitLower.collider != null))
+                {
+                    this.HandleCollision(SideHitUpper, this.GetDirectionRay(1));
+                }
+                
+               
 
             }
-           
+
+            RaycastHit FrontHitUpper;
+            RaycastHit FrontHitLower;
+
+            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction], out FrontHitUpper, this.playerRaycastSizeSide);
+            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction], out FrontHitLower, this.playerRaycastSizeSide);
 
             Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction] * this.playerRaycastSizeSide, Color.red);
             Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction] * this.playerRaycastSizeSide, Color.red);
+
+            if ((FrontHitUpper.collider != null) && (FrontHitLower.collider != null))
+            {
+                //this.HandleCollision(FrontHitUpper, this.GetDirectionRay(2));
+            }
+            else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null))
+            {
+                //this.HandleCollision(FrontHitLower, this.GetDirectionRay(0));
+            }
+            else if ((FrontHitUpper.collider == null) && (FrontHitLower.collider != null))
+            {
+                //this.HandleCollision(FrontHitUpper, this.GetDirectionRay(1));
+            }
+
+
+            
 
             this._character.transform.localPosition = this.playerPosition;
         }
@@ -477,10 +505,25 @@ public class CharacterManager : MonoBehaviour
 
 
                         break;
+                    case WhichRay.LeftUp:
 
-                   
+                    case WhichRay.LeftDown:
 
-                    
+                    case WhichRay.LeftBoth:
+                        this.targetLane = this.previousLane;
+                        
+                        break;
+                    case WhichRay.RightUp:
+
+                    case WhichRay.RightDown:
+
+                    case WhichRay.RightBoth:
+                        this.targetLane = this.previousLane;
+
+                        break;
+
+
+
 
                 }
 
@@ -510,6 +553,48 @@ public class CharacterManager : MonoBehaviour
             this.playerYVelocity += jumpHeight;
         }
     }
+
+    private WhichRay GetDirectionRay(int Index)
+    {
+        switch (Index)
+        {
+
+            case 0:
+                if (this.recentMove == movementDirections.left || this.recentMove == movementDirections.leftDouble)
+                {
+                    return (WhichRay.LeftUp);
+                }
+                else if (this.recentMove == movementDirections.right || this.recentMove == movementDirections.rightDouble)
+                {
+                    return (WhichRay.RightUp);
+                }
+                break;
+
+            case 1:
+                if (this.recentMove == movementDirections.left || this.recentMove == movementDirections.leftDouble)
+                {
+                    return (WhichRay.LeftDown);
+                }
+                else if (this.recentMove == movementDirections.right || this.recentMove == movementDirections.rightDouble)
+                {
+                    return (WhichRay.RightDown);
+                }
+                break;
+
+            case 2:
+                if (this.recentMove == movementDirections.left || this.recentMove == movementDirections.leftDouble)
+                {
+                    return (WhichRay.LeftBoth);
+                }
+                else if (this.recentMove == movementDirections.right || this.recentMove == movementDirections.rightDouble)
+                {
+                    return (WhichRay.RightBoth);
+                }
+                break;
+        }
+        return WhichRay.LeftBoth;
+    }
+
 
     public bool GetPlayerTransitioningState()
     {
