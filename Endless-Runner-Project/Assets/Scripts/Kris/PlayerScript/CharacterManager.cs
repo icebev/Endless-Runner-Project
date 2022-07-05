@@ -55,6 +55,7 @@ public class CharacterManager : MonoBehaviour
 
     private movementDirections recentMove = movementDirections.none;
     private movementDirections recentMovePrevious;
+    private float recentMoveScheduled = 0;
 
     private float recentMoveTimer = 0;
     private float recentMoveMaxTime = 0.18f;
@@ -85,6 +86,8 @@ public class CharacterManager : MonoBehaviour
         up,
         down,
         none,
+        leftDouble,
+        rightDouble,
     }
 
     public enum interpolationSpeeds
@@ -215,22 +218,41 @@ public class CharacterManager : MonoBehaviour
 
     public void Move(movementDirections Direction, int Amount)
     {
-        if (!this.lockLaneSwitch && !this.transitioning)
+        if (!this.lockLaneSwitch)
         {
+
             float previousTargetLane = this.targetLane;
             switch (Direction)
             {
                 case movementDirections.left:
-                    this.targetLane -= this.LaneSize * Amount;
+
+                    if (this.transitioning)
+                    {
+                        this.recentMoveScheduled -= this.LaneSize * Amount;
+                    }
+                    else
+                    {
+                        this.targetLane -= this.LaneSize * Amount;
+                    }
+                    
                     
                     break;
 
                 case movementDirections.right:
-                    this.targetLane += this.LaneSize * Amount;
+
+                    if (this.transitioning)
+                    {
+                        this.recentMoveScheduled += this.LaneSize * Amount;
+                    }
+                    else
+                    {
+                        this.targetLane += this.LaneSize * Amount;
+                    }
+
                     break;
             }
             this.recentMove = Direction;
-            CheckLaneBounds();
+            this.CheckLaneBounds();
             /*
             if(!(this.targetLane == previousTargetLane))
             {
@@ -303,7 +325,7 @@ public class CharacterManager : MonoBehaviour
                 this.currentLane = this.targetLane + this.LaneSize;
             }
 
-            if (Mathf.Abs(this.playerPosition.x - this.targetLane) < 0.01f)
+            if (Mathf.Abs(this.playerPosition.x - this.targetLane) < 0.18f)
             {
                 this.playerPosition.x = this.targetLane;
             }
@@ -313,6 +335,13 @@ public class CharacterManager : MonoBehaviour
         {
             this.currentLane = this.targetLane;
             this.transitioning = false;
+            if(this.recentMoveScheduled != 0)
+            {
+                this.targetLane += this.recentMoveScheduled;
+                this.recentMoveScheduled = 0;
+                this.CheckLaneBounds();
+            }
+
         }
 
         if (this.currentrotation != this.targetrotation)
@@ -321,6 +350,7 @@ public class CharacterManager : MonoBehaviour
             this.currentrotation = linearPlayerRotate;
             this._characterParent.transform.rotation = this.currentrotation;
         }
+        
         
     }
 
