@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb413b62a2171046b33fee420573fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinSpeed: 5
+  spinSpeed: 50
   spinAxis: {x: 0, y: 1, z: 0}
 --- !u!1 &3896676646148116301
 GameObject:

@@ -76,7 +76,7 @@ public class JunctionTileBehaviour : MonoBehaviour
 
         if (turnReady == true && this.hasRotated == false)
         {
-            if (this.characterManager.GetPlayerLaneTarget() == 4 && this.hasRightTurn)
+            if (this.characterManager.GetPlayerLaneTarget() == 2 && this.hasRightTurn)
             {
                 this.characterManager.Rotate(TurnDirection.Right);
                 this.tileManager.TrackSpawnRightTurn();
@@ -94,7 +94,7 @@ public class JunctionTileBehaviour : MonoBehaviour
                 //}
 
             }
-            else if (this.characterManager.GetPlayerLaneTarget() == -4 && this.hasLeftTurn)
+            else if (this.characterManager.GetPlayerLaneTarget() == -2 && this.hasLeftTurn)
             {
                 this.characterManager.Rotate(TurnDirection.Left);
                 this.tileManager.TrackSpawnLeftTurn();
