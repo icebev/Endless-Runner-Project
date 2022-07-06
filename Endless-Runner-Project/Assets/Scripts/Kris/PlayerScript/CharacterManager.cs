@@ -436,17 +436,17 @@ public class CharacterManager : MonoBehaviour
                 if((SideHitUpper.collider != null) && (SideHitLower.collider != null))
                 {
                     this.HandleCollision(SideHitUpper, this.GetDirectionRay(2));
-                    print("SIDE HIT UPPER!");
+                    print("SIDE HIT BOTH!");
                 }
                 else if ((SideHitUpper.collider != null) && (SideHitLower.collider == null))
                 {
                     this.HandleCollision(SideHitLower, this.GetDirectionRay(0));
-                    print("SIDE HIT LOWER");
+                    print("SIDE HIT UPPER!");
                 }
                 else if ((SideHitUpper.collider == null) && (SideHitLower.collider != null))
                 {
                     this.HandleCollision(SideHitUpper, this.GetDirectionRay(1));
-                    print("SIDE HIT BOTH");
+                    print("SIDE HIT LOWER!");
                 }
                 
                
@@ -464,15 +464,15 @@ public class CharacterManager : MonoBehaviour
 
             if ((FrontHitUpper.collider != null) && (FrontHitLower.collider != null))
             {
-                print("FRONT HIT UPPER!");
+                print("FRONT HIT BOTH!");
             }
             else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null))
             {
-                print("FRONT HIT LOWER!");
+                print("FRONT HIT UPPER!");
             }
             else if ((FrontHitUpper.collider == null) && (FrontHitLower.collider != null))
             {
-                print("FRONT HIT BOTTOM!");
+                print("FRONT HIT LOWER!");
             }
 
 

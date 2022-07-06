@@ -11,8 +11,8 @@ public class MenuHandler : MonoBehaviour
     [SerializeField] private GameObject[] _menus;
     [SerializeField] private Animator[] _menusAnimator;
     [SerializeField] private MainButtons _buttonManager;
-    private int _menuState = (int)gameMenus.Main;
-    private int _previousMenu;
+    private gameMenus _menuState = gameMenus.Main;
+    private gameMenus _previousMenu;
 
     public enum gameMenus
     {
@@ -20,6 +20,7 @@ public class MenuHandler : MonoBehaviour
         Options,
         Credits,
         Quit,
+        Store,
     }
 
     public void ReturnMenuState()
@@ -27,7 +28,7 @@ public class MenuHandler : MonoBehaviour
         ChangeMenuState(_previousMenu);
     }
 
-    public void ChangeMenuState(int targetMenu)
+    public void ChangeMenuState(gameMenus targetMenu)
     {
 
         if (_menuState != targetMenu)
@@ -36,9 +37,9 @@ public class MenuHandler : MonoBehaviour
             this._previousMenu = this._menuState;
             this._menuState = targetMenu;
             this._buttonManager.ToggleButtons(this._previousMenu, false);
-            this._menus[this._previousMenu].SetActive(false);  //Change this for animation
+            this._menus[(int)this._previousMenu].SetActive(false);  //Change this for animation
             this._buttonManager.ToggleButtons(this._menuState, true);
-            this._menus[this._menuState].SetActive(true); //Change this for animation
+            this._menus[(int)this._menuState].SetActive(true); //Change this for animation
 
         }
     }

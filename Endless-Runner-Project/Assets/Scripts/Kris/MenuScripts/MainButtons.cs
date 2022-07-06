@@ -18,24 +18,27 @@ public class MainButtons : MonoBehaviour
 
 
 
-    public void ToggleButtons(int WhichMenu, bool ButtonEnable)
+    public void ToggleButtons(MenuHandler.gameMenus WhichMenu, bool ButtonEnable)
     {
 
         Button[] _GameButtons = this._menuButtons;
 
         switch (WhichMenu)
         {
-            case (int)MenuHandler.gameMenus.Main:
+            case MenuHandler.gameMenus.Main:
                 _GameButtons = this._menuButtons;
                 break;
-            case (int)MenuHandler.gameMenus.Credits:
+            case MenuHandler.gameMenus.Credits:
                 _GameButtons = this._creditsButtons;
                 break;
-            case (int)MenuHandler.gameMenus.Options:
+            case MenuHandler.gameMenus.Options:
                 _GameButtons = this._optionsButtons;
                 break;
-            case (int)MenuHandler.gameMenus.Quit:
+            case MenuHandler.gameMenus.Quit:
                 _GameButtons = this._quitButtons;
+                break;
+            case MenuHandler.gameMenus.Store:
+
                 break;
 
         }
@@ -67,17 +70,17 @@ public class MainButtons : MonoBehaviour
 
     public void SettingsMenu()
     {
-        _menuHandler.ChangeMenuState((int)MenuHandler.gameMenus.Options);
+        _menuHandler.ChangeMenuState(MenuHandler.gameMenus.Options);
     }
     public void CreditsMenu()
     {
-        _menuHandler.ChangeMenuState((int)MenuHandler.gameMenus.Credits);
+        _menuHandler.ChangeMenuState(MenuHandler.gameMenus.Credits);
     }
 
 
     public void QuitGame()
     {
-        _menuHandler.ChangeMenuState((int)MenuHandler.gameMenus.Quit);
+        _menuHandler.ChangeMenuState(MenuHandler.gameMenus.Quit);
     }
 
     public void GoBack()
@@ -86,6 +89,10 @@ public class MainButtons : MonoBehaviour
         _menuHandler.ReturnMenuState();
     }
 
+    public void Store()
+    {
+        _menuHandler.ChangeMenuState(MenuHandler.gameMenus.Store);
+    }
 
     public void ExitGame()
     {
