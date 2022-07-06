@@ -14,9 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Kris Scenes/MainMenu.unity
     guid: 11d7e5f48bb30dc49a8cce660eeb5b96
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Joe Scenes/JoePrototypeScene2.unity
+    guid: 88d64ee94e6af3e4993580c1d4b81bd8
   - enabled: 0
     path: Assets/Scenes/Kris Scenes/Running.unity
     guid: 19d7ddccb59e2394b8d355c08484d4b0

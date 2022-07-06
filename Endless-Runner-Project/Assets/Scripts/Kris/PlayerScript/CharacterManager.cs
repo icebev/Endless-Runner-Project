@@ -133,10 +133,12 @@ public class CharacterManager : MonoBehaviour
                        
     }
 
-
+    private LoadingManager _loadingManager;
 
     private void Start()
     {
+        GameObject _loadingManagerObject = GameObject.FindGameObjectWithTag("LoadManager");
+        this._loadingManager = _loadingManagerObject.GetComponent<LoadingManager>();
         this._playerAudioS = _character.GetComponent<AudioSource>();
         SetLaneLimit(this.numberOfLanes);
 
@@ -431,19 +433,20 @@ public class CharacterManager : MonoBehaviour
                 //    this.gameObject.SetActive(false);
                 //}
 
-                
-
                 if((SideHitUpper.collider != null) && (SideHitLower.collider != null))
                 {
                     this.HandleCollision(SideHitUpper, this.GetDirectionRay(2));
+                    print("SIDE HIT UPPER!");
                 }
                 else if ((SideHitUpper.collider != null) && (SideHitLower.collider == null))
                 {
                     this.HandleCollision(SideHitLower, this.GetDirectionRay(0));
+                    print("SIDE HIT LOWER");
                 }
                 else if ((SideHitUpper.collider == null) && (SideHitLower.collider != null))
                 {
                     this.HandleCollision(SideHitUpper, this.GetDirectionRay(1));
+                    print("SIDE HIT BOTH");
                 }
                 
                
@@ -461,15 +464,15 @@ public class CharacterManager : MonoBehaviour
 
             if ((FrontHitUpper.collider != null) && (FrontHitLower.collider != null))
             {
-                //this.HandleCollision(FrontHitUpper, this.GetDirectionRay(2));
+                print("FRONT HIT UPPER!");
             }
             else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null))
             {
-                //this.HandleCollision(FrontHitLower, this.GetDirectionRay(0));
+                print("FRONT HIT LOWER!");
             }
             else if ((FrontHitUpper.collider == null) && (FrontHitLower.collider != null))
             {
-                //this.HandleCollision(FrontHitUpper, this.GetDirectionRay(1));
+                print("FRONT HIT BOTTOM!");
             }
 
 
@@ -640,4 +643,26 @@ public class CharacterManager : MonoBehaviour
     {
         return this.laneBoundaries[direction];
     }
+
+    private int loading = 0;
+
+   public void RestartLevel()
+    {
+        if(loading == 0)
+        {
+            loading += 1;
+            this._loadingManager.LoadGameScene1(3, true, 0);
+        }
+        
+    }
+    public void MainMenu()
+    {
+        if (loading == 0)
+        {
+            loading += 1;
+            this._loadingManager.LoadGameScene1(2, true, 0);
+        }
+    }
+
+
 }
