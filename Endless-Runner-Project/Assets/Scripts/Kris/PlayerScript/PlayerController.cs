@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     private GameObject _playerCharacter;
     [SerializeField] private CharacterManager _characterManager;
 
+
+
     public void RotateLeft(InputAction.CallbackContext press)
     {
         if (press.performed)
@@ -61,6 +63,21 @@ public class PlayerController : MonoBehaviour
             this._characterManager.Jump();
         }
     }
+    public void MainMenu(InputAction.CallbackContext press)
+    {
+        if (press.performed)
+        {
+            this._characterManager.MainMenu();
+        }
+    }
+    public void Restart(InputAction.CallbackContext press)
+    {
+        if (press.performed)
+        {
+            this._characterManager.RestartLevel();
+        }
+    }
+
 
     private void Start()
     {
