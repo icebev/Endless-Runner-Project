@@ -6,10 +6,13 @@ public class TileSpeedIncrementation : MonoBehaviour
 {
     public SpeedIncrementMode incrementMode;
     public float currentTileSpeed;
+    public float calculatedTargetTileSpeed;
     public bool useSpeedLimit = false;
     public float speedLimit;
 
-    private float targetSpeed;
+    private float intervalTargetSpeed;
+
+
 
     [Tooltip("The starting speed of tile movement opposing the run direction.")]
     [SerializeField] private float startingTileSpeed = 6f;
@@ -28,20 +31,28 @@ public class TileSpeedIncrementation : MonoBehaviour
 
     private void Start()
     {
-        this.targetSpeed = this.startingTileSpeed;
+        this.intervalTargetSpeed = this.startingTileSpeed;
         this.timeUntilInterval = this.intervalTime;
-        this.currentTileSpeed = this.startingTileSpeed;
+        this.calculatedTargetTileSpeed = this.startingTileSpeed;
     }
+
+
 
     private void FixedUpdate()
     {
-        if (this.currentTileSpeed < this.speedLimit || this.useSpeedLimit == false)
+        this.IncrementTargetTileSpeed();
+
+    }
+
+    private void IncrementTargetTileSpeed()
+{
+        if (this.calculatedTargetTileSpeed < this.speedLimit || this.useSpeedLimit == false)
         {
             switch (this.incrementMode)
             {
                 case SpeedIncrementMode.linear:
                     {
-                        this.currentTileSpeed += Time.fixedDeltaTime * 0.1f * this.linearIncrementFactor;
+                        this.calculatedTargetTileSpeed += Time.fixedDeltaTime * 0.1f * this.linearIncrementFactor;
                         break;
                     }
                 case SpeedIncrementMode.intervals:
@@ -49,7 +60,7 @@ public class TileSpeedIncrementation : MonoBehaviour
                         if (this.timeUntilInterval <= 0.0f)
                         {
                             this.timeUntilInterval = this.intervalTime;
-                            this.currentTileSpeed += this.intervalIncreaseFactor;
+                            this.calculatedTargetTileSpeed += this.intervalIncreaseFactor;
                         }
                         this.timeUntilInterval -= Time.fixedDeltaTime;
                         break;
@@ -59,21 +70,22 @@ public class TileSpeedIncrementation : MonoBehaviour
                         if (this.timeUntilInterval <= 0.0f)
                         {
                             this.timeUntilInterval = this.intervalTime;
-                            this.targetSpeed += this.intervalIncreaseFactor;
+                            this.intervalTargetSpeed += this.intervalIncreaseFactor;
                         }
                         this.timeUntilInterval -= Time.fixedDeltaTime;
 
-                        if (this.currentTileSpeed <= this.targetSpeed)
+                        if (this.calculatedTargetTileSpeed <= this.intervalTargetSpeed)
                         {
-                            this.currentTileSpeed += Time.fixedDeltaTime * 0.1f * this.linearIncrementFactor;
+                            this.calculatedTargetTileSpeed += Time.fixedDeltaTime * 0.1f * this.linearIncrementFactor;
                         }
                         break;
                     }
             }
         }
-        else if (this.currentTileSpeed > this.speedLimit)
+        else if (this.calculatedTargetTileSpeed > this.speedLimit)
         {
-            this.currentTileSpeed = this.speedLimit;
+            this.calculatedTargetTileSpeed = this.speedLimit;
         }
+
     }
 }

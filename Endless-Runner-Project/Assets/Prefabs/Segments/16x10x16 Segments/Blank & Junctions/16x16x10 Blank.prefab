@@ -1052,7 +1052,7 @@ GameObject:
   - component: {fileID: 4618107425983388843}
   - component: {fileID: 4916546617616906377}
   m_Layer: 0
-  m_Name: ConfigurablePowerup
+  m_Name: onfigurablePowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+
 [CustomEditor(typeof(TileSpeedIncrementation)), CanEditMultipleObjects]
 public class SpeedIncrement : Editor
 {
 
     public SerializedProperty
     incrementMode_prop,
-    currentTileSpeed_prop,
+    calculatedTargetTileSpeed_prop,
     useSpeedLimit_prop,
     speedLimit_prop,
     startingTileSpeed_prop,
@@ -21,7 +22,7 @@ public class SpeedIncrement : Editor
     void OnEnable()
     {
         this.incrementMode_prop = this.serializedObject.FindProperty("incrementMode");
-        this.currentTileSpeed_prop = this.serializedObject.FindProperty("currentTileSpeed");
+        this.calculatedTargetTileSpeed_prop = this.serializedObject.FindProperty("calculatedTargetTileSpeed");
         this.useSpeedLimit_prop = this.serializedObject.FindProperty("useSpeedLimit");
         this.speedLimit_prop = this.serializedObject.FindProperty("speedLimit");
         this.startingTileSpeed_prop = this.serializedObject.FindProperty("startingTileSpeed");
@@ -35,7 +36,8 @@ public class SpeedIncrement : Editor
     {
         this.serializedObject.Update();
 
-        EditorGUILayout.PropertyField(this.currentTileSpeed_prop);
+        EditorGUILayout.PropertyField(this.calculatedTargetTileSpeed_prop);
+
         EditorGUILayout.PropertyField(this.incrementMode_prop);
         EditorGUILayout.PropertyField(this.useSpeedLimit_prop);
 

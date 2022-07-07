@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Kris Scenes/Running.unity
     guid: 19d7ddccb59e2394b8d355c08484d4b0
   m_configObjects: {}

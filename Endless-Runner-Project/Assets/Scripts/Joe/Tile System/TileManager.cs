@@ -56,6 +56,7 @@ public class TileManager : MonoBehaviour
 
     #region Private Variables
     private TileSpeedIncrementation tileSpeedIncrementation;
+    private TileSpeedManagement tileSpeedManagement;
     private GameObject finalTile;
     private float spawnHeightChange;
     private float nextTileSpawnGap;
@@ -63,13 +64,14 @@ public class TileManager : MonoBehaviour
 
     public float CurrentTileSpeed
     {
-        get { return this.tileSpeedIncrementation.currentTileSpeed; }
+        get { return this.tileSpeedManagement.currentTileSpeed; }
     }
 
     private void Start()
     {
         // Reference speed incrementation script
         this.tileSpeedIncrementation = GetComponent<TileSpeedIncrementation>();
+        this.tileSpeedManagement = GetComponent<TileSpeedManagement>();
 
         // List instantiation
         this.fillerTilesList = new List<ScriptableTileObject>();
