@@ -77,7 +77,6 @@ public class TileCoinSpawn : MonoBehaviour
                         coin.transform.position = coinSet.GetChild(c).position;
                         coin.transform.parent = coinSet.GetChild(c).transform;
                         coin.SetActive(true);
-                        Debug.Log("Coin set active!");
 
                     }
                 }

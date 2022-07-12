@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 2WayLeft
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 6457794106042632697, guid: 4047edae52d988c4c8576cb372b0fe4e, type: 3}
-  difficulty: 1
+  difficulty: 2
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0

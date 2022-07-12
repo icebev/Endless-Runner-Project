@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: L1-0-RubbleExample
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 2209883308885714640, guid: 2462f8eea3488b746b3cc4e9d7b06518, type: 3}
-  difficulty: 1
+  difficulty: 3
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0

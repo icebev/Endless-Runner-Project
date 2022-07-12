@@ -34,7 +34,6 @@ public class TileSpawnWeightings : MonoBehaviour
             case TileDifficulty.Easy:
             { 
                 chancesForNextTile = this.spawnProbabilitySets[setIndex].wasEasyTile;
-                Debug.Log(chancesForNextTile.easyChance);
                 break;
             }
             case TileDifficulty.Medium:
@@ -53,13 +52,11 @@ public class TileSpawnWeightings : MonoBehaviour
 
         if (randomVal <= chancesForNextTile.easyChance)
         {
-            Debug.Log("Easy chosen with " + randomVal);
             return TileDifficulty.Easy;
         }
         else if (randomVal <= chancesForNextTile.easyChance + chancesForNextTile.mediumChance)
         {
             return TileDifficulty.Medium;
-            Debug.Log("Medium chosen!");
         }
         else if (randomVal <= chancesForNextTile.easyChance + chancesForNextTile.mediumChance + chancesForNextTile.hardChance)
         {
