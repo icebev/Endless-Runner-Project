@@ -22,6 +22,7 @@ public class SprintSystem : MonoBehaviour
     public CinemachineVirtualCamera playerCamera;
     public TileSpeedIncrementation tileSpeedIncrementation;
     public Transform cameraHolder;
+    public bool isSprinting;
     
     public float camZNormal;
     public float camZSprinting;
@@ -72,10 +73,12 @@ public class SprintSystem : MonoBehaviour
         if (press.performed)
         {
             this.StartSprinting();
+            this.isSprinting = true;
         }
         if (press.canceled)
         {
             this.StopSprinting();
+            this.isSprinting = false;
         }
     }
     private void FixedUpdate()

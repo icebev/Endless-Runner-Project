@@ -86,12 +86,13 @@ public class JunctionTileBehaviour : MonoBehaviour
                 foreach (GameObject tileObject in this.tileManager.junctionSpawnedTilesList)
                 {
                     tileObject.transform.RotateAround(this.transform.position, Vector3.up, 90);
-                    //tileObject.GetComponent<TileMovement>().CorrectOffset();
                 }
-                //foreach (Transform child in this.tileManager.tilesContainer.transform)
-                //{
-                //    child.GetComponent<TileMovement>().CorrectOffset();
-                //}
+                this.tileManager.spawningAfterJunction = false;
+                this.characterManager.SetLanePos(0);
+                this.hasRotated = true;
+                this.tileManager.junctionSpawnedTilesList.Clear();
+                this.tileManager.currentJunctionTile = null;
+
 
             }
             else if (this.characterManager.GetPlayerLaneTarget() == -2 && this.hasLeftTurn)
@@ -104,16 +105,16 @@ public class JunctionTileBehaviour : MonoBehaviour
                 foreach (GameObject tileObject in this.tileManager.junctionSpawnedTilesList)
                 {
                     tileObject.transform.RotateAround(this.transform.position, Vector3.up, -90);
-                    //tileObject.GetComponent<TileMovement>().CorrectOffset();
 
                 }
+                this.tileManager.spawningAfterJunction = false;
+                this.characterManager.SetLanePos(0);
+                this.hasRotated = true;
+                this.tileManager.junctionSpawnedTilesList.Clear();
+                this.tileManager.currentJunctionTile = null;
             }
 
-            this.tileManager.spawningAfterJunction = false;
-            this.characterManager.SetLanePos(0);
-            this.hasRotated = true;
-            this.tileManager.junctionSpawnedTilesList.Clear();
-            this.tileManager.currentJunctionTile = null;
+
         }
     }
 }

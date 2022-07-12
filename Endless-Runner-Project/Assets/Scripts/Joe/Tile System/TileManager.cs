@@ -57,9 +57,13 @@ public class TileManager : MonoBehaviour
     #region Private Variables
     private TileSpeedIncrementation tileSpeedIncrementation;
     private TileSpeedManagement tileSpeedManagement;
+    private TileSpawnWeightings tileSpawnWeightings;
     private GameObject finalTile;
     private float spawnHeightChange;
     private float nextTileSpawnGap;
+
+    private TileDifficulty lastNonFillerTileDifficulty;
+    private int spawnFillersNextCount;
     #endregion
 
     public float CurrentTileSpeed
@@ -72,6 +76,7 @@ public class TileManager : MonoBehaviour
         // Reference speed incrementation script
         this.tileSpeedIncrementation = GetComponent<TileSpeedIncrementation>();
         this.tileSpeedManagement = GetComponent<TileSpeedManagement>();
+        this.tileSpawnWeightings = GetComponent<TileSpawnWeightings>();
 
         // List instantiation
         this.fillerTilesList = new List<ScriptableTileObject>();
@@ -81,7 +86,6 @@ public class TileManager : MonoBehaviour
         this.hardTilesList = new List<ScriptableTileObject>();
         this.cornerTilesList = new List<ScriptableTileObject>();
         this.junctionTilesList = new List<ScriptableTileObject>();
-
         this.junctionSpawnedTilesList = new List<GameObject>();
 
         // Fill each list
@@ -91,6 +95,9 @@ public class TileManager : MonoBehaviour
             {
                 switch (tileObject.difficulty)
                 {
+                    case TileDifficulty.Filler:
+                        this.fillerTilesList.Add(tileObject);
+                        break;
                     case TileDifficulty.VeryEasy:
                         this.veryEasyTilesList.Add(tileObject);
                         break;
@@ -118,6 +125,7 @@ public class TileManager : MonoBehaviour
         this.tilesContainer = GameObject.FindGameObjectWithTag("TilesContainer");
         this.nextTileSpawnGap = this.squareTileDimension;
 
+        this.lastNonFillerTileDifficulty = TileDifficulty.Easy;
         this.finalTile = InstantiateSemiRandomTile();
         ///this.finalTile.transform.Translate(new Vector3(0, 4.5f, 0));
         // Spawn in the starting tile sequence
@@ -180,9 +188,12 @@ public class TileManager : MonoBehaviour
         ScriptableTileObject chosenScriptableTile;
         GameObject spawnedTile;
         float randomVal = Random.Range(0.0f, 1.0f);
+
+
         if (randomVal < this.cornerProbability && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false)
         {
             chosenScriptableTile = this.SelectCornerTile();
+            this.spawnFillersNextCount = 1;
 
             TurnDirection tileTurnDirection = chosenScriptableTile.tilePrefab.GetComponent<CornerTileBehaviour>().turnDirection;
 
@@ -202,13 +213,16 @@ public class TileManager : MonoBehaviour
             chosenScriptableTile = this.SelectJunctionTile();
             spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
             this.spawningAfterJunction = true;
+            this.spawnFillersNextCount = 1;
             return spawnedTile;
 
         }
         else
         {
-            chosenScriptableTile = this.SelectTileByDifficulty(TileDifficulty.VeryEasy);
+            TileDifficulty newTileDifficulty = this.DetermineNextTileDifficulty(this.lastNonFillerTileDifficulty);
+            chosenScriptableTile = this.SelectTileByDifficulty(newTileDifficulty);
         }
+
 
         spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
         this.nextTileSpawnGap = chosenScriptableTile.tileLength * this.squareTileDimension;
@@ -219,11 +233,34 @@ public class TileManager : MonoBehaviour
             this.junctionSpawnedTilesList.Add(spawnedTile);
         }
 
-
-
-
         return spawnedTile;
     }
+
+    public TileDifficulty DetermineNextTileDifficulty(TileDifficulty lastTileDifficulty)
+    {
+        float randomVal = Random.Range(0.0f, 1.0f);
+        if (randomVal <= this.tileSpawnWeightings.fillerTileChance || this.spawnFillersNextCount > 0)
+        {
+            if (this.spawnFillersNextCount > 0)
+            {
+                this.spawnFillersNextCount--;
+            }
+            return TileDifficulty.Filler;
+        }
+        else
+        {
+            int currentProbabilitySetIndex = 0;
+            while (Time.timeSinceLevelLoad > this.tileSpawnWeightings.spawnProbabilitySets[currentProbabilitySetIndex].maxSetTime)
+            {
+                currentProbabilitySetIndex++;
+            }
+
+            TileDifficulty nextTileDifficulty = this.tileSpawnWeightings.GenerateNextTileDifficulty(lastTileDifficulty, currentProbabilitySetIndex);
+            return nextTileDifficulty;
+        }
+
+    }
+
 
     public void ResetTilesContainer()
     {
@@ -256,7 +293,6 @@ public class TileManager : MonoBehaviour
 
         // Final new tile setup
         // Set as a child of the container gameobject
-    
 
         
         this.finalTile = newTile;
@@ -343,7 +379,7 @@ public class TileManager : MonoBehaviour
         switch (difficulty)
         {
             case TileDifficulty.Filler:
-                selectedList = this.veryEasyTilesList;
+                selectedList = this.fillerTilesList;
                 break;
             case TileDifficulty.VeryEasy:
                 selectedList = this.veryEasyTilesList;
@@ -357,6 +393,11 @@ public class TileManager : MonoBehaviour
             case TileDifficulty.Hard:
                 selectedList = this.hardTilesList;
                 break;
+        }
+
+        if (difficulty != TileDifficulty.Filler)
+        {
+            this.lastNonFillerTileDifficulty = difficulty;
         }
 
         ScriptableTileObject selectedScriptableTileObject = this.SelectTileFromWeightedList(selectedList);
