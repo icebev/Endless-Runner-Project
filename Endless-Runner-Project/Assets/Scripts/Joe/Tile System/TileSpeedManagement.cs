@@ -25,6 +25,8 @@ public class TileSpeedManagement : MonoBehaviour
     public float chaserMaxDistance;
     public Animator playerAnimator;
 
+    public GameOverEvent gameOverEvent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -76,6 +78,11 @@ public class TileSpeedManagement : MonoBehaviour
         Vector3 targetFogPos = new Vector3(this.movingFog.transform.position.x, this.fogYPositionCurve.Evaluate(sliderValue), this.movingFog.transform.position.z);
         this.movingFog.transform.localPosition = Vector3.MoveTowards(this.movingFog.transform.localPosition, targetFogPos, 5);
         this.chaserSlider.value = sliderValue;
+
+        if (sliderValue > 0.95)
+        {
+            this.gameOverEvent.playerDeath.Invoke();
+        }
     }
 
 }
