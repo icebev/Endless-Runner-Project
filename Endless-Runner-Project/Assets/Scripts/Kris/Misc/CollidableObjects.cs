@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CollidableObjects : MonoBehaviour, iCollidable
 {
+    public static float timeBetweenNonGroundCollisions = 0.3f;
     private enum CollisionBehaviour
     {
         NoCollide,
@@ -37,15 +38,11 @@ public class CollidableObjects : MonoBehaviour, iCollidable
     private CharacterManager charManager;
     private GameObject objCharManager;
 
-    /*private CollisionBehaviour[] DownwardsCollision = new CollisionBehaviour[] { CollisionBehaviour.StandOn };
-    private CollisionBehaviour[] DownwardsCollision = new CollisionBehaviour[] { CollisionBehaviour.StandOn };
-    private CollisionBehaviour[] DownwardsCollision = new CollisionBehaviour[] { CollisionBehaviour.StandOn };
-    private CollisionBehaviour[] DownwardsCollision = new CollisionBehaviour[] { CollisionBehaviour.StandOn };
-    private CollisionBehaviour[] DownwardsCollision = new CollisionBehaviour[] { CollisionBehaviour.StandOn };
-    */
 
     public void DoCollision(CharacterManager.WhichRay whichRay) 
     {
+
+
         if(this.objCharManager == null)
         {
             this.objCharManager = GameObject.FindGameObjectWithTag("CharacterManager");
@@ -58,6 +55,7 @@ public class CollidableObjects : MonoBehaviour, iCollidable
                 foreach(CollisionBehaviour gameCollision in this.DownwardsCollision)
                 {
                     this.CollisionReaction(gameCollision);
+
                 }
                 break;
             
@@ -148,6 +146,7 @@ public class CollidableObjects : MonoBehaviour, iCollidable
             break;
             case CollisionBehaviour.StandOn:
                 this.charManager.GroundedCharacter();
+
                 break;
             case CollisionBehaviour.BurnFeet:
 
@@ -165,8 +164,16 @@ public class CollidableObjects : MonoBehaviour, iCollidable
 
                 break;
             case CollisionBehaviour.Stumble:
-
-                break;
+                if (CollidableObjects.timeBetweenNonGroundCollisions > 0)
+                {
+                    return;
+                }
+                else
+                {
+                    CollidableObjects.timeBetweenNonGroundCollisions = 0.3f;
+                    GameObject.FindObjectOfType<TileSpeedManagement>().StumbleSlowDown();
+                    break;
+                }
             case CollisionBehaviour.MoveLeft:
                 this.charManager.AddPlayerLaneTarget(-1);
                 break;

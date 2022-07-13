@@ -1873,6 +1873,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
+      propertyPath: gravity
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
       propertyPath: LaneSize
       value: 2
       objectReference: {fileID: 0}
@@ -1880,6 +1884,10 @@ PrefabInstance:
       propertyPath: _character
       value: 
       objectReference: {fileID: 1719365278}
+    - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
+      propertyPath: jumpHeight
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
       propertyPath: _characterParent
       value: 

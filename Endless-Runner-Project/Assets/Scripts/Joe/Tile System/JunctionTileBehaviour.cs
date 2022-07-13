@@ -113,7 +113,7 @@ public class JunctionTileBehaviour : MonoBehaviour
                 this.tileManager.junctionSpawnedTilesList.Clear();
                 this.tileManager.currentJunctionTile = null;
             }
-
+            this.hasRotated = true;
 
         }
     }

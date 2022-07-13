@@ -1370,6 +1370,7 @@ GameObject:
   - component: {fileID: 4652856289371841449}
   - component: {fileID: 3225409293501986165}
   - component: {fileID: 579901640620375547}
+  - component: {fileID: 7987260636686109522}
   m_Layer: 0
   m_Name: Lane3 (1)
   m_TagString: Untagged
@@ -1673,6 +1674,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &7987260636686109522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2472269716671870894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 01000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 
+  FrontLowerCollision: 
+  FrontBothCollision: 
+  LeftUpperCollision: 
+  LeftLowerCollision: 
+  LeftBothCollision: 
+  RightUpperCollision: 
+  RightLowerCollision: 
+  RightBothCollision: 
 --- !u!1 &2513977963148833742
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,6 +2026,7 @@ GameObject:
   - component: {fileID: 2115868691686556093}
   - component: {fileID: 6290163423382108972}
   - component: {fileID: 8712871201567532152}
+  - component: {fileID: 8415720270709819759}
   m_Layer: 0
   m_Name: Lane5 (3)
   m_TagString: Untagged
@@ -2305,6 +2330,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &8415720270709819759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2668390589921161655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 01000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 
+  FrontLowerCollision: 
+  FrontBothCollision: 
+  LeftUpperCollision: 
+  LeftLowerCollision: 
+  LeftBothCollision: 
+  RightUpperCollision: 
+  RightLowerCollision: 
+  RightBothCollision: 
 --- !u!1 &3012133472939556640
 GameObject:
   m_ObjectHideFlags: 0
@@ -3297,6 +3345,7 @@ GameObject:
   - component: {fileID: 4379842896900532417}
   - component: {fileID: 1089391955088696213}
   - component: {fileID: 7044864923095072117}
+  - component: {fileID: 8379966036398451473}
   m_Layer: 0
   m_Name: Lane5
   m_TagString: Untagged
@@ -3600,6 +3649,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &8379966036398451473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4774329336799344752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 01000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 
+  FrontLowerCollision: 
+  FrontBothCollision: 
+  LeftUpperCollision: 
+  LeftLowerCollision: 
+  LeftBothCollision: 
+  RightUpperCollision: 
+  RightLowerCollision: 
+  RightBothCollision: 
 --- !u!1 &4774329337612811573
 GameObject:
   m_ObjectHideFlags: 0
@@ -3613,6 +3685,7 @@ GameObject:
   - component: {fileID: 4379842897680510340}
   - component: {fileID: 1089391955382593232}
   - component: {fileID: 7044864922264893488}
+  - component: {fileID: 7404914844689342195}
   m_Layer: 0
   m_Name: Lane4
   m_TagString: Untagged
@@ -3916,6 +3989,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &7404914844689342195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4774329337612811573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 01000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 
+  FrontLowerCollision: 
+  FrontBothCollision: 
+  LeftUpperCollision: 
+  LeftLowerCollision: 
+  LeftBothCollision: 
+  RightUpperCollision: 
+  RightLowerCollision: 
+  RightBothCollision: 
 --- !u!1 &4774329337661297499
 GameObject:
   m_ObjectHideFlags: 0
@@ -3929,6 +4025,7 @@ GameObject:
   - component: {fileID: 4379842897766745066}
   - component: {fileID: 1089391955430557886}
   - component: {fileID: 7044864922212193886}
+  - component: {fileID: 6330869235032727545}
   m_Layer: 0
   m_Name: Lane3
   m_TagString: Untagged
@@ -4232,6 +4329,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &6330869235032727545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4774329337661297499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 01000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 
+  FrontLowerCollision: 
+  FrontBothCollision: 
+  LeftUpperCollision: 
+  LeftLowerCollision: 
+  LeftBothCollision: 
+  RightUpperCollision: 
+  RightLowerCollision: 
+  RightBothCollision: 
 --- !u!1 &4774329337836223255
 GameObject:
   m_ObjectHideFlags: 0
@@ -4245,6 +4365,7 @@ GameObject:
   - component: {fileID: 4379842897660652454}
   - component: {fileID: 1089391955334947058}
   - component: {fileID: 7044864922049740306}
+  - component: {fileID: 3181087544216215939}
   m_Layer: 0
   m_Name: Lane2
   m_TagString: Untagged
@@ -4548,6 +4669,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &3181087544216215939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4774329337836223255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 01000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 
+  FrontLowerCollision: 
+  FrontBothCollision: 
+  LeftUpperCollision: 
+  LeftLowerCollision: 
+  LeftBothCollision: 
+  RightUpperCollision: 
+  RightLowerCollision: 
+  RightBothCollision: 
 --- !u!1 &5220720014962877281
 GameObject:
   m_ObjectHideFlags: 0
@@ -4877,6 +5021,7 @@ GameObject:
   - component: {fileID: 2682060040028760261}
   - component: {fileID: 5241114650822625008}
   - component: {fileID: 8935961374360768451}
+  - component: {fileID: 8624883023387491178}
   m_Layer: 0
   m_Name: Lane5 (1)
   m_TagString: Untagged
@@ -5180,6 +5325,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &8624883023387491178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5682777596443802027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 01000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 
+  FrontLowerCollision: 
+  FrontBothCollision: 
+  LeftUpperCollision: 
+  LeftLowerCollision: 
+  LeftBothCollision: 
+  RightUpperCollision: 
+  RightLowerCollision: 
+  RightBothCollision: 
 --- !u!1 &6457794106042632697
 GameObject:
   m_ObjectHideFlags: 0
@@ -5368,6 +5536,7 @@ GameObject:
   - component: {fileID: 1468282767760365267}
   - component: {fileID: 7774363520182804126}
   - component: {fileID: 8118972360128686864}
+  - component: {fileID: 863292300021467004}
   m_Layer: 0
   m_Name: Lane3 (2)
   m_TagString: Untagged
@@ -5671,6 +5840,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &863292300021467004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016281139145986201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 01000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 
+  FrontLowerCollision: 
+  FrontBothCollision: 
+  LeftUpperCollision: 
+  LeftLowerCollision: 
+  LeftBothCollision: 
+  RightUpperCollision: 
+  RightLowerCollision: 
+  RightBothCollision: 
 --- !u!1 &8413340302390610214
 GameObject:
   m_ObjectHideFlags: 0
@@ -6031,6 +6223,7 @@ GameObject:
   - component: {fileID: 4745359395741560402}
   - component: {fileID: 8745053898888042306}
   - component: {fileID: 443606026193449405}
+  - component: {fileID: 7530694271312479579}
   m_Layer: 0
   m_Name: Lane5 (2)
   m_TagString: Untagged
@@ -6334,6 +6527,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &7530694271312479579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9097852628095502524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 01000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 
+  FrontLowerCollision: 
+  FrontBothCollision: 
+  LeftUpperCollision: 
+  LeftLowerCollision: 
+  LeftBothCollision: 
+  RightUpperCollision: 
+  RightLowerCollision: 
+  RightBothCollision: 
 --- !u!1001 &568991704187738493
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -150,11 +150,14 @@ public class CharacterManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (CollidableObjects.timeBetweenNonGroundCollisions >= 0.0f)
+        {
+            CollidableObjects.timeBetweenNonGroundCollisions -= Time.fixedDeltaTime;
+        }
         UpdateCharacterData();
         UpdateDoubleTapTimer();
         UpdateLanePositionAndRotation();
         UpdatePhysics();
-
         //GroundCheck();
 
     }
@@ -377,7 +380,7 @@ public class CharacterManager : MonoBehaviour
             
             this.playerPosition.y += this.playerYVelocity;
 
-            this.playerPositionRelative = this._characterParent.transform.InverseTransformDirection(this.playerPosition);  
+            this.playerPositionRelative = this._characterParent.transform.InverseTransformDirection(this.playerPosition);
             //Vector3 relativeRayCastX = this._characterParent.transform.InverseTransformDirection(Vector3.left);
             //Vector3 relativeRayCastXa = this._characterParent.transform.InverseTransformDirection(Vector3.right);
             //Vector3 relativeRayCastZ = this._characterParent.transform.InverseTransformDirection(Vector3.forward);
@@ -385,21 +388,23 @@ public class CharacterManager : MonoBehaviour
             //Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
             //Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red);
 
-            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), transform.TransformDirection(Vector3.down), out this.GroundRayHit, this.playerRaycastSizeDown);
-            
-            if (this.GroundRayHit.collider != null)
+            RaycastHit TempGroundRayHit;
+            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), transform.TransformDirection(Vector3.down), out TempGroundRayHit, this.playerRaycastSizeDown);
+            this.GroundRayHit = TempGroundRayHit;
+
+            if (TempGroundRayHit.collider != null)
             {
 
 
 
-                this.HandleCollision(GroundRayHit, WhichRay.Down);
+                this.HandleCollision(TempGroundRayHit, WhichRay.Down);
             }
             else
             {
                 this.isGrounded = false;
             }
 
-            
+
             /*if (GroundHit.collider != null)
             {
                 this.isGrounded = true;
@@ -488,15 +493,18 @@ public class CharacterManager : MonoBehaviour
 
             if ((FrontHitUpper.collider != null) && (FrontHitLower.collider != null))
             {
+                this.HandleCollision(FrontHitUpper, WhichRay.FrontBoth);
                 print("FRONT HIT BOTH!");
             }
             else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null))
             {
-                print("FRONT HIT UPPER!");
+                this.HandleCollision(FrontHitUpper, WhichRay.FrontUp);
+                //print("FRONT HIT UPPER!");
             }
             else if ((FrontHitUpper.collider == null) && (FrontHitLower.collider != null))
             {
-                print("FRONT HIT LOWER!");
+                this.HandleCollision(FrontHitLower, WhichRay.FrontDown);
+                //print("FRONT HIT LOWER!");
             }
 
 
@@ -508,11 +516,13 @@ public class CharacterManager : MonoBehaviour
 
     private void HandleCollision(RaycastHit rayHit, WhichRay whichRay)
     {
-        print(rayHit);
-        iCollidable gameCollision = rayHit.transform.gameObject.GetComponent<iCollidable>();
+        //print(rayHit);
+        print("HANDLING COLLISION");
+        CollidableObjects gameCollision = rayHit.collider.GetComponent<CollidableObjects>();
         if (gameCollision != null)
         {
             gameCollision.DoCollision(whichRay);
+            print("DO COLLISION");
         }
 
 
@@ -579,7 +589,7 @@ public class CharacterManager : MonoBehaviour
 
     private void ApplyGravity()
     {
-        if (!this.isGrounded || this.IgnoreGroundCollision)
+        if (!this.isGrounded || this.IgnoreGroundCollision == true)
         {
             this.playerYVelocity -= gravity;
         }
@@ -590,7 +600,8 @@ public class CharacterManager : MonoBehaviour
         if (this.isGrounded)
         {
             
-            this.playerYVelocity += jumpHeight;
+            this.playerYVelocity += this.jumpHeight;
+            this.isGrounded = false;
         }
     }
 
@@ -637,6 +648,8 @@ public class CharacterManager : MonoBehaviour
 
     public void GroundedCharacter()
     {
+        print("groundedChar");
+
         this.isGrounded = true;
         //if (this.playerYVelocity < 0)
         //{

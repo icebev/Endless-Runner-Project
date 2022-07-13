@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3004552889635667884}
   - component: {fileID: 1901732018797393144}
   - component: {fileID: 8412267074745641496}
+  - component: {fileID: -5203689088915044561}
   m_Layer: 0
   m_Name: Rubble 2x2x1
   m_TagString: Untagged
@@ -316,3 +317,26 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &-5203689088915044561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285846658475093789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DownwardsCollision: 00000000
+  UpwardsCollision: 05000000
+  FrontUpperCollision: 09000000
+  FrontLowerCollision: 09000000
+  FrontBothCollision: 09000000
+  LeftUpperCollision: 09000000
+  LeftLowerCollision: 09000000
+  LeftBothCollision: 09000000
+  RightUpperCollision: 08000000
+  RightLowerCollision: 08000000
+  RightBothCollision: 08000000
