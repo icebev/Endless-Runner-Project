@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 589410188470930477}
   m_Layer: 0
   m_Name: CharacterManager
-  m_TagString: Untagged
+  m_TagString: CharacterManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,6 +52,12 @@ MonoBehaviour:
   evenLaneBias: 0
   LaneSize: 1
   lockLaneSwitch: 0
+  interpolationSpeedLane: 0.25
+  interpolationSpeedRotate: 0.25
+  doPhysics: 1
+  gravity: 0.01
+  jumpHeight: 0.25
+  IgnoreGroundCollision: 0
 --- !u!114 &589410188470930476
 MonoBehaviour:
   m_ObjectHideFlags: 0
