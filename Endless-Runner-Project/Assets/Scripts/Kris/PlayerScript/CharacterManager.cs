@@ -47,8 +47,8 @@ public class CharacterManager : MonoBehaviour
 
     private float[] interpolationSpeedIndex = new float[] { 0.125f, 0.25f, 0.5f };
 
-    private float interpolationSpeedLane = 0.25f;
-    private float interpolationSpeedRotate = 0.25f;                           //Used for Linear Interpolation for smooth Lane moving and smooth rotation
+    [SerializeField] private float interpolationSpeedLane = 0.25f;
+    [SerializeField] private float interpolationSpeedRotate = 0.25f;                           //Used for Linear Interpolation for smooth Lane moving and smooth rotation
 
     private Vector3[] LeftLocal = new Vector3[] { new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(1, 0, 0), new Vector3(0, 0, -1) };
     private Vector3[] RightLocal = new Vector3[] { new Vector3(1, 0, 0), new Vector3(0, 0, -1), new Vector3(-1, 0, 0), new Vector3(0, 0, 1) };
@@ -62,13 +62,17 @@ public class CharacterManager : MonoBehaviour
     private float recentMoveMaxTime = 0.18f;
     private float timerSpeed = 0.02f; //This equates to 1 second.
 
-    private bool doPhysics = true;
+    [SerializeField] private bool doPhysics = true;
     private bool isGrounded = true;
     private float playerYVelocity = 0;
-    private float gravity = 0.01f;
-    private float jumpHeight = 0.25f;
+    [SerializeField] private float gravity = 0.01f;
+    [SerializeField] private float jumpHeight = 0.25f;
     private float playerRaycastSizeDown = 0.42f;
     private float playerRaycastSizeSide = 0.28f;
+
+    [SerializeField] private bool IgnoreGroundCollision = false;
+
+    private RaycastHit GroundRayHit;
 
     //Each possible player Direction
     public enum directions
@@ -208,9 +212,14 @@ public class CharacterManager : MonoBehaviour
         CheckLaneBounds();
     }
 
-    public void SetLanePos(int lanepos)
+    public void SetLanePos(float lanepos)
     {
-        this.targetLane = lanepos;
+        this.targetLane = lanepos * this.LaneSize;
+        CheckLaneBounds();
+    }
+    public void AddLanePos(float lanepos)
+    {
+        this.targetLane += lanepos * this.LaneSize;
         CheckLaneBounds();
     }
 
@@ -312,7 +321,10 @@ public class CharacterManager : MonoBehaviour
         {
             //Vector3 linearPlayerMove = Vector3.Lerp(this.playerPosition, this.playerTargetPosition, this.interpolationSpeedLane);
 
-            float linearPlayerXMove = Mathf.Lerp(this.playerPosition.x, this.targetLane, this.interpolationSpeedLane);
+
+            float linearPlayerXMove = Mathf.MoveTowards(this.playerPosition.x, this.targetLane, this.interpolationSpeedLane);
+
+            //float linearPlayerXMove = Mathf.Lerp(this.playerPosition.x, this.targetLane, this.interpolationSpeedLane);
             this.playerPosition.x = linearPlayerXMove;
             //this.playerPosition.x = linearPlayerXMove;
             
@@ -366,7 +378,6 @@ public class CharacterManager : MonoBehaviour
             this.playerPosition.y += this.playerYVelocity;
 
             this.playerPositionRelative = this._characterParent.transform.InverseTransformDirection(this.playerPosition);  
-            RaycastHit GroundHit;
             //Vector3 relativeRayCastX = this._characterParent.transform.InverseTransformDirection(Vector3.left);
             //Vector3 relativeRayCastXa = this._characterParent.transform.InverseTransformDirection(Vector3.right);
             //Vector3 relativeRayCastZ = this._characterParent.transform.InverseTransformDirection(Vector3.forward);
@@ -374,8 +385,21 @@ public class CharacterManager : MonoBehaviour
             //Physics.Raycast(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down), out GroundHit, 0.42f);
             //Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red);
 
-            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), transform.TransformDirection(Vector3.down), out GroundHit, this.playerRaycastSizeDown);
-            this.HandleCollision(GroundHit, WhichRay.Down);
+            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), transform.TransformDirection(Vector3.down), out this.GroundRayHit, this.playerRaycastSizeDown);
+            
+            if (this.GroundRayHit.collider != null)
+            {
+
+
+
+                this.HandleCollision(GroundRayHit, WhichRay.Down);
+            }
+            else
+            {
+                this.isGrounded = false;
+            }
+
+            
             /*if (GroundHit.collider != null)
             {
                 this.isGrounded = true;
@@ -440,12 +464,12 @@ public class CharacterManager : MonoBehaviour
                 }
                 else if ((SideHitUpper.collider != null) && (SideHitLower.collider == null))
                 {
-                    this.HandleCollision(SideHitLower, this.GetDirectionRay(0));
+                    this.HandleCollision(SideHitUpper, this.GetDirectionRay(0));
                     print("SIDE HIT UPPER!");
                 }
                 else if ((SideHitUpper.collider == null) && (SideHitLower.collider != null))
                 {
-                    this.HandleCollision(SideHitUpper, this.GetDirectionRay(1));
+                    this.HandleCollision(SideHitLower, this.GetDirectionRay(1));
                     print("SIDE HIT LOWER!");
                 }
                 
@@ -484,7 +508,15 @@ public class CharacterManager : MonoBehaviour
 
     private void HandleCollision(RaycastHit rayHit, WhichRay whichRay)
     {
+        print(rayHit);
+        iCollidable gameCollision = rayHit.transform.gameObject.GetComponent<iCollidable>();
+        if (gameCollision != null)
+        {
+            gameCollision.DoCollision(whichRay);
+        }
 
+
+        /*
         switch (rayHit.collider)
         {
             case null:
@@ -509,17 +541,21 @@ public class CharacterManager : MonoBehaviour
 
                         break;
                     case WhichRay.LeftUp:
-
+                        
+                        break;
                     case WhichRay.LeftDown:
 
+                        break;
                     case WhichRay.LeftBoth:
                         this.targetLane = this.previousLane;
                         
                         break;
                     case WhichRay.RightUp:
 
+                        break;
                     case WhichRay.RightDown:
 
+                        break;
                     case WhichRay.RightBoth:
                         this.targetLane = this.previousLane;
 
@@ -534,6 +570,7 @@ public class CharacterManager : MonoBehaviour
                 break;
 
         }
+        */
 
 
     }
@@ -542,7 +579,7 @@ public class CharacterManager : MonoBehaviour
 
     private void ApplyGravity()
     {
-        if (!this.isGrounded)
+        if (!this.isGrounded || this.IgnoreGroundCollision)
         {
             this.playerYVelocity -= gravity;
         }
@@ -598,6 +635,16 @@ public class CharacterManager : MonoBehaviour
         return WhichRay.LeftBoth;
     }
 
+    public void GroundedCharacter()
+    {
+        this.isGrounded = true;
+        //if (this.playerYVelocity < 0)
+        //{
+            this.playerYVelocity = 0;
+        //}
+        this.playerPosition.y = this.GroundRayHit.point.y - 0.02f;
+    }
+
 
     public bool GetPlayerTransitioningState()
     {
@@ -612,6 +659,21 @@ public class CharacterManager : MonoBehaviour
     public float GetPlayerLaneTarget()
     {
         return (this.targetLane / this.LaneSize);
+    }
+
+    public void SetPlayerLaneTarget(int lane)
+    {
+        this.targetLane = lane * this.LaneSize;
+    }
+
+    public void AddPlayerLaneTarget(int lane)
+    {
+        this.targetLane += lane * this.LaneSize;
+    }
+
+    public void PreviousLaneReturn()
+    {
+        this.targetLane = this.previousLane;
     }
 
     public float GetPlayerPositionXCurrent()
