@@ -65,9 +65,10 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private bool doPhysics = true;
     private bool isGrounded = true;
     private float playerYVelocity = 0;
+    private float playerMaxDownwardVelocity = -0.75f;
     [SerializeField] private float gravity = 0.01f;
-    [SerializeField] private float jumpHeight = 0.25f;
-    private float playerRaycastSizeDown = 0.42f;
+    [SerializeField] private float jumpVelocity = 0.25f;
+    private float playerRaycastSizeDown = 1.02f;
     private float playerRaycastSizeSide = 0.28f;
 
     [SerializeField] private bool IgnoreGroundCollision = false;
@@ -389,7 +390,7 @@ public class CharacterManager : MonoBehaviour
             //Debug.DrawRay(new Vector3(relativePlayerPos.x, this.playerPosition.y + 0.4f, -relativePlayerPos.z), transform.TransformDirection(Vector3.down) * 0.42f, Color.red);
 
             RaycastHit TempGroundRayHit;
-            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), transform.TransformDirection(Vector3.down), out TempGroundRayHit, this.playerRaycastSizeDown);
+            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1f, -this.playerPositionRelative.z), transform.TransformDirection(Vector3.down), out TempGroundRayHit, this.playerRaycastSizeDown);
             this.GroundRayHit = TempGroundRayHit;
 
             if (TempGroundRayHit.collider != null)
@@ -591,7 +592,13 @@ public class CharacterManager : MonoBehaviour
     {
         if (!this.isGrounded || this.IgnoreGroundCollision == true)
         {
-            this.playerYVelocity -= gravity;
+            this.playerYVelocity -= this.gravity;
+            if (this.playerYVelocity < this.playerMaxDownwardVelocity )
+            {
+                this.playerYVelocity = this.playerMaxDownwardVelocity;
+            }
+
+            print("Player Y Velocity " + this.playerYVelocity);
         }
     }
 
@@ -600,7 +607,7 @@ public class CharacterManager : MonoBehaviour
         if (this.isGrounded)
         {
             
-            this.playerYVelocity += this.jumpHeight;
+            this.playerYVelocity += this.jumpVelocity;
             this.isGrounded = false;
         }
     }
