@@ -63,6 +63,14 @@ public class PlayerController : MonoBehaviour
             this._characterManager.Jump();
         }
     }
+
+    public void Slide(InputAction.CallbackContext press)
+    {
+        if (press.performed)
+        {
+            this._characterManager.Slide();
+        }
+    }
     public void MainMenu(InputAction.CallbackContext press)
     {
         if (press.performed)
