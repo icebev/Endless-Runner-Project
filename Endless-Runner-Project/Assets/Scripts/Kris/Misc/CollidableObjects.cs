@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CollidableObjects : MonoBehaviour, iCollidable
 {
-    public static float timeBetweenNonGroundCollisions = 0.3f;
+    public static float stumbleCoolDown = 0.3f;
+    public static float pushRightCoolDown = 0.3f;
+    public static float pushLeftCoolDown = 0.3f;
     private enum CollisionBehaviour
     {
         NoCollide,
@@ -38,7 +40,23 @@ public class CollidableObjects : MonoBehaviour, iCollidable
     private CharacterManager charManager;
     private GameObject objCharManager;
 
+    public static void TickCooldowns()
+    {
+        if (CollidableObjects.stumbleCoolDown >= 0.0f)
+        {
+            CollidableObjects.stumbleCoolDown -= Time.fixedDeltaTime;
+        }
 
+        if (CollidableObjects.pushRightCoolDown >= 0.0f)
+        {
+            CollidableObjects.pushRightCoolDown -= Time.fixedDeltaTime;
+        }
+
+        if (CollidableObjects.pushLeftCoolDown >= 0.0f)
+        {
+            CollidableObjects.pushLeftCoolDown -= Time.fixedDeltaTime;
+        }
+    }
     public void DoCollision(CharacterManager.WhichRay whichRay) 
     {
 
@@ -164,22 +182,38 @@ public class CollidableObjects : MonoBehaviour, iCollidable
 
                 break;
             case CollisionBehaviour.Stumble:
-                if (CollidableObjects.timeBetweenNonGroundCollisions > 0)
+                if (CollidableObjects.stumbleCoolDown > 0)
                 {
                     return;
                 }
                 else
                 {
-                    CollidableObjects.timeBetweenNonGroundCollisions = 0.3f;
+                    CollidableObjects.stumbleCoolDown = 0.3f;
                     GameObject.FindObjectOfType<TileSpeedManagement>().StumbleSlowDown();
                     break;
                 }
             case CollisionBehaviour.MoveLeft:
-                this.charManager.AddPlayerLaneTarget(-1);
-                break;
+                if (CollidableObjects.pushLeftCoolDown > 0)
+                {
+                    return;
+                }
+                else
+                {
+                    CollidableObjects.pushLeftCoolDown = 0.3f;
+                    this.charManager.AddPlayerLaneTarget(-1);
+                    break;
+                }
             case CollisionBehaviour.MoveRight:
-                this.charManager.AddPlayerLaneTarget(1);
-                break;
+                if (CollidableObjects.pushLeftCoolDown > 0)
+                {
+                    return;
+                }
+                else
+                {
+                    CollidableObjects.pushLeftCoolDown = 0.3f;
+                    this.charManager.AddPlayerLaneTarget(1);
+                    break;
+                }
             case CollisionBehaviour.Kill:
 
                 break;

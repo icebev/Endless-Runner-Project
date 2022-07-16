@@ -2,6 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* CHARACTER MANAGER CLASS
+ * Author(s): Kris Burgess-James
+ * Date last modified: 16/07/2022
+ *******************************************************************************
+ * Important Note: Some changes have been made using Joe's computer / account by me.
+ * CHANGE NOTES: 
+ * Added max fall velocity and ensured the player doesn't fall through the ground.
+ * Extend the forward raycasts so at high speed the player still interacts with the obstacles.
+ * 
+ */
+/// <summary>
+/// A class for implementing character movement and collision.
+/// </summary>
 public class CharacterManager : MonoBehaviour
 {
     //The character and Parent.
@@ -62,6 +75,10 @@ public class CharacterManager : MonoBehaviour
     private float recentMoveMaxTime = 0.18f;
     private float timerSpeed = 0.02f; //This equates to 1 second.
 
+    [SerializeField] private playerStates currentState = playerStates.grounded;
+    [SerializeField] private animationStates animationState = animationStates.RegularRun;
+    [SerializeField] private Animator playerAnimator;
+
     [SerializeField] private bool doPhysics = true;
     private bool isGrounded = true;
     private float playerYVelocity = 0;
@@ -70,10 +87,12 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private float jumpVelocity = 0.25f;
     private float playerRaycastSizeDown = 1.02f;
     private float playerRaycastSizeSide = 0.28f;
+    private float playerRaycastSizeFront = 0.84f;
 
     [SerializeField] private bool IgnoreGroundCollision = false;
 
     private RaycastHit GroundRayHit;
+    private RaycastHit FrontUpperRayHit;
 
     //Each possible player Direction
     public enum directions
@@ -108,10 +127,11 @@ public class CharacterManager : MonoBehaviour
         grounded,
         jumping,
         quickfall,
+        crouching
         
     }
 
-    public enum AnimationState
+    public enum animationStates
     {
         Roll,
         Fall,
@@ -151,10 +171,7 @@ public class CharacterManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (CollidableObjects.timeBetweenNonGroundCollisions >= 0.0f)
-        {
-            CollidableObjects.timeBetweenNonGroundCollisions -= Time.fixedDeltaTime;
-        }
+        CollidableObjects.TickCooldowns();
         UpdateCharacterData();
         UpdateDoubleTapTimer();
         UpdateLanePositionAndRotation();
@@ -234,7 +251,7 @@ public class CharacterManager : MonoBehaviour
 
     public void Move(movementDirections Direction, int Amount)
     {
-        if (!this.lockLaneSwitch)
+        if (!this.lockLaneSwitch && this.currentState != playerStates.crouching)
         {
 
             this.previousLane = this.targetLane;
@@ -483,21 +500,25 @@ public class CharacterManager : MonoBehaviour
 
             }
 
+
+            // Front raycast hit detection
             RaycastHit FrontHitUpper;
             RaycastHit FrontHitLower;
 
-            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction], out FrontHitUpper, this.playerRaycastSizeSide);
-            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction], out FrontHitLower, this.playerRaycastSizeSide);
 
-            Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction] * this.playerRaycastSizeSide, Color.red);
-            Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction] * this.playerRaycastSizeSide, Color.red);
+            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction], out FrontHitUpper, this.playerRaycastSizeFront);
+            Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction] * this.playerRaycastSizeFront, Color.red);
 
-            if ((FrontHitUpper.collider != null) && (FrontHitLower.collider != null))
+
+            Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction], out FrontHitLower, this.playerRaycastSizeFront);
+            Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.ForwardLocal[this.direction] * this.playerRaycastSizeFront, Color.red);
+
+            if ((FrontHitUpper.collider != null) && (FrontHitLower.collider != null) && (this.currentState != playerStates.crouching))
             {
                 this.HandleCollision(FrontHitUpper, WhichRay.FrontBoth);
                 print("FRONT HIT BOTH!");
             }
-            else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null))
+            else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null) && (this.currentState != playerStates.crouching))
             {
                 this.HandleCollision(FrontHitUpper, WhichRay.FrontUp);
                 //print("FRONT HIT UPPER!");
@@ -602,9 +623,26 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    public void Jump()
+    public void Slide()
     {
         if (this.isGrounded)
+        {
+            this.playerAnimator.Play("Slide");
+            this.currentState = playerStates.crouching;
+            StartCoroutine(EndSlide(1.0f));
+        }
+    }
+
+    public IEnumerator EndSlide(float slideTime)
+    {
+        yield return new WaitForSeconds(slideTime);
+
+        this.currentState = playerStates.grounded;
+    }
+
+    public void Jump()
+    {
+        if (this.isGrounded && this.currentState != playerStates.crouching)
         {
             
             this.playerYVelocity += this.jumpVelocity;
