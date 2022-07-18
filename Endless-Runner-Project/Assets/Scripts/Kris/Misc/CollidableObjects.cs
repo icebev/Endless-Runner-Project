@@ -2,11 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* CHARACTER MANAGER CLASS
+ * Author(s): Kris Burgess-James
+ * Date last modified: 16/07/2022
+ *******************************************************************************
+ * 
+ */
+/// <summary>
+/// A class for implementing custom collision behaviours to objects.
+/// </summary>
+
 public class CollidableObjects : MonoBehaviour, iCollidable
 {
-    public static float stumbleCoolDown = 0.3f;
-    public static float pushRightCoolDown = 0.3f;
+    //Cooldowns as to not collide every frame
+    public static float stumbleCoolDown = 0.3f;     
+    public static float pushRightCoolDown = 0.3f; //Push is when the character is moved left or right
     public static float pushLeftCoolDown = 0.3f;
+    
+    //List of the different type of collision behaviours.
     private enum CollisionBehaviour
     {
         NoCollide,
@@ -22,24 +35,34 @@ public class CollidableObjects : MonoBehaviour, iCollidable
         Kill,
     }
 
+
+    //Expandable arrays for adding Collision Behaviours
+
+    //Up & Down Collisions
     [SerializeField] private CollisionBehaviour[] DownwardsCollision = new CollisionBehaviour[] { CollisionBehaviour.StandOn };
     [SerializeField] private CollisionBehaviour[] UpwardsCollision = new CollisionBehaviour[] { CollisionBehaviour.GoDown };
 
+    //Front Collisions
     [SerializeField] private CollisionBehaviour[] FrontUpperCollision = new CollisionBehaviour[] { CollisionBehaviour.HopUp };
     [SerializeField] private CollisionBehaviour[] FrontLowerCollision = new CollisionBehaviour[] { CollisionBehaviour.Stumble };
     [SerializeField] private CollisionBehaviour[] FrontBothCollision= new CollisionBehaviour[] { CollisionBehaviour.Kill };
 
+    //Right Collisions
     [SerializeField] private CollisionBehaviour[] LeftUpperCollision = new CollisionBehaviour[] { CollisionBehaviour.MoveRight };
     [SerializeField] private CollisionBehaviour[] LeftLowerCollision = new CollisionBehaviour[] { CollisionBehaviour.MoveRight };
     [SerializeField] private CollisionBehaviour[] LeftBothCollision= new CollisionBehaviour[] { CollisionBehaviour.MoveRight };
 
+    //Left Collisions
     [SerializeField] private CollisionBehaviour[] RightUpperCollision = new CollisionBehaviour[] { CollisionBehaviour.MoveLeft };
     [SerializeField] private CollisionBehaviour[] RightLowerCollision = new CollisionBehaviour[] { CollisionBehaviour.MoveLeft };
     [SerializeField] private CollisionBehaviour[] RightBothCollision = new CollisionBehaviour[] { CollisionBehaviour.MoveLeft };
 
+    //To retrieve the character Manager and perform behaviours/
     private CharacterManager charManager;
     private GameObject objCharManager;
 
+
+    //Please Refactor. Ticking the CoolDowns
     public static void TickCooldowns()
     {
         if (CollidableObjects.stumbleCoolDown >= 0.0f)
@@ -60,12 +83,24 @@ public class CollidableObjects : MonoBehaviour, iCollidable
     public void DoCollision(CharacterManager.WhichRay whichRay) 
     {
 
-
+        //Retrieves the Character Manager when first collision is detected.
+        //Saves on small resources instead of keeping it in Start()
         if(this.objCharManager == null)
         {
             this.objCharManager = GameObject.FindGameObjectWithTag("CharacterManager");
             this.charManager = this.objCharManager.GetComponent<CharacterManager>();
         }
+
+
+        //Note for future kris: Please Refactor.
+        //Create a temporary CollisionBehaviour and store the current collision.
+        ////EXAMPLE:
+        // case CharacterManager.WhichRay.Down:
+        //  TemporaryColInfo = this.DownwardsCollision
+        //  break;
+        // .... 
+        //  foreach(CollisionBehaviour gameCollision in TemporaryColInfo)
+        //
 
         switch (whichRay)
         {
@@ -153,6 +188,8 @@ public class CollidableObjects : MonoBehaviour, iCollidable
 
     }
 
+
+    //How the selected collision behaviours react.
     private void CollisionReaction(CollisionBehaviour colBehaviour)
     {
         switch (colBehaviour)
@@ -182,38 +219,23 @@ public class CollidableObjects : MonoBehaviour, iCollidable
 
                 break;
             case CollisionBehaviour.Stumble:
-                if (CollidableObjects.stumbleCoolDown > 0)
-                {
-                    return;
-                }
-                else
-                {
-                    CollidableObjects.stumbleCoolDown = 0.3f;
-                    GameObject.FindObjectOfType<TileSpeedManagement>().StumbleSlowDown();
-                    break;
-                }
+                if (CollidableObjects.stumbleCoolDown > 0) return; 
+                CollidableObjects.stumbleCoolDown = 0.3f;
+                GameObject.FindObjectOfType<TileSpeedManagement>().StumbleSlowDown();
+                break;
+                
             case CollisionBehaviour.MoveLeft:
-                if (CollidableObjects.pushLeftCoolDown > 0)
-                {
-                    return;
-                }
-                else
-                {
-                    CollidableObjects.pushLeftCoolDown = 0.3f;
-                    this.charManager.AddPlayerLaneTarget(-1);
-                    break;
-                }
+                if (CollidableObjects.pushLeftCoolDown > 0) return;
+                CollidableObjects.pushLeftCoolDown = 0.3f;
+                this.charManager.AddPlayerLaneTarget(-1);
+                break;
+                
             case CollisionBehaviour.MoveRight:
-                if (CollidableObjects.pushLeftCoolDown > 0)
-                {
-                    return;
-                }
-                else
-                {
-                    CollidableObjects.pushLeftCoolDown = 0.3f;
-                    this.charManager.AddPlayerLaneTarget(1);
-                    break;
-                }
+                if (CollidableObjects.pushLeftCoolDown > 0) return; 
+                CollidableObjects.pushLeftCoolDown = 0.3f;
+                this.charManager.AddPlayerLaneTarget(1);
+                break;
+                
             case CollisionBehaviour.Kill:
 
                 break;
