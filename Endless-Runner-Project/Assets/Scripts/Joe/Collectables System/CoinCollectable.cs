@@ -6,11 +6,12 @@ using UnityEngine.Events;
 public class CoinCollectable : MonoBehaviour
 {
     public int coinValue = 1;
+    public static int coinValueMultiplier = 1;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            CollectableEventFunctions.OnCoinCollect.Invoke(this.coinValue);
+            CollectableEventFunctions.OnCoinCollect.Invoke(this.coinValue * CoinCollectable.coinValueMultiplier);
             this.transform.Translate(new Vector3(0, -200, 0), Space.World);
         }
     }

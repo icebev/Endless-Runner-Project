@@ -26,7 +26,7 @@ public class GroundCheckRaycastExperiment : MonoBehaviour
             this.playerRigidbody.velocity = new Vector3();
             this.playerRigidbody.useGravity = false;
             this.transform.position += new Vector3(0, this.transformChangeRate, 0);
-            Debug.Log("Did Hit");
+            //Debug.Log("Did Hit");
         }
         else if (!Physics.Raycast(this.raycastOrigin, Vector3.down, out lowerHit, this.raycastDistance * 2))
         {
@@ -36,7 +36,7 @@ public class GroundCheckRaycastExperiment : MonoBehaviour
             {
                 this.playerRigidbody.useGravity = true;
             }
-            Debug.Log("Did not Hit");
+            //Debug.Log("Did not Hit");
         }
     }
 }

@@ -32,6 +32,6 @@ public class CollectableEventFunctions : MonoBehaviour
 
     public void LogPowerUpType(PowerUpType powerUpRef)
     {
-        Debug.Log(powerUpRef.powerUpName);
+        //Debug.Log(powerUpRef.powerUpName);
     }
 }

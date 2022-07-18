@@ -483,17 +483,17 @@ public class CharacterManager : MonoBehaviour
                 if((SideHitUpper.collider != null) && (SideHitLower.collider != null))
                 {
                     this.HandleCollision(SideHitUpper, this.GetDirectionRay(2));
-                    print("SIDE HIT BOTH!");
+                    //print("SIDE HIT BOTH!");
                 }
                 else if ((SideHitUpper.collider != null) && (SideHitLower.collider == null))
                 {
                     this.HandleCollision(SideHitUpper, this.GetDirectionRay(0));
-                    print("SIDE HIT UPPER!");
+                    //print("SIDE HIT UPPER!");
                 }
                 else if ((SideHitUpper.collider == null) && (SideHitLower.collider != null))
                 {
                     this.HandleCollision(SideHitLower, this.GetDirectionRay(1));
-                    print("SIDE HIT LOWER!");
+                    //print("SIDE HIT LOWER!");
                 }
                 
                
@@ -516,7 +516,7 @@ public class CharacterManager : MonoBehaviour
             if ((FrontHitUpper.collider != null) && (FrontHitLower.collider != null) && (this.currentState != playerStates.crouching))
             {
                 this.HandleCollision(FrontHitUpper, WhichRay.FrontBoth);
-                print("FRONT HIT BOTH!");
+                //print("FRONT HIT BOTH!");
             }
             else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null) && (this.currentState != playerStates.crouching))
             {
@@ -539,12 +539,12 @@ public class CharacterManager : MonoBehaviour
     private void HandleCollision(RaycastHit rayHit, WhichRay whichRay)
     {
         //print(rayHit);
-        print("HANDLING COLLISION");
+        //print("HANDLING COLLISION");
         CollidableObjects gameCollision = rayHit.collider.GetComponent<CollidableObjects>();
         if (gameCollision != null)
         {
             gameCollision.DoCollision(whichRay);
-            print("DO COLLISION");
+            //print("DO COLLISION");
         }
 
 
@@ -619,7 +619,7 @@ public class CharacterManager : MonoBehaviour
                 this.playerYVelocity = this.playerMaxDownwardVelocity;
             }
 
-            print("Player Y Velocity " + this.playerYVelocity);
+            //print("Player Y Velocity " + this.playerYVelocity);
         }
     }
 
@@ -693,7 +693,7 @@ public class CharacterManager : MonoBehaviour
 
     public void GroundedCharacter()
     {
-        print("groundedChar");
+        //print("groundedChar");
 
         this.isGrounded = true;
         //if (this.playerYVelocity < 0)

@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class PowerUpType
 {
     public string powerUpName;
+    public float powerUpDuration;
     public UnityAction eventFunction;
     public GameObject powerUpPrefab;
     public float powerUpRarityWeighting;

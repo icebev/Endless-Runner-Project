@@ -23,6 +23,8 @@ public class JunctionTileBehaviour : MonoBehaviour
     private bool hasRotated = false;
     private float turnDist = 0.1f;
 
+    public JunctionTurnPositionOverride positionOverride;
+
     [SerializeField] private bool hasLeftTurn;
     [SerializeField] private bool hasRightTurn;
     [SerializeField] private bool hasCenterCorridor;
@@ -90,6 +92,8 @@ public class JunctionTileBehaviour : MonoBehaviour
                 this.tileManager.spawningAfterJunction = false;
                 this.characterManager.SetLanePos(0);
                 this.hasRotated = true;
+                this.positionOverride.ActivateRightTurn();
+
                 this.tileManager.junctionSpawnedTilesList.Clear();
                 this.tileManager.currentJunctionTile = null;
 
@@ -110,10 +114,14 @@ public class JunctionTileBehaviour : MonoBehaviour
                 this.tileManager.spawningAfterJunction = false;
                 this.characterManager.SetLanePos(0);
                 this.hasRotated = true;
+                this.positionOverride.ActivateLeftTurn();
                 this.tileManager.junctionSpawnedTilesList.Clear();
                 this.tileManager.currentJunctionTile = null;
             }
             this.hasRotated = true;
+            this.tileManager.spawningAfterJunction = false;
+            this.tileManager.junctionSpawnedTilesList.Clear();
+            this.tileManager.currentJunctionTile = null;
 
         }
     }

@@ -9,6 +9,8 @@ TagManager:
   - GUI
   - LoadManager
   - CharacterManager
+  - Coin
+  - PlayerCharacterContainer
   layers:
   - Default
   - TransparentFX
