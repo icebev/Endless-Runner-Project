@@ -10,6 +10,8 @@ using UnityEngine;
  * CHANGE NOTES: 
  * Added max fall velocity and ensured the player doesn't fall through the ground.
  * Extend the forward raycasts so at high speed the player still interacts with the obstacles.
+ * Fixed glitch where you can slide through two-tall obstacles.
+ * Refactored the code to utilise more guard-clauses.
  * 
  */
 /// <summary>
@@ -518,58 +520,57 @@ public class CharacterManager : MonoBehaviour
 
     private void HandleCollision(RaycastHit rayHit, WhichRay whichRay)
     {
-        //print(rayHit);
-        //print("HANDLING COLLISION");
+
         CollidableObjects gameCollision = rayHit.collider.GetComponent<CollidableObjects>();
-        if (gameCollision != null)
-        {
-            gameCollision.DoCollision(whichRay);
-            //print("DO COLLISION");
-        }
+        if (gameCollision == null) return;
+
+        gameCollision.DoCollision(whichRay);
+       
 
     }
+    
 
 
 
     private void ApplyGravity()
     {
-        if (!this.isGrounded || this.IgnoreGroundCollision == true)
-        {
-            this.playerYSpeed -= this.gravity;
-            if (this.playerYSpeed < this.playerMaxDownwardVelocity )
-            {
-                this.playerYSpeed = this.playerMaxDownwardVelocity;
-            }
+        if (!(!this.isGrounded || this.IgnoreGroundCollision == true)) return;
 
-            //print("Player Y Velocity " + this.playerYSpeed);
+        this.playerYSpeed -= this.gravity;
+        if (this.playerYSpeed < this.playerMaxDownwardVelocity)
+        {
+            this.playerYSpeed = this.playerMaxDownwardVelocity;
         }
+
+        //print("Player Y Velocity " + this.playerYSpeed);
+
     }
 
     public void Slide()
     {
-        if (this.isGrounded)
-        {
-            this.playerAnimator.Play("Slide");
-            this.currentState = playerStates.crouching;
-            StartCoroutine(EndSlide(1.0f));
-        }
+        if (!this.isGrounded) return;
+
+        this.playerAnimator.Play("Slide");
+        this.currentState = playerStates.crouching;
+        StartCoroutine(EndSlide(1.0f));
+
+
     }
 
     public IEnumerator EndSlide(float slideTime)
     {
         yield return new WaitForSeconds(slideTime);
-
         this.currentState = playerStates.grounded;
     }
 
     public void Jump()
     {
-        if (this.isGrounded)
-        {
-            this.currentState = playerStates.grounded;
-            this.playerYSpeed += this.jumpVelocity;
-            this.isGrounded = false;
-        }
+        if (!this.isGrounded) return; 
+
+        this.currentState = playerStates.grounded;
+        this.playerYSpeed += this.jumpVelocity;
+        this.isGrounded = false;
+
     }
 
     private WhichRay GetDirectionRay(int Index)
