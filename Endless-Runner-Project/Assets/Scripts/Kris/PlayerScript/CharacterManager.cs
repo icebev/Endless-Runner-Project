@@ -501,12 +501,12 @@ public class CharacterManager : MonoBehaviour
         else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null) && (this.currentState != playerStates.crouching))
         {
             this.HandleCollision(FrontHitUpper, WhichRay.FrontUp);
-            //print("FRONT HIT UPPER!");
+            print("FRONT HIT UPPER!");
         }
-        else if ((FrontHitUpper.collider == null) && (FrontHitLower.collider != null))
+        else if (((FrontHitUpper.collider == null) || (this.currentState == playerStates.crouching)) && (FrontHitLower.collider != null))
         {
             this.HandleCollision(FrontHitLower, WhichRay.FrontDown);
-            //print("FRONT HIT LOWER!");
+            print("FRONT HIT LOWER!");
         }
 
 
