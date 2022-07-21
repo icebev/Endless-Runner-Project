@@ -496,7 +496,7 @@ public class CharacterManager : MonoBehaviour
         if ((FrontHitUpper.collider != null) && (FrontHitLower.collider != null) && (this.currentState != playerStates.crouching))
         {
             this.HandleCollision(FrontHitUpper, WhichRay.FrontBoth);
-            print("FRONT HIT BOTH!");
+            //print("FRONT HIT BOTH!");
         }
         else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null) && (this.currentState != playerStates.crouching))
         {
@@ -564,9 +564,9 @@ public class CharacterManager : MonoBehaviour
 
     public void Jump()
     {
-        if (this.isGrounded && this.currentState != playerStates.crouching)
+        if (this.isGrounded)
         {
-            
+            this.currentState = playerStates.grounded;
             this.playerYSpeed += this.jumpVelocity;
             this.isGrounded = false;
         }
