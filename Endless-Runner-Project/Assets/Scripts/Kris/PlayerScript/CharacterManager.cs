@@ -73,10 +73,6 @@ public class CharacterManager : MonoBehaviour
     private movementDirections recentMovePrevious;
     private float recentMoveScheduled = 0;
 
-    private float recentMoveTimer = 0;
-    private float recentMoveMaxTime = 0.18f;
-    private float timerSpeed = 0.02f; //This equates to 1 second.
-
     [SerializeField] private playerStates currentState = playerStates.grounded;
     [SerializeField] private animationStates animationState = animationStates.RegularRun;
     [SerializeField] private Animator playerAnimator;
@@ -160,31 +156,22 @@ public class CharacterManager : MonoBehaviour
                        
     }
 
-    private LoadingManager _loadingManager;
-
     private void Start()
     {
-        GameObject _loadingManagerObject = GameObject.FindGameObjectWithTag("LoadManager");
-        this._loadingManager = _loadingManagerObject.GetComponent<LoadingManager>();
         this._playerAudioS = _character.GetComponent<AudioSource>();
         SetLaneLimit(this.numberOfLanes);
-
     }
 
     private void FixedUpdate()
     {
         CollidableObjects.TickCooldowns();
         UpdateCharacterData();
-        UpdateDoubleTapTimer();
         UpdateLanePositionAndRotation();
         UpdatePhysics();
-        //GroundCheck();
-
     }
     private void UpdateCharacterData()
     {
-        //this.playerTargetPosition = new Vector3(this.targetLane, this._character.transform.localPosition.y, 0);
-        //this.playerTargetPosition = new Vector3(this.targetLane, this.playerPosition.y, 0);
+
         this.targetrotation = Quaternion.Euler(0, rotationIndex[this.direction], 0);
     }
 
@@ -198,10 +185,12 @@ public class CharacterManager : MonoBehaviour
         if (this.targetLane < this.laneBoundaries[(int)movementDirections.left])
         {
             this.targetLane = this.laneBoundaries[(int)movementDirections.left];
+            return;
         }
         else if (this.targetLane > this.laneBoundaries[(int)movementDirections.right])
         {
             this.targetLane = this.laneBoundaries[(int)movementDirections.right];
+            return;
         }
     }
 
@@ -251,60 +240,36 @@ public class CharacterManager : MonoBehaviour
         this.lockLaneSwitch = LockLanes;
     }
 
-    public void Move(movementDirections Direction, int Amount)
+    public void Move(movementDirections Direction)
     {
-        if (!this.lockLaneSwitch && this.currentState != playerStates.crouching)
+        if (!(!this.lockLaneSwitch && this.currentState != playerStates.crouching)) return;
+        this.previousLane = this.targetLane;
+        switch (Direction)
         {
-
-            this.previousLane = this.targetLane;
-            switch (Direction)
-            {
-                case movementDirections.left:
-
-                    if (this.transitioning)
-                    {
-                        this.recentMoveScheduled -= this.LaneSize * Amount;
-                    }
-                    else
-                    {
-                        this.targetLane -= this.LaneSize * Amount;
-                    }
-                    
-                    
-                    break;
-
-                case movementDirections.right:
-
-                    if (this.transitioning)
-                    {
-                        this.recentMoveScheduled += this.LaneSize * Amount;
-                    }
-                    else
-                    {
-                        this.targetLane += this.LaneSize * Amount;
-                    }
-
-                    break;
-            }
-            this.recentMove = Direction;
-            this.CheckLaneBounds();
-            /*
-            if(!(this.targetLane == previousTargetLane))
-            {
-                this.recentMovePrevious = this.recentMove;
-                this.recentMove = Direction;
-                if(this.recentMoveTimer > 0 && this.recentMove == this.recentMovePrevious)
+            case movementDirections.left:
+                if (this.transitioning)
                 {
-                    this.interpolationSpeedLane = this.interpolationSpeedIndex[(int)interpolationSpeeds.doubleSpeed];
+                    this.recentMoveScheduled -= this.LaneSize;
                 }
                 else
                 {
-                    this.interpolationSpeedLane = this.interpolationSpeedIndex[(int)interpolationSpeeds.normalSpeed];
-                    this.recentMoveTimer = this.recentMoveMaxTime;
+                    this.targetLane -= this.LaneSize;
                 }
-            }
-            */
+                break;
+
+            case movementDirections.right:
+                if (this.transitioning)
+                {
+                    this.recentMoveScheduled += this.LaneSize;
+                }
+                else
+                {
+                    this.targetLane += this.LaneSize;
+                }
+                break;
         }
+        this.recentMove = Direction;
+        this.CheckLaneBounds();
     }
 
     public void Rotate(TurnDirection turnDirection)
@@ -313,27 +278,15 @@ public class CharacterManager : MonoBehaviour
         {
             case TurnDirection.Left:
                 this.direction -= 1;
-                if (this.direction < (int)directions.north)
-                {
-                    this.direction = (int)directions.west;
-                }
+                if (!(this.direction < (int)directions.north)) return;
+                this.direction = (int)directions.west;
+                
                 break;
             case TurnDirection.Right:
                 this.direction += 1;
-                if (this.direction > (int)directions.west)
-                {
+                if (!(this.direction > (int)directions.west)) return;
                     this.direction = (int)directions.north;
-                }
                 break;
-        }
-
-    }
-
-    private void UpdateDoubleTapTimer()
-    {
-        if (this.recentMoveTimer >= 0)
-        {
-            this.recentMoveTimer -= this.timerSpeed;
         }
     }
 
@@ -406,13 +359,11 @@ public class CharacterManager : MonoBehaviour
         //Get the player's Local Position from the rotated world position.
         this.playerPositionRelative = this._characterParent.transform.InverseTransformDirection(this.playerPosition);
 
+        //Downwards raycast.//
         RaycastHit TempGroundRayHit; //Used to Nullify a RayHit if nothing is detected
-
-        //Downwards raycast.
         Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1f, -this.playerPositionRelative.z), transform.TransformDirection(Vector3.down), out TempGroundRayHit, this.playerRaycastSizeDown);
         this.GroundRayHit = TempGroundRayHit; //Setting or Nullyfing the ground ray hit.
 
-        ////////Refactor this.
         if (TempGroundRayHit.collider != null) //If it isn't Null send collision information to the collision handler.
         {
             this.HandleCollision(TempGroundRayHit, WhichRay.Down);
@@ -421,8 +372,6 @@ public class CharacterManager : MonoBehaviour
         {
             this.isGrounded = false; //If it is null, the character is not grounded.
         }
-        ///////
-
 
         //Check to see if the player is moving left or right.
         if (this.transitioning)
@@ -431,32 +380,22 @@ public class CharacterManager : MonoBehaviour
             RaycastHit SideHitLower;
 
             //Checks the recent move to see whether or not the raycast will be on the left or right.
-            //Kris - Please change this to be a check of the character's x pos in relation to Target Pos to solve info
-           
-            switch (this.recentMove)
+
+            if (this.playerPosition.x < this.targetLane)
             {
-                case movementDirections.left:
-                    Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.LeftLocal[this.direction], out SideHitUpper, this.playerRaycastSizeSide);
-                    Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.LeftLocal[this.direction], out SideHitLower, this.playerRaycastSizeSide);
+                Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.LeftLocal[this.direction], out SideHitUpper, this.playerRaycastSizeSide);
+                Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.LeftLocal[this.direction], out SideHitLower, this.playerRaycastSizeSide);
 
-                    Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.LeftLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
-                    Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.LeftLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
+                Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.LeftLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
+                Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.LeftLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
+            }
+            else
+            {
+                Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.RightLocal[this.direction], out SideHitUpper, this.playerRaycastSizeSide);
+                Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.RightLocal[this.direction], out SideHitLower, this.playerRaycastSizeSide);
 
-                    break;
-
-                case movementDirections.right:
-
-                    Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.RightLocal[this.direction], out SideHitUpper, this.playerRaycastSizeSide);
-                    Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.RightLocal[this.direction], out SideHitLower, this.playerRaycastSizeSide);
-
-                    Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.RightLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
-                    Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.RightLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
-
-                    break;
-                default:
-                    Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.RightLocal[this.direction], out SideHitUpper, this.playerRaycastSizeSide);
-                    Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.RightLocal[this.direction], out SideHitLower, this.playerRaycastSizeSide);
-                    break;
+                Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.RightLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
+                Debug.DrawRay(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.RightLocal[this.direction] * this.playerRaycastSizeDown, Color.yellow);
             }
 
             //Handles the Side collisions. This detects if top and bottom raycasts were hit at the same time.
@@ -477,12 +416,7 @@ public class CharacterManager : MonoBehaviour
                 this.HandleCollision(SideHitLower, this.GetDirectionRay(1));
                 print("SIDE HIT LOWER!");
             }
-
-
-
         }
-
-
         // Front raycast hit detection
         RaycastHit FrontHitUpper;
         RaycastHit FrontHitLower;
@@ -510,51 +444,30 @@ public class CharacterManager : MonoBehaviour
             this.HandleCollision(FrontHitLower, WhichRay.FrontDown);
             print("FRONT HIT LOWER!");
         }
-
-
-
-
         this._character.transform.localPosition = this.playerPosition;
-
     }
 
     private void HandleCollision(RaycastHit rayHit, WhichRay whichRay)
     {
-
         CollidableObjects gameCollision = rayHit.collider.GetComponent<CollidableObjects>();
         if (gameCollision == null) return;
-
-        gameCollision.DoCollision(whichRay);
-       
-
+        gameCollision.DoCollision(whichRay);  
     }
     
-
-
-
     private void ApplyGravity()
     {
         if (!(!this.isGrounded || this.IgnoreGroundCollision == true)) return;
-
         this.playerYSpeed -= this.gravity;
-        if (this.playerYSpeed < this.playerMaxDownwardVelocity)
-        {
-            this.playerYSpeed = this.playerMaxDownwardVelocity;
-        }
-
-        //print("Player Y Velocity " + this.playerYSpeed);
-
+        if (!(this.playerYSpeed < this.playerMaxDownwardVelocity)) return;
+        this.playerYSpeed = this.playerMaxDownwardVelocity;
     }
 
     public void Slide()
     {
         if (!this.isGrounded) return;
-
         this.playerAnimator.Play("Slide");
         this.currentState = playerStates.crouching;
         StartCoroutine(EndSlide(1.0f));
-
-
     }
 
     public IEnumerator EndSlide(float slideTime)
@@ -566,49 +479,28 @@ public class CharacterManager : MonoBehaviour
     public void Jump()
     {
         if (!this.isGrounded) return; 
-
         this.currentState = playerStates.grounded;
         this.playerYSpeed += this.jumpVelocity;
         this.isGrounded = false;
-
     }
 
     private WhichRay GetDirectionRay(int Index)
     {
         switch (Index)
         {
-
             case 0:
-                if (this.recentMove == movementDirections.left || this.recentMove == movementDirections.leftDouble)
-                {
-                    return (WhichRay.LeftUp);
-                }
-                else if (this.recentMove == movementDirections.right || this.recentMove == movementDirections.rightDouble)
-                {
-                    return (WhichRay.RightUp);
-                }
+                if (this.recentMove == movementDirections.left) return (WhichRay.LeftUp);
+                if (this.recentMove == movementDirections.right) return (WhichRay.RightUp);
                 break;
 
             case 1:
-                if (this.recentMove == movementDirections.left || this.recentMove == movementDirections.leftDouble)
-                {
-                    return (WhichRay.LeftDown);
-                }
-                else if (this.recentMove == movementDirections.right || this.recentMove == movementDirections.rightDouble)
-                {
-                    return (WhichRay.RightDown);
-                }
+                if (this.recentMove == movementDirections.left) return (WhichRay.LeftDown);
+                if (this.recentMove == movementDirections.right) return (WhichRay.RightDown);
                 break;
 
             case 2:
-                if (this.recentMove == movementDirections.left || this.recentMove == movementDirections.leftDouble)
-                {
-                    return (WhichRay.LeftBoth);
-                }
-                else if (this.recentMove == movementDirections.right || this.recentMove == movementDirections.rightDouble)
-                {
-                    return (WhichRay.RightBoth);
-                }
+                if (this.recentMove == movementDirections.left) return (WhichRay.LeftBoth);                
+                if (this.recentMove == movementDirections.right) return (WhichRay.RightBoth);
                 break;
         }
         return WhichRay.LeftBoth;
@@ -616,16 +508,10 @@ public class CharacterManager : MonoBehaviour
 
     public void GroundedCharacter()
     {
-        //print("groundedChar");
-
         this.isGrounded = true;
-        //if (this.playerYVelocity < 0)
-        //{
-            this.playerYSpeed = 0;
-        //}
+        this.playerYSpeed = 0;
         this.playerPosition.y = this.GroundRayHit.point.y - 0.02f;
     }
-
 
     public bool GetPlayerTransitioningState()
     {
@@ -686,26 +572,4 @@ public class CharacterManager : MonoBehaviour
     {
         return this.laneBoundaries[direction];
     }
-
-    private int loading = 0;
-
-   public void RestartLevel()
-    {
-        if(loading == 0)
-        {
-            loading += 1;
-            this._loadingManager.LoadGameScene1(3, true, 0);
-        }
-        
-    }
-    public void MainMenu()
-    {
-        if (loading == 0)
-        {
-            loading += 1;
-            this._loadingManager.LoadGameScene1(2, true, 0);
-        }
-    }
-
-
 }
