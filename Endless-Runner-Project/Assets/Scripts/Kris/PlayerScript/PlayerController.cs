@@ -5,90 +5,42 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private GameObject _playerCharacter;
+    //private GameObject _playerCharacter;
     [SerializeField] private CharacterManager _characterManager;
-
-
 
     public void RotateLeft(InputAction.CallbackContext press)
     {
-        if (press.performed)
-        {
-            this._characterManager.Rotate(TurnDirection.Left);
-        }
+        if (!press.performed) return;
+        this._characterManager.Rotate(TurnDirection.Left);
     }
 
     public void RotateRight(InputAction.CallbackContext press)
     {
-        if (press.performed)
-        {
-            this._characterManager.Rotate(TurnDirection.Right);
-        }
+        if (!press.performed) return;
+        this._characterManager.Rotate(TurnDirection.Right);
     }
 
     public void MoveLeft(InputAction.CallbackContext press)
     {
-        if (press.performed)
-        {
-            this._characterManager.Move((int)CharacterManager.movementDirections.left, 1);
-        }
-    }
-    public void RollLeft(InputAction.CallbackContext press)
-    {
-        if (press.performed)
-        {
-            this._characterManager.Move((int)CharacterManager.movementDirections.left, 2);
-        }
+        if (!press.performed) return;
+        this._characterManager.Move(CharacterManager.movementDirections.left);
     }
 
     public void MoveRight(InputAction.CallbackContext press)
     {
-        if (press.performed)
-        {
-            this._characterManager.Move(CharacterManager.movementDirections.right, 1);
-        }
-    }
-    public void RollRight(InputAction.CallbackContext press)
-    {
-        if (press.performed)
-        {
-            this._characterManager.Move(CharacterManager.movementDirections.right, 2);
-        }
+        if (!press.performed) return;
+        this._characterManager.Move(CharacterManager.movementDirections.right);
     }
 
     public void Jump(InputAction.CallbackContext press)
     {
-        if (press.performed)
-        {
-            this._characterManager.Jump();
-        }
+        if (!press.performed) return;
+        this._characterManager.Jump();      
     }
 
     public void Slide(InputAction.CallbackContext press)
     {
-        if (press.performed)
-        {
-            this._characterManager.Slide();
-        }
-    }
-    public void MainMenu(InputAction.CallbackContext press)
-    {
-        if (press.performed)
-        {
-            this._characterManager.MainMenu();
-        }
-    }
-    public void Restart(InputAction.CallbackContext press)
-    {
-        if (press.performed)
-        {
-            this._characterManager.RestartLevel();
-        }
-    }
-
-
-    private void Start()
-    {
-        this._playerCharacter = this.gameObject;
+        if (!press.performed) return;
+        this._characterManager.Slide();
     }
 }
