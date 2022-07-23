@@ -74,9 +74,9 @@ public class TileManager : MonoBehaviour
     private void Start()
     {
         // Reference speed incrementation script
-        this.tileSpeedIncrementation = GetComponent<TileSpeedIncrementation>();
-        this.tileSpeedManagement = GetComponent<TileSpeedManagement>();
-        this.tileSpawnWeightings = GetComponent<TileSpawnWeightings>();
+        this.tileSpeedIncrementation = FindObjectOfType<TileSpeedIncrementation>();
+        this.tileSpeedManagement = FindObjectOfType<TileSpeedManagement>();
+        this.tileSpawnWeightings = FindObjectOfType<TileSpawnWeightings>();
 
         // List instantiation
         this.fillerTilesList = new List<ScriptableTileObject>();

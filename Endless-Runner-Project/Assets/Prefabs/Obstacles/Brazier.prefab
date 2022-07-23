@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 2411965228908097210}
   - component: {fileID: 6812240911218635492}
   - component: {fileID: 8983942434225343962}
+  - component: {fileID: 3145794571809592742}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -365,12 +366,12 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 0.7013435, b: 0.13836467, a: 1}
   m_Intensity: 1.5
-  m_Range: 20
+  m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -398,12 +399,12 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -428,12 +429,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Version: 1
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
+  m_AdditionalLightsShadowResolutionTier: 0
   m_LightLayerMask: 1
   m_CustomShadowLayers: 0
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!114 &3145794571809592742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697813953801624570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e714bc96345be4e45b76160048df242d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flickerSpeed: 0.1
+  lightMoveAmount: 0.05
+  lightMoveDirection: {x: 0, y: 1, z: 0}
 --- !u!1001 &2500645016824158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -562,11 +578,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 6d6e5c658faa9d246b3e789dd6d173d9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9a002d82c0f85df4fa6fc74a1680cc1d, type: 2}
+      objectReference: {fileID: 2100000, guid: e3613df6c6268524cad1a7a206dd51fb, type: 2}
     - target: {fileID: -7511558181221131132, guid: 6d6e5c658faa9d246b3e789dd6d173d9, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 9a002d82c0f85df4fa6fc74a1680cc1d, type: 2}
+      objectReference: {fileID: 2100000, guid: 7e6ad97c8b33fa744bfec6328353fd8f, type: 2}
     - target: {fileID: 919132149155446097, guid: 6d6e5c658faa9d246b3e789dd6d173d9, type: 3}
       propertyPath: m_Name
       value: Prp_GreekBrazier_02

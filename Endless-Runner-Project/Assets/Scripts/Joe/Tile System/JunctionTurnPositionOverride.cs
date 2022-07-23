@@ -10,22 +10,28 @@ public class JunctionTurnPositionOverride : MonoBehaviour
     public Transform rightTurnPoint;
     public bool leftTurning;
     public bool rightTurning;
-    public float turnTime;
+    public AnimationCurve speedToTurnTimeCurve;
+
+    private TileSpeedIncrementation tileSpeedIncrementation;
+
 
     private CharacterManager characterManager;
     public CinemachineVirtualCamera closeCam;
     public CinemachineVirtualCamera normalCam;
 
+    
 
     public void ActivateLeftTurn()
     {
         this.leftTurning = true;
-        StartCoroutine(DelayedTurnToggleOff("Left", this.turnTime));
+        float turnTime = this.speedToTurnTimeCurve.Evaluate(this.tileSpeedIncrementation.calculatedTargetTileSpeed);
+        StartCoroutine(DelayedTurnToggleOff("Left", turnTime));
     }
     public void ActivateRightTurn()
     {
         this.rightTurning = true;
-        StartCoroutine(DelayedTurnToggleOff("Right", this.turnTime));
+        float turnTime = this.speedToTurnTimeCurve.Evaluate(this.tileSpeedIncrementation.calculatedTargetTileSpeed);
+        StartCoroutine(DelayedTurnToggleOff("Right", turnTime));
     }
 
 
@@ -52,6 +58,7 @@ public class JunctionTurnPositionOverride : MonoBehaviour
         this.normalCam = GameObject.Find("NormalCam").GetComponent<CinemachineVirtualCamera>();
         this.closeCam = GameObject.Find("CloseCam").GetComponent<CinemachineVirtualCamera>();
         this.characterManager = FindObjectOfType<CharacterManager>();
+        this.tileSpeedIncrementation = FindObjectOfType<TileSpeedIncrementation>();
     }
 
     private void LateUpdate()

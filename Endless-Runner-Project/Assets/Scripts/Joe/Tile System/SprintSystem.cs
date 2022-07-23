@@ -20,7 +20,7 @@ public class SprintSystem : MonoBehaviour
 {
     public Animator playerAnimator;
     public CinemachineVirtualCamera playerCamera;
-    public TileSpeedIncrementation tileSpeedIncrementation;
+    private TileSpeedIncrementation tileSpeedIncrementation;
     public Transform cameraHolder;
     public bool isSprinting;
     

@@ -221,7 +221,7 @@ public class CollidableObjects : MonoBehaviour, iCollidable
             case CollisionBehaviour.Stumble:
                 if (CollidableObjects.stumbleCoolDown > 0) return; 
                 CollidableObjects.stumbleCoolDown = 0.3f;
-                GameObject.FindObjectOfType<TileSpeedManagement>().StumbleSlowDown();
+                GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(0);
                 break;
                 
             case CollisionBehaviour.MoveLeft:
