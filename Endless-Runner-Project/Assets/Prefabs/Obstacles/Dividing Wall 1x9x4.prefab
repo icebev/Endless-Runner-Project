@@ -250,17 +250,9 @@ MonoBehaviour:
   m_Mesh: {fileID: 0}
   m_VersionIndex: 404
   m_IsSelectable: 1
-  m_SelectedFaces: 00000000
-  m_SelectedEdges:
-  - a: 0
-    b: 1
-  - a: 2
-    b: 0
-  - a: 1
-    b: 3
-  - a: 3
-    b: 2
-  m_SelectedVertices: 00000000010000000200000003000000
+  m_SelectedFaces: 
+  m_SelectedEdges: []
+  m_SelectedVertices: 
 --- !u!23 &2038338428387735180
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -281,7 +273,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 23ecc52be2596dd46b2516c7ff80a810, type: 2}
+  - {fileID: 2100000, guid: 2d68335d754218f4087dc50e49ce7ea2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -376,6 +368,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: c788d1e465c87114195f502d773e1bae, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2d68335d754218f4087dc50e49ce7ea2, type: 2}
     - target: {fileID: 919132149155446097, guid: c788d1e465c87114195f502d773e1bae, type: 3}
       propertyPath: m_Name
       value: Env_GreekDividingWall_L4_01

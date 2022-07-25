@@ -955,7 +955,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b2f7f75e04ce60f4c92571866f904805, type: 2}
+  - {fileID: 2100000, guid: 2d68335d754218f4087dc50e49ce7ea2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1053,7 +1053,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 77bca26ef4a510c48809085e49af81e0, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: bcc8acbdfb4049944aba669e4c27bb3e, type: 2}
+      objectReference: {fileID: 2100000, guid: 7e5f8cd552d73be4993cf7a45d70bd05, type: 2}
     - target: {fileID: 919132149155446097, guid: 77bca26ef4a510c48809085e49af81e0, type: 3}
       propertyPath: m_Name
       value: Env_GreekPillar1x3x1_01

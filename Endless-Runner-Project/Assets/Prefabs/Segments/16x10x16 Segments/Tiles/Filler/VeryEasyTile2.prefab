@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3925959423505066413}
   - component: {fileID: 8186530617003076915}
-  - component: {fileID: 2869726757428979118}
+  - component: {fileID: 3822503166843015652}
   m_Layer: 0
   m_Name: VeryEasyTile2
   m_TagString: Untagged
@@ -53,15 +53,15 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 913147673552594824}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2869726757428979118
+--- !u!114 &3822503166843015652
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,21 +70,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 913147673552594824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 439d8ff8da455ab41953400f6d44b4d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 58ccc64ae77b6884e9f764b52efbbbd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableTiles: []
-  tileSpawnCount: 0
-  squareTileDimension: 0
-  despawnDistance: 0
-  cornerProbability: 0
-  junctionProbability: 0
-  spawningAfterJunction: 0
-  junctionSpawnedTilesList: []
-  spawnDirection: 0
-  runDirection: 0
-  tilesContainer: {fileID: 0}
-  currentJunctionTile: {fileID: 0}
 --- !u!1001 &903125136370141926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -524,7 +512,9 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -2882171739837878484, guid: 7e8cf958150f6eb44a086ed86805f255, type: 3}
+    - {fileID: -2731417088341427336, guid: 7e8cf958150f6eb44a086ed86805f255, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7e8cf958150f6eb44a086ed86805f255, type: 3}
 --- !u!4 &6131151716639949596 stripped
 Transform:

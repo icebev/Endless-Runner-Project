@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77efaed4e09f194cabe2f4a5115b0bd, type: 3}
   m_Name: MediumTile2
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 0}
-  difficulty: 0
-  tileLength: 0
-  spawnProbability: 0
+  tilePrefab: {fileID: 6433261008718029649, guid: 865fdd3f366b4fc4c89989ae82c641ac, type: 3}
+  difficulty: 3
+  tileLength: 1
+  spawnProbability: 1
   hasCorner: 0
   hasJunction: 0
   elevationChange: 0
