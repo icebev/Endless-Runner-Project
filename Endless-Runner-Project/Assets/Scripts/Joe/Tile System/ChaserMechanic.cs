@@ -8,6 +8,8 @@ public class ChaserMechanic : MonoBehaviour
     public GameObject movingFog;
     public AnimationCurve fogYPositionCurve;
 
+    [SerializeField] private Animator sprintIndicatorAnimator;
+
     public Slider chaserSlider;
     public float chaserStartDistance;
     public float chaserCurrentDistance;
@@ -27,31 +29,45 @@ public class ChaserMechanic : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (this.sprintSystem.isSprinting)
+        if (GameOverEvent.isPlayerDead == false)
         {
-            if (this.chaserCurrentDistance < this.chaserMaxDistance)
-                this.chaserCurrentDistance += this.sprintEscapeRate * Time.fixedDeltaTime;
-        }
-        else
-        {
-            if (this.chaserCurrentDistance > 0.0f)
-                this.chaserCurrentDistance -= this.chaserCloseInRate * Time.fixedDeltaTime;
+            if (this.sprintSystem.isSprinting)
+            {
+                if (this.chaserCurrentDistance < this.chaserMaxDistance)
+                    this.chaserCurrentDistance += this.sprintEscapeRate * Time.fixedDeltaTime;
+            }
+            else
+            {
+                if (this.chaserCurrentDistance > 0.0f)
+                    this.chaserCurrentDistance -= this.chaserCloseInRate * Time.fixedDeltaTime;
+            }
+
+
         }
 
         // Update GUI bar
         float sliderValue = 1 - (this.chaserCurrentDistance / this.chaserMaxDistance);
-        Debug.Log(sliderValue);
         this.chaserSlider.value = sliderValue;
 
+        if (sliderValue > 0.7)
+        {
+            this.sprintIndicatorAnimator.SetBool("IndicateSprint", true);
+        }
+        else
+        {
+            this.sprintIndicatorAnimator.SetBool("IndicateSprint", false);
+        }
+        // Game over trigger
+        if (sliderValue > 0.99)
+        {
+            this.gameOverEvent.playerDeath.Invoke();
+            this.chaserCurrentDistance = 0;
+        }
         // update chaser fog position
         Vector3 targetFogPos = new Vector3(this.movingFog.transform.localPosition.x, this.fogYPositionCurve.Evaluate(sliderValue), this.movingFog.transform.localPosition.z);
         this.movingFog.transform.localPosition = Vector3.MoveTowards(this.movingFog.transform.localPosition, targetFogPos, this.fogMoveSpeed);
 
 
-        // Game over trigger
-        if (sliderValue > 0.95)
-        {
-            this.gameOverEvent.playerDeath.Invoke();
-        }
+
     }
 }

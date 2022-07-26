@@ -12,19 +12,18 @@ public class GUIFunctionality : MonoBehaviour
         this.loadingManager = FindObjectOfType<LoadingManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void Retry()
     {
-        this.loadingManager.LoadGameScene1(3, true, 0);
+        GameObject _loadingManagerObject = GameObject.FindGameObjectWithTag("LoadManager");
+        LoadingManager _loadingManagerScript = _loadingManagerObject.GetComponent<LoadingManager>();
+        _loadingManagerScript.LoadGameScene1(3, true, 0);
     }
 
     public void ReturnToMenu()
     {
-        this.loadingManager.LoadGameScene1(2, true, 0);
+        GameObject _loadingManagerObject = GameObject.FindGameObjectWithTag("LoadManager");
+        LoadingManager _loadingManagerScript = _loadingManagerObject.GetComponent<LoadingManager>();
+        _loadingManagerScript.LoadGameScene1(2, true, 0);
     }
 }

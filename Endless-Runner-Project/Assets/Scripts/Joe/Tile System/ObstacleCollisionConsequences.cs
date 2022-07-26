@@ -54,12 +54,13 @@ public class ObstacleCollisionConsequences : MonoBehaviour
         if (this.slowDownAnimationTime < this.slowDownDuration)
         {
             float speedMultiplier = this.chosenSlowDownCurve.Evaluate(this.slowDownAnimationTime / this.slowDownDuration);
-            this.tileSpeedManagement.currentTileSpeed = this.speedIncrementation.calculatedTargetTileSpeed * speedMultiplier;
+            this.tileSpeedManagement.externalSpeedMultiplier = speedMultiplier;
             this.slowDownAnimationTime += Time.fixedDeltaTime;
         }
         else
         {
-            this.tileSpeedManagement.currentTileSpeed = this.speedIncrementation.calculatedTargetTileSpeed;
+            this.tileSpeedManagement.externalSpeedMultiplier = 1.0f;
+
         }
     }
 

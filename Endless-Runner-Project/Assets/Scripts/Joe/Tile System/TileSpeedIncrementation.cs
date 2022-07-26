@@ -5,7 +5,6 @@ using UnityEngine;
 public class TileSpeedIncrementation : MonoBehaviour
 {
     public SpeedIncrementMode incrementMode;
-    public float currentTileSpeed;
     public float calculatedTargetTileSpeed;
     public bool useSpeedLimit = false;
     public float speedLimit;

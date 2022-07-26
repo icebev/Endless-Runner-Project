@@ -107,7 +107,7 @@ public class SprintSystem : MonoBehaviour
 
     public void StartSprinting()
     {
-        this.tileSpeedIncrementation.currentTileSpeed += 2.0f;
+        //this.tileSpeedIncrementation.currentTileSpeed += 2.0f;
         this.tileSpeedIncrementation.speedLimit += 2.0f;
 
         this.fovTarget = this.fovSprinting;
@@ -117,7 +117,7 @@ public class SprintSystem : MonoBehaviour
 
     public void StopSprinting()
     {
-        this.tileSpeedIncrementation.currentTileSpeed -= this.tileSpeedChange;
+        //this.tileSpeedIncrementation.currentTileSpeed -= this.tileSpeedChange;
         this.tileSpeedIncrementation.speedLimit -= this.tileSpeedChange;
 
         this.fovTarget = this.fovNormal;
