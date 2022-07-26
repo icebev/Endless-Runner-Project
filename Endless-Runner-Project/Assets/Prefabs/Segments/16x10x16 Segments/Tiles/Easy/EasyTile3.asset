@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77efaed4e09f194cabe2f4a5115b0bd, type: 3}
   m_Name: EasyTile3
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 0}
-  difficulty: 0
-  tileLength: 0
-  spawnProbability: 0
+  tilePrefab: {fileID: 9103113601374574471, guid: 8256718c164983f4f99f718d9294b6ac, type: 3}
+  difficulty: 2
+  tileLength: 1
+  spawnProbability: 1
   hasCorner: 0
   hasJunction: 0
   elevationChange: 0

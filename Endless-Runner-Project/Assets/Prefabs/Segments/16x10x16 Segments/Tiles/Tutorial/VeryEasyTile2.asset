@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f77efaed4e09f194cabe2f4a5115b0bd, type: 3}
-  m_Name: VeryEasyTile1
+  m_Name: VeryEasyTile2
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 7305682894644360754, guid: 1e49baf05c33d434eb1e6a030652796b, type: 3}
-  difficulty: 0
+  tilePrefab: {fileID: 913147673552594824, guid: 2086c7173d7be664f80e4ad9337b09cf, type: 3}
+  difficulty: 1
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0
