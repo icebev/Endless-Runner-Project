@@ -21,6 +21,7 @@ public class TileManager : MonoBehaviour
     #region Configurable Inspector Variables
     [Header("Tile Scriptable Objects")]
     [SerializeField] private ScriptableTileObject[] scriptableTiles;
+    [SerializeField] private ScriptableTileObject startingTile;
    
     [Header("Parameters")]
     [Tooltip("The number of tiles that exist in a given moment.")]
@@ -126,7 +127,8 @@ public class TileManager : MonoBehaviour
         this.nextTileSpawnGap = this.squareTileDimension;
 
         this.lastNonFillerTileDifficulty = TileDifficulty.Easy;
-        this.finalTile = InstantiateSemiRandomTile();
+        this.finalTile = Instantiate(this.startingTile.tilePrefab, this.startingTile.tilePrefab.transform.position, this.startingTile.tilePrefab.transform.rotation);
+        this.spawnFillersNextCount = 5;
         ///this.finalTile.transform.Translate(new Vector3(0, 4.5f, 0));
         // Spawn in the starting tile sequence
         for (int z = 0; z <= this.tileSpawnCount; z++)
@@ -190,7 +192,7 @@ public class TileManager : MonoBehaviour
         float randomVal = Random.Range(0.0f, 1.0f);
 
 
-        if (randomVal < this.cornerProbability && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false)
+        if (randomVal < this.cornerProbability && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false && this.spawnFillersNextCount <= 0)
         {
             chosenScriptableTile = this.SelectCornerTile();
             this.spawnFillersNextCount = 1;
@@ -208,7 +210,7 @@ public class TileManager : MonoBehaviour
             }
 
         }
-        else if (randomVal < (this.junctionProbability + this.cornerProbability) && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false)
+        else if (randomVal < (this.junctionProbability + this.cornerProbability) && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false && this.spawnFillersNextCount <= 0)
         {
             chosenScriptableTile = this.SelectJunctionTile();
             spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);

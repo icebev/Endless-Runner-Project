@@ -54,7 +54,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.8
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -201,7 +201,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9ae227df460b9284f9596ad57d5dd615, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: bcc8acbdfb4049944aba669e4c27bb3e, type: 2}
+      objectReference: {fileID: 2100000, guid: 7e6ad97c8b33fa744bfec6328353fd8f, type: 2}
     - target: {fileID: 919132149155446097, guid: 9ae227df460b9284f9596ad57d5dd615, type: 3}
       propertyPath: m_Name
       value: Prp_GreekBrazier_01
