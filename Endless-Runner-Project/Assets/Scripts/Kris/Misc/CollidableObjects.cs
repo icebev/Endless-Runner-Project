@@ -210,7 +210,7 @@ public class CollidableObjects : MonoBehaviour, iCollidable
 
                 break;
             case CollisionBehaviour.HopUp:
-
+                this.charManager.HopUpCharacter();
                 break;
             case CollisionBehaviour.GoDown:
 

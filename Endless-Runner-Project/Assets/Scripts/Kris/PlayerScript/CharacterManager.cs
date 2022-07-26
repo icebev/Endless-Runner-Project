@@ -87,6 +87,14 @@ public class CharacterManager : MonoBehaviour
     private float playerRaycastSizeSide = 0.28f;
     private float playerRaycastSizeFront = 0.84f;
 
+    [SerializeField] private float hopUpSpeed = 0.1f;
+    private float hopUpTime = 0.1f;
+    private float hopUpTick = 0.1f;
+
+    [SerializeField] private float slideTime = 0.1f;
+    private float slideTick;
+    private bool slideScheduled;
+
     [SerializeField] private bool IgnoreGroundCollision = false;
 
     private RaycastHit GroundRayHit;
@@ -136,8 +144,6 @@ public class CharacterManager : MonoBehaviour
         Jump,
         LaneSwitch,
         RegularRun,
-
-
     }
 
     public enum WhichRay
@@ -158,6 +164,8 @@ public class CharacterManager : MonoBehaviour
 
     private void Start()
     {
+        this.hopUpTick = this.hopUpTime;
+        this.slideTick = this.slideTime;
         this._playerAudioS = _character.GetComponent<AudioSource>();
         SetLaneLimit(this.numberOfLanes);
     }
@@ -165,6 +173,8 @@ public class CharacterManager : MonoBehaviour
     private void FixedUpdate()
     {
         CollidableObjects.TickCooldowns();
+        UpdateTimers();
+        ScheduledMovements();
         UpdateCharacterData();
         UpdateLanePositionAndRotation();
         UpdatePhysics();
@@ -341,8 +351,6 @@ public class CharacterManager : MonoBehaviour
             this.currentrotation = linearPlayerRotate;
             this._characterParent.transform.rotation = this.currentrotation;
         }
-        
-        
     }
 
 
@@ -464,16 +472,16 @@ public class CharacterManager : MonoBehaviour
 
     public void Slide()
     {
+        
+        if (this.slideTick < this.slideTime || this.currentState == playerStates.crouching)
+        {
+            this.slideScheduled = true;
+            return;
+        }
         if (!this.isGrounded) return;
+        this.slideTick = 0;
         this.playerAnimator.Play("Slide");
         this.currentState = playerStates.crouching;
-        StartCoroutine(EndSlide(1.0f));
-    }
-
-    public IEnumerator EndSlide(float slideTime)
-    {
-        yield return new WaitForSeconds(slideTime);
-        this.currentState = playerStates.grounded;
     }
 
     public void Jump()
@@ -511,6 +519,52 @@ public class CharacterManager : MonoBehaviour
         this.isGrounded = true;
         this.playerYSpeed = 0;
         this.playerPosition.y = this.GroundRayHit.point.y - 0.02f;
+    }
+
+    public void HopUpCharacter()
+    {
+        if (!(this.hopUpTick >= this.hopUpTime)) return;
+        this.isGrounded = false;
+        this.playerYSpeed = this.hopUpSpeed;
+    }
+
+
+
+    private void UpdateTimers()
+    {
+        if (this.hopUpTick < this.hopUpTime) 
+        { 
+            this.hopUpTick += Time.fixedDeltaTime; 
+        }
+
+        if (this.slideTick <= this.slideTime)
+        {
+            if(this.currentState != playerStates.crouching)
+            {
+                this.slideTick = this.slideTime;
+            }
+            else
+            {
+                this.slideTick += Time.fixedDeltaTime;
+            }
+            if ((this.slideTick >= this.slideTime))
+            {
+                this.currentState = playerStates.grounded;
+            }
+        }
+    }
+
+    private void ScheduledMovements()
+    {
+        if (this.isGrounded)
+        {
+            if (this.currentState == playerStates.grounded && this.slideScheduled == true && this.slideTick >= this.slideTime)
+            {
+                this.slideScheduled = false;
+                Slide();
+            }
+        }
+
     }
 
     public bool GetPlayerTransitioningState()
