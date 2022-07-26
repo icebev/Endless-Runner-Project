@@ -2124,7 +2124,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 589410188470930474, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 589410188470930474, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3148,7 +3148,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 0
     chaserCatchUpAmount: 0.1
-    specificSlowDownDuration: 4
+    specificSlowDownDuration: 1
 --- !u!4 &1173473215 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4737683061344530877, guid: edd4f375f0725e44a9f3059723da260e, type: 3}
@@ -3755,8 +3755,8 @@ MonoBehaviour:
   calculatedTargetTileSpeed: 0
   useSpeedLimit: 1
   speedLimit: 15
-  startingTileSpeed: 10
-  linearIncrementFactor: 2
+  startingTileSpeed: 6
+  linearIncrementFactor: 1
   intervalTime: 0
   intervalIncreaseFactor: 0
 --- !u!114 &1395989217
@@ -5592,16 +5592,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptableTiles:
-  - {fileID: 11400000, guid: 92ba7f377043e5c4d8e5fb35f5a2c599, type: 2}
+  - {fileID: 11400000, guid: abf8844042309694ba1bff270d45eb84, type: 2}
   - {fileID: 11400000, guid: 8e68e873eb2b6504986b39ad880f4321, type: 2}
+  - {fileID: 11400000, guid: 65e1592d87322b94ebbafd8b8236e5be, type: 2}
+  - {fileID: 11400000, guid: 43a87e4f161549d4995f5ca30355a823, type: 2}
+  - {fileID: 11400000, guid: 92ba7f377043e5c4d8e5fb35f5a2c599, type: 2}
   - {fileID: 11400000, guid: 4c334dd1fd05a294ea2d0f7016d25037, type: 2}
   - {fileID: 11400000, guid: a02ca7add099f8e4dbd16f5c0c4b38c2, type: 2}
+  - {fileID: 11400000, guid: 8d53b06581272a942a9eae970d22e819, type: 2}
+  - {fileID: 11400000, guid: cdb00aeb2c37841498b316c49f450828, type: 2}
   - {fileID: 11400000, guid: 5a002de4bdfddd34d9b5349272ad7d04, type: 2}
   - {fileID: 11400000, guid: b9c220d18c2525b4a9a5f1c90e01f056, type: 2}
-  - {fileID: 11400000, guid: 10b3fb6725673c640b208d3d94cabb00, type: 2}
-  - {fileID: 11400000, guid: eb2bffeb5989a354a9c809ada07dd06a, type: 2}
-  - {fileID: 11400000, guid: abf8844042309694ba1bff270d45eb84, type: 2}
-  - {fileID: 11400000, guid: 05f9e9ba8d13fb54da365f1427f361a9, type: 2}
+  - {fileID: 11400000, guid: 3bac98fa5099f1c489b69a349c919f09, type: 2}
+  - {fileID: 11400000, guid: bfbd5f00f2c4c5141b1bd699e9047047, type: 2}
+  - {fileID: 11400000, guid: a3169991c05e1e54ba26695f4c6177cf, type: 2}
   startingTile: {fileID: 11400000, guid: 4c9692487ae43034ab5b141653cb50de, type: 2}
   tileSpawnCount: 7
   squareTileDimension: 16

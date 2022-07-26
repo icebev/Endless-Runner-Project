@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77efaed4e09f194cabe2f4a5115b0bd, type: 3}
   m_Name: Filler
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 0}
+  tilePrefab: {fileID: 4323673674492976332, guid: 5a65d8841fef8d64aa1d1c68b2d3a841, type: 3}
   difficulty: 0
-  tileLength: 0
-  spawnProbability: 0
+  tileLength: 1
+  spawnProbability: 1
   hasCorner: 0
   hasJunction: 0
   elevationChange: 0

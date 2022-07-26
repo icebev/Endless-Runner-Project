@@ -45,7 +45,6 @@ GameObject:
   - component: {fileID: 5020424171843176424}
   - component: {fileID: 5973931474894999698}
   - component: {fileID: 818894422887342888}
-  - component: {fileID: 9143045792330928523}
   - component: {fileID: 7141354785086628780}
   m_Layer: 0
   m_Name: MediumTile2
@@ -109,21 +108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ccc64ae77b6884e9f764b52efbbbd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9143045792330928523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6433261008718029649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4dbea804c41ce84f88139f6a5b6a05e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coinContainer: {fileID: 0}
-  exclusiveCoinSets: 0
-  coinSetSpawnProbabilities: []
 --- !u!114 &7141354785086628780
 MonoBehaviour:
   m_ObjectHideFlags: 0
