@@ -44,7 +44,7 @@ public class ChaserMechanic : MonoBehaviour
         this.chaserSlider.value = sliderValue;
 
         // update chaser fog position
-        Vector3 targetFogPos = new Vector3(this.movingFog.transform.position.x, this.fogYPositionCurve.Evaluate(sliderValue), this.movingFog.transform.position.z);
+        Vector3 targetFogPos = new Vector3(this.movingFog.transform.localPosition.x, this.fogYPositionCurve.Evaluate(sliderValue), this.movingFog.transform.localPosition.z);
         this.movingFog.transform.localPosition = Vector3.MoveTowards(this.movingFog.transform.localPosition, targetFogPos, this.fogMoveSpeed);
 
 
