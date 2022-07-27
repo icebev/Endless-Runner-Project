@@ -12,6 +12,10 @@ public class CollectableEventFunctions : MonoBehaviour
     public static UnityEvent<PowerUpType> OnPowerUpCollect;
 
     public int coinsCollected = 0;
+    public AudioSource coinCollectSound;
+    public ParticleSystem powerUpCollectParticles;
+    public ParticleSystem coinCollectParticles;
+    
 
     public TextMeshProUGUI coinCountText;
 
@@ -31,12 +35,17 @@ public class CollectableEventFunctions : MonoBehaviour
 
     public void IncrementCoinCount(int coinVal)
     {
+        this.coinCollectSound.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+        this.coinCollectSound.volume = UnityEngine.Random.Range(0.04f, 0.06f);
+        this.coinCollectSound.PlayOneShot(this.coinCollectSound.clip);
+        this.coinCollectParticles.Play();
         this.coinsCollected += coinVal;
         this.coinCountText.text = this.coinsCollected.ToString();
     }
 
     public void TriggerPowerUp(PowerUpType powerUpRef)
     {
+        this.powerUpCollectParticles.Play();
         if (powerUpRef.powerUpName == "CoinMagnet")
         {
             this.coinMagnetField.SetActive(true);

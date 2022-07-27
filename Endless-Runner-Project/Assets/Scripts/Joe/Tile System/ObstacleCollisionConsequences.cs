@@ -16,7 +16,8 @@ public class ObstacleCollisionConsequences : MonoBehaviour
     private ChaserMechanic chaserMechanic;
 
     public ConfigurablePlayerSlowDown[] playerSlowDowns;
-
+    public ParticleSystem collisionParticles;
+    public AudioSource collisionAudio;
 
     [System.Serializable]
     public struct ConfigurablePlayerSlowDown
@@ -40,6 +41,8 @@ public class ObstacleCollisionConsequences : MonoBehaviour
     public void StumbleSlowDown(int slowDownIndex)
     {
         this.playerAnimator.Play("Stumble");
+        this.collisionParticles.Play();
+        this.collisionAudio.Play();
 
         ConfigurablePlayerSlowDown configurablePlayerSlow = this.playerSlowDowns[slowDownIndex];
         this.slowDownAnimationTime = 0.0f;

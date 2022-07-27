@@ -5,9 +5,10 @@ using UnityEditor;
 
 
 [CustomEditor(typeof(TileSpeedIncrementation)), CanEditMultipleObjects]
-public class SpeedIncrement : Editor
+public class TileSpeedIncrementationEditor : Editor
 {
 
+    // create property variables
     public SerializedProperty
     incrementMode_prop,
     calculatedTargetTileSpeed_prop,
@@ -21,6 +22,7 @@ public class SpeedIncrement : Editor
     // Start is called before the first frame update
     void OnEnable()
     {
+        // Enable all the properties as serializedObjects
         this.incrementMode_prop = this.serializedObject.FindProperty("incrementMode");
         this.calculatedTargetTileSpeed_prop = this.serializedObject.FindProperty("calculatedTargetTileSpeed");
         this.useSpeedLimit_prop = this.serializedObject.FindProperty("useSpeedLimit");
@@ -31,13 +33,12 @@ public class SpeedIncrement : Editor
         this.intervalIncreaseFactor_prop = this.serializedObject.FindProperty("intervalIncreaseFactor");
     }
 
-
+    // Arranges the GUI depending on certain conditions
     public override void OnInspectorGUI()
     {
         this.serializedObject.Update();
 
         EditorGUILayout.PropertyField(this.calculatedTargetTileSpeed_prop);
-
         EditorGUILayout.PropertyField(this.incrementMode_prop);
         EditorGUILayout.PropertyField(this.useSpeedLimit_prop);
 
