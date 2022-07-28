@@ -13939,7 +13939,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 2.574056, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -26091,7 +26091,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 2.574056, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -26432,9 +26432,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bfbd5f00f2c4c5141b1bd699e9047047, type: 2}
   - {fileID: 11400000, guid: a3169991c05e1e54ba26695f4c6177cf, type: 2}
   startingTile: {fileID: 11400000, guid: 4c9692487ae43034ab5b141653cb50de, type: 2}
-  tileSpawnCount: 7
+  tileSpawnCount: 8
   squareTileDimension: 16
-  despawnDistance: 20
+  despawnDistance: 30
   cornerProbability: 0
   junctionProbability: 0.2
   spawningAfterJunction: 0
@@ -27113,7 +27113,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 2.574056, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
