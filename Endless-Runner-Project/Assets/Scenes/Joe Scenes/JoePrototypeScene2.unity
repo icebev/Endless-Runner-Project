@@ -6641,7 +6641,7 @@ MonoBehaviour:
   m_Version: 1
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 3
+  m_LightLayerMask: 2
   m_CustomShadowLayers: 0
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
@@ -6696,7 +6696,7 @@ Light:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingLayerMask: 3
+  m_RenderingLayerMask: 2
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
@@ -7437,7 +7437,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -28133,11 +28133,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3bac98fa5099f1c489b69a349c919f09, type: 2}
   - {fileID: 11400000, guid: bfbd5f00f2c4c5141b1bd699e9047047, type: 2}
   - {fileID: 11400000, guid: a3169991c05e1e54ba26695f4c6177cf, type: 2}
+  - {fileID: 11400000, guid: 3dd76ad90ca351148b5aac3719ea127f, type: 2}
+  - {fileID: 11400000, guid: d2ca77aeba2cefb45a5cefbd9cb4e625, type: 2}
   startingTile: {fileID: 11400000, guid: 4c9692487ae43034ab5b141653cb50de, type: 2}
   tileSpawnCount: 8
   squareTileDimension: 16
   despawnDistance: 30
-  cornerProbability: 0
+  cornerProbability: 0.2
   junctionProbability: 0.2
   spawningAfterJunction: 0
   junctionSpawnedTilesList: []

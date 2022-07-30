@@ -9,7 +9,6 @@ public class CornerTileBehaviour : MonoBehaviour
     private TileManager tileManager;
     private CharacterManager characterManager;
     private bool hasRotated = false;
-    private float turnDist = 0.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +20,46 @@ public class CornerTileBehaviour : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float distanceFromOrigin = Vector3.Distance(this.transform.position, new Vector3(0, 4.5f, 0));
-        if (distanceFromOrigin < this.turnDist)
+
+        bool turnReady = false;
+
+        switch (this.tileManager.runDirection)
+        {
+            case (TrackDirection.negativeX):
+                {
+                    if (this.transform.position.x >= 0.0f)
+                    {
+                        turnReady = true;
+                    }
+                    break;
+                }
+            case (TrackDirection.positiveX):
+                {
+                    if (this.transform.position.x <= 0.0f)
+                    {
+                        turnReady = true;
+                    }
+                    break;
+                }
+            case (TrackDirection.negativeZ):
+                {
+                    if (this.transform.position.z >= 0.0f)
+                    {
+                        turnReady = true;
+                    }
+                    break;
+                }
+            case (TrackDirection.positiveZ):
+                {
+                    if (this.transform.position.z <= 0.0f)
+                    {
+                        turnReady = true;
+                    }
+                    break;
+                }
+        }
+
+        if (turnReady == true && this.hasRotated == false)
         {
             if (this.hasRotated == false)
             {
@@ -31,10 +68,7 @@ public class CornerTileBehaviour : MonoBehaviour
 
                 this.hasRotated = true;
                 this.tileManager.runDirection = this.tileManager.spawnDirection;
-                foreach (Transform child in this.tileManager.tilesContainer.transform)
-                {
-                    //child.GetComponent<TileMovement>().CorrectOffset();
-                }
+
             }
         }
     }

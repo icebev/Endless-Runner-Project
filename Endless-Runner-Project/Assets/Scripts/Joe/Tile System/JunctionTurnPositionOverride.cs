@@ -11,6 +11,7 @@ public class JunctionTurnPositionOverride : MonoBehaviour
     public bool leftTurning;
     public bool rightTurning;
     public AnimationCurve speedToTurnTimeCurve;
+    public GameObject disappearingPieces;
 
     private TileSpeedIncrementation tileSpeedIncrementation;
 
@@ -24,11 +25,13 @@ public class JunctionTurnPositionOverride : MonoBehaviour
     public void ActivateLeftTurn()
     {
         this.leftTurning = true;
+        this.disappearingPieces.SetActive(false);
         float turnTime = this.speedToTurnTimeCurve.Evaluate(this.tileSpeedIncrementation.calculatedTargetTileSpeed);
         StartCoroutine(DelayedTurnToggleOff("Left", turnTime));
     }
     public void ActivateRightTurn()
     {
+        this.disappearingPieces.SetActive(false);
         this.rightTurning = true;
         float turnTime = this.speedToTurnTimeCurve.Evaluate(this.tileSpeedIncrementation.calculatedTargetTileSpeed);
         StartCoroutine(DelayedTurnToggleOff("Right", turnTime));
