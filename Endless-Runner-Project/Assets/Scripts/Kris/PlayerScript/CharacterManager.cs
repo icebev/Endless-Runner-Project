@@ -389,7 +389,7 @@ public class CharacterManager : MonoBehaviour
 
             //Checks the recent move to see whether or not the raycast will be on the left or right.
 
-            if (this.playerPosition.x < this.targetLane)
+            if (this.playerPosition.x > this.targetLane)
             {
                 Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 1.2f, -this.playerPositionRelative.z), this.LeftLocal[this.direction], out SideHitUpper, this.playerRaycastSizeSide);
                 Physics.Raycast(new Vector3(this.playerPositionRelative.x, this.playerPosition.y + 0.4f, -this.playerPositionRelative.z), this.LeftLocal[this.direction], out SideHitLower, this.playerRaycastSizeSide);
@@ -585,16 +585,19 @@ public class CharacterManager : MonoBehaviour
     public void SetPlayerLaneTarget(int lane)
     {
         this.targetLane = lane * this.LaneSize;
+        this.CheckLaneBounds();
     }
 
     public void AddPlayerLaneTarget(int lane)
     {
         this.targetLane += lane * this.LaneSize;
+        this.CheckLaneBounds();
     }
 
     public void PreviousLaneReturn()
     {
         this.targetLane = this.previousLane;
+        this.CheckLaneBounds();
     }
 
     public float GetPlayerPositionXCurrent()

@@ -9,6 +9,7 @@ public class LoadingManager : MonoBehaviour
     private int targetScene = 2; //The scene the game will try to load.
     private int targetAnimationTrans = 0; //What transition animation will the game try to play
     private Slider loadingBar;
+    private bool currentlyLoading = false;
 
     private enum SceneAnimationTypes //Insert *actual* animation types if there is time.
     {
@@ -39,13 +40,15 @@ public class LoadingManager : MonoBehaviour
     //what transition the scenes will make.
     public void LoadGameScene1(int sceneID, bool useLoadingScene, int animationTransID)
     {
+        if (this.currentlyLoading == true) return;
+        this.currentlyLoading = true;
         this.targetScene = sceneID;
         this.targetAnimationTrans = animationTransID;
 
         switch (useLoadingScene)
         {
             case false:
-                StartCoroutine(LoadGameScene2(this.targetScene));
+                StartCoroutine(LoadGameScene4(this.targetScene));
                 break;
 
             case true:
@@ -72,7 +75,7 @@ public class LoadingManager : MonoBehaviour
             print(asyncLoading.progress);
             yield return null;
         }
-        
+        this.currentlyLoading = false;
     }
 
     public void LoadGameScene3() //This is used by the script in the loading level. Loads the target scene.
@@ -82,6 +85,13 @@ public class LoadingManager : MonoBehaviour
         this.loadingBar.value = 0;
         StartCoroutine(LoadGameScene2(this.targetScene));
 
+    }
+
+    public IEnumerator LoadGameScene4(int Scene) //This loads a scene by skipping the Loading Screen.
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(Scene);
+        yield return null;
     }
 
 }
