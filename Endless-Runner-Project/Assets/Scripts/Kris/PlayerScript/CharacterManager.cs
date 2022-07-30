@@ -585,16 +585,19 @@ public class CharacterManager : MonoBehaviour
     public void SetPlayerLaneTarget(int lane)
     {
         this.targetLane = lane * this.LaneSize;
+        this.CheckLaneBounds();
     }
 
     public void AddPlayerLaneTarget(int lane)
     {
         this.targetLane += lane * this.LaneSize;
+        this.CheckLaneBounds();
     }
 
     public void PreviousLaneReturn()
     {
         this.targetLane = this.previousLane;
+        this.CheckLaneBounds();
     }
 
     public float GetPlayerPositionXCurrent()
