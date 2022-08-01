@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 589410188470930475}
   - component: {fileID: 589410188470930476}
   - component: {fileID: 589410188470930477}
+  - component: {fileID: 816150542179703391}
   m_Layer: 0
   m_Name: CharacterManager
   m_TagString: CharacterManager
@@ -54,9 +55,13 @@ MonoBehaviour:
   lockLaneSwitch: 0
   interpolationSpeedLane: 0.25
   interpolationSpeedRotate: 0.25
+  currentState: 0
+  playerAnimator: {fileID: 0}
   doPhysics: 1
   gravity: 0.01
-  jumpHeight: 0.25
+  jumpVelocity: 0.25
+  hopUpSpeed: 0.1
+  slideTime: 1
   IgnoreGroundCollision: 0
 --- !u!114 &589410188470930476
 MonoBehaviour:
@@ -180,38 +185,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 589410188470930476}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: RollLeft
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 5ced2d30-0d27-47ff-917a-1c5ddfbbe6a4
-    m_ActionName: PlayerCharacter/DashLeft[/Keyboard/q]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 589410188470930476}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: RollRight
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: bbdc087e-3a94-4884-92cb-855d95ea61b6
-    m_ActionName: PlayerCharacter/DashRight[/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 589410188470930476}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: Sprint
         m_Mode: 0
         m_Arguments:
@@ -225,39 +198,23 @@ MonoBehaviour:
     m_ActionId: bac5149d-a5ac-4d76-905d-24207f3f7eb4
     m_ActionName: PlayerCharacter/Sprint[/Keyboard/leftShift]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 589410188470930475}
-        m_TargetAssemblyTypeName: CharacterManager, Assembly-CSharp
-        m_MethodName: RestartLevel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: f98946c9-6369-44cb-b736-3af77515ef7d
-    m_ActionName: PlayerCharacter/Restart[/Keyboard/r]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 589410188470930475}
-        m_TargetAssemblyTypeName: CharacterManager, Assembly-CSharp
-        m_MethodName: MainMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: b0ec40a9-b59c-40be-b801-f8ade482d218
-    m_ActionName: PlayerCharacter/MainMenu[/Keyboard/m]
+      m_Calls: []
+    m_ActionId: 1e703812-a8a9-44f0-90fd-d90924aba30a
+    m_ActionName: PlayerCharacter/Slide[/Keyboard/s,/Keyboard/downArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerCharacter
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &816150542179703391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589410188470930478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c57ec9fc876786c468653067c14c5648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

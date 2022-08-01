@@ -74,8 +74,9 @@ public class CharacterManager : MonoBehaviour
     private float recentMoveScheduled = 0;
 
     [SerializeField] private playerStates currentState = playerStates.grounded;
-    [SerializeField] private animationStates animationState = animationStates.RegularRun;
+    //[SerializeField] private animationStates animationState = animationStates.RegularRun;
     [SerializeField] private Animator playerAnimator;
+    private CharacterAnimManager animManager;
 
     [SerializeField] private bool doPhysics = true;
     private bool isGrounded = true;
@@ -91,7 +92,7 @@ public class CharacterManager : MonoBehaviour
     private float hopUpTime = 0.1f;
     private float hopUpTick = 0.1f;
 
-    [SerializeField] private float slideTime = 0.1f;
+    [SerializeField] private float slideTime = 2f;
     private float slideTick;
     private bool slideScheduled;
 
@@ -137,15 +138,6 @@ public class CharacterManager : MonoBehaviour
         
     }
 
-    public enum animationStates
-    {
-        Roll,
-        Fall,
-        Jump,
-        LaneSwitch,
-        RegularRun,
-    }
-
     public enum WhichRay
     {
         LeftUp,             //Left Up
@@ -167,6 +159,7 @@ public class CharacterManager : MonoBehaviour
         this.hopUpTick = this.hopUpTime;
         this.slideTick = this.slideTime;
         this._playerAudioS = _character.GetComponent<AudioSource>();
+        this.animManager = this.gameObject.GetComponent<CharacterAnimManager>();
         SetLaneLimit(this.numberOfLanes);
     }
 
@@ -178,6 +171,8 @@ public class CharacterManager : MonoBehaviour
         UpdateCharacterData();
         UpdateLanePositionAndRotation();
         UpdatePhysics();
+        this.animManager.ManageAnimation(this.currentState);
+
     }
     private void UpdateCharacterData()
     {
@@ -379,6 +374,7 @@ public class CharacterManager : MonoBehaviour
         else
         {
             this.isGrounded = false; //If it is null, the character is not grounded.
+            if(this.currentState != playerStates.jumping && this.playerYSpeed<-0.23f) this.currentState = playerStates.quickfall;
         }
 
         //Check to see if the player is moving left or right.
@@ -416,19 +412,16 @@ public class CharacterManager : MonoBehaviour
             if ((SideHitUpper.collider != null) && (SideHitLower.collider != null))
             {
                 this.HandleCollision(SideHitUpper, this.GetDirectionRay(2));
-                print("SIDE HIT BOTH!");
             }
             //This detects if only the top raycast was hit 
             else if ((SideHitUpper.collider != null) && (SideHitLower.collider == null))
             {
                 this.HandleCollision(SideHitUpper, this.GetDirectionRay(0));
-                print("SIDE HIT UPPER!");
             }
             //This detects if only the bottom raycast was hit 
             else if ((SideHitUpper.collider == null) && (SideHitLower.collider != null))
             {
                 this.HandleCollision(SideHitLower, this.GetDirectionRay(1));
-                print("SIDE HIT LOWER!");
             }
         }
         // Front raycast hit detection
@@ -446,17 +439,14 @@ public class CharacterManager : MonoBehaviour
         if ((FrontHitUpper.collider != null) && (FrontHitLower.collider != null) && (this.currentState != playerStates.crouching))
         {
             this.HandleCollision(FrontHitUpper, WhichRay.FrontBoth);
-            //print("FRONT HIT BOTH!");
         }
         else if ((FrontHitUpper.collider != null) && (FrontHitLower.collider == null) && (this.currentState != playerStates.crouching))
         {
             this.HandleCollision(FrontHitUpper, WhichRay.FrontUp);
-            print("FRONT HIT UPPER!");
         }
         else if (((FrontHitUpper.collider == null) || (this.currentState == playerStates.crouching)) && (FrontHitLower.collider != null))
         {
             this.HandleCollision(FrontHitLower, WhichRay.FrontDown);
-            print("FRONT HIT LOWER!");
         }
         this._character.transform.localPosition = this.playerPosition;
     }
@@ -486,14 +476,14 @@ public class CharacterManager : MonoBehaviour
         }
         if (!this.isGrounded) return;
         this.slideTick = 0;
-        this.playerAnimator.Play("Slide");
+        
         this.currentState = playerStates.crouching;
     }
 
     public void Jump()
     {
         if (!this.isGrounded) return; 
-        this.currentState = playerStates.grounded;
+        this.currentState = playerStates.jumping;
         this.playerYSpeed += this.jumpVelocity;
         this.isGrounded = false;
     }
@@ -525,6 +515,8 @@ public class CharacterManager : MonoBehaviour
         this.isGrounded = true;
         this.playerYSpeed = 0;
         this.playerPosition.y = this.GroundRayHit.point.y - 0.02f;
+        if (this.currentState == playerStates.crouching) return;
+        this.currentState = playerStates.grounded;
     }
 
     public void HopUpCharacter()
@@ -542,20 +534,21 @@ public class CharacterManager : MonoBehaviour
         { 
             this.hopUpTick += Time.fixedDeltaTime; 
         }
-
-        if (this.slideTick <= this.slideTime)
+        
+        if (this.slideTick < this.slideTime)
         {
-            if(this.currentState != playerStates.crouching)
+
+            this.slideTick += Time.fixedDeltaTime;
+
+            if (this.currentState != playerStates.crouching)
             {
                 this.slideTick = this.slideTime;
             }
-            else
-            {
-                this.slideTick += Time.fixedDeltaTime;
-            }
             if ((this.slideTick >= this.slideTime))
             {
+                if (this.currentState != playerStates.crouching) return;
                 this.currentState = playerStates.grounded;
+
             }
         }
     }
@@ -635,4 +628,10 @@ public class CharacterManager : MonoBehaviour
     {
         return this.laneBoundaries[direction];
     }
+
+    public Animator GetAnimator()
+    {
+        return this.playerAnimator;
+    }
+
 }
