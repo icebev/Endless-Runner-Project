@@ -4,7 +4,7 @@ using UnityEngine;
 
 /* CHARACTER MANAGER CLASS
  * Author(s): Kris Burgess-James
- * Date last modified: 16/07/2022
+ * Date last modified: 01/08/2022
  *******************************************************************************
  * Important Note: Some changes have been made using Joe's computer / account by me.
  * CHANGE NOTES: 
@@ -12,6 +12,8 @@ using UnityEngine;
  * Extend the forward raycasts so at high speed the player still interacts with the obstacles.
  * Fixed glitch where you can slide through two-tall obstacles.
  * Refactored the code to utilise more guard-clauses.
+ * Implemented State Machine
+ * Added character Animation Communication
  * 
  */
 /// <summary>
