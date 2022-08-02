@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f77efaed4e09f194cabe2f4a5115b0bd, type: 3}
-  m_Name: EasyTile5
+  m_Name: TutorialTile1
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 5851517143591777608, guid: fb96038da6505824c84a8edb66aeaa0a, type: 3}
-  difficulty: 2
+  tilePrefab: {fileID: 7305682894644360754, guid: 1e49baf05c33d434eb1e6a030652796b, type: 3}
+  difficulty: 1
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0
