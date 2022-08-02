@@ -6100,7 +6100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2219991720385461623, guid: e647037db80fb9d47aa6d0841efde897, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 960.0001
+      value: 960.00006
       objectReference: {fileID: 0}
     - target: {fileID: 2219991720385461623, guid: e647037db80fb9d47aa6d0841efde897, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -10330,7 +10330,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 0
     chaserCatchUpAmount: 0.2
-    specificSlowDownDuration: 1.5
+    specificSlowDownDuration: 2
   collisionParticles: {fileID: 1144908402}
   collisionAudio: {fileID: 2096038434}
 --- !u!1 &1144908401
@@ -15506,7 +15506,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.2648647, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -16754,10 +16754,10 @@ MonoBehaviour:
   isSprinting: 0
   sprintCooldown: 0
   sprintAction:
-    m_Name: 
+    m_Name: Sprint
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 
+    m_Id: f21cf973-3504-469a-9398-8e7ecdf52870
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -16791,7 +16791,7 @@ MonoBehaviour:
   useSpeedLimit: 1
   speedLimit: 15
   startingTileSpeed: 6
-  linearIncrementFactor: 0.75
+  linearIncrementFactor: 1
   intervalTime: 0
   intervalIncreaseFactor: 0
 --- !u!114 &1395989217
@@ -17022,8 +17022,8 @@ MonoBehaviour:
   boostActive: 0
   coinCountText: {fileID: 401848385}
   coinMagnetField: {fileID: 1010538809}
-  coinMagnetIndicator: {fileID: 197943280}
-  coinMultiplierIndicator: {fileID: 1798274094}
+  coinMagnetIndicator: {fileID: 919132147593209200}
+  coinMultiplierIndicator: {fileID: 919132148046305457}
 --- !u!4 &1441933269
 Transform:
   m_ObjectHideFlags: 0
@@ -29176,7 +29176,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.2648647, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -29523,6 +29523,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d34939d6de2ba9647bdfad77ffd8e1e3, type: 2}
   startingTile: {fileID: 11400000, guid: 4c9692487ae43034ab5b141653cb50de, type: 2}
   tileSpawnCount: 8
+  initialFillerCount: 3
   squareTileDimension: 16
   despawnDistance: 30
   cornerProbability: 0.2
@@ -30279,7 +30280,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.2648647, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

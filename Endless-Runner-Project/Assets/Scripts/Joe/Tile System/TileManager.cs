@@ -26,6 +26,8 @@ public class TileManager : MonoBehaviour
     [Header("Parameters")]
     [Tooltip("The number of tiles that exist in a given moment.")]
     [SerializeField] private int tileSpawnCount;
+    [Tooltip("The number of filler tiles that spawn in a row at the beginning.")]
+    [SerializeField] private int initialFillerCount;
     [Tooltip("The square size of a single tile.")]
     [SerializeField] private float squareTileDimension;
     [Tooltip("How far behind the player the tile is before being destroyed.")]
@@ -128,7 +130,7 @@ public class TileManager : MonoBehaviour
 
         this.lastNonFillerTileDifficulty = TileDifficulty.Easy;
         this.finalTile = Instantiate(this.startingTile.tilePrefab, this.startingTile.tilePrefab.transform.position, this.startingTile.tilePrefab.transform.rotation);
-        this.spawnFillersNextCount = 5;
+        this.spawnFillersNextCount = this.initialFillerCount;
         ///this.finalTile.transform.Translate(new Vector3(0, 4.5f, 0));
         // Spawn in the starting tile sequence
         for (int z = 0; z <= this.tileSpawnCount; z++)
