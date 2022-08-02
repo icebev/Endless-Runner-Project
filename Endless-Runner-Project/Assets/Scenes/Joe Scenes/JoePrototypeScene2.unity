@@ -6100,7 +6100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2219991720385461623, guid: e647037db80fb9d47aa6d0841efde897, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 960.00006
+      value: 960.0001
       objectReference: {fileID: 0}
     - target: {fileID: 2219991720385461623, guid: e647037db80fb9d47aa6d0841efde897, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -10330,7 +10330,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 0
     chaserCatchUpAmount: 0.2
-    specificSlowDownDuration: 2
+    specificSlowDownDuration: 1.5
   collisionParticles: {fileID: 1144908402}
   collisionAudio: {fileID: 2096038434}
 --- !u!1 &1144908401
@@ -15506,7 +15506,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 2.2648647, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -16753,6 +16753,15 @@ MonoBehaviour:
   tileSpeedManagement: {fileID: 0}
   isSprinting: 0
   sprintCooldown: 0
+  sprintAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   camZNormal: 0
   camZSprinting: 2
   camZTarget: 0
@@ -16782,7 +16791,7 @@ MonoBehaviour:
   useSpeedLimit: 1
   speedLimit: 15
   startingTileSpeed: 6
-  linearIncrementFactor: 1
+  linearIncrementFactor: 0.75
   intervalTime: 0
   intervalIncreaseFactor: 0
 --- !u!114 &1395989217
@@ -17005,6 +17014,12 @@ MonoBehaviour:
   coinCollectSound: {fileID: 339412732}
   powerUpCollectParticles: {fileID: 1626487824}
   coinCollectParticles: {fileID: 1885040647}
+  remainingMagnetTime: 0
+  remainingMultiplierTime: 0
+  remainingBoostTime: 0
+  magnetActive: 0
+  multiplierActive: 0
+  boostActive: 0
   coinCountText: {fileID: 401848385}
   coinMagnetField: {fileID: 1010538809}
   coinMagnetIndicator: {fileID: 197943280}
@@ -29161,7 +29176,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 2.2648647, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -30264,7 +30279,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 2.2648647, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
