@@ -60,4 +60,9 @@ public class CharacterAnimManager : MonoBehaviour
                 break;
         }
     }
+
+    public void UpdateVelocity(float velocity)
+    {
+        this.charAnimator.SetFloat("yVelo", velocity);
+    }
 }
