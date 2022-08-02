@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77efaed4e09f194cabe2f4a5115b0bd, type: 3}
   m_Name: TutorialTile3
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 0}
-  difficulty: 0
-  tileLength: 0
-  spawnProbability: 0
+  tilePrefab: {fileID: 6134360038749929044, guid: 9f77c8ca72c877345a4beec272c44a74, type: 3}
+  difficulty: 1
+  tileLength: 1
+  spawnProbability: 1
   hasCorner: 0
   hasJunction: 0
   elevationChange: 0
