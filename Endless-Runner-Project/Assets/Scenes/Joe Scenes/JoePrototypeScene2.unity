@@ -16753,6 +16753,15 @@ MonoBehaviour:
   tileSpeedManagement: {fileID: 0}
   isSprinting: 0
   sprintCooldown: 0
+  sprintAction:
+    m_Name: Sprint
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: f21cf973-3504-469a-9398-8e7ecdf52870
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   camZNormal: 0
   camZSprinting: 2
   camZTarget: 0
@@ -17005,10 +17014,16 @@ MonoBehaviour:
   coinCollectSound: {fileID: 339412732}
   powerUpCollectParticles: {fileID: 1626487824}
   coinCollectParticles: {fileID: 1885040647}
+  remainingMagnetTime: 0
+  remainingMultiplierTime: 0
+  remainingBoostTime: 0
+  magnetActive: 0
+  multiplierActive: 0
+  boostActive: 0
   coinCountText: {fileID: 401848385}
   coinMagnetField: {fileID: 1010538809}
-  coinMagnetIndicator: {fileID: 197943280}
-  coinMultiplierIndicator: {fileID: 1798274094}
+  coinMagnetIndicator: {fileID: 919132147593209200}
+  coinMultiplierIndicator: {fileID: 919132148046305457}
 --- !u!4 &1441933269
 Transform:
   m_ObjectHideFlags: 0
@@ -29508,6 +29523,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d34939d6de2ba9647bdfad77ffd8e1e3, type: 2}
   startingTile: {fileID: 11400000, guid: 4c9692487ae43034ab5b141653cb50de, type: 2}
   tileSpawnCount: 8
+  initialFillerCount: 3
   squareTileDimension: 16
   despawnDistance: 30
   cornerProbability: 0.2
