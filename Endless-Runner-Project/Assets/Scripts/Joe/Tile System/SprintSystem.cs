@@ -35,6 +35,7 @@ public class SprintSystem : MonoBehaviour
 
     public float fovNormal;
     public float fovSprinting;
+    public float fovSpeedboost;
     public float fovTarget;
 
     [SerializeField] private float runAnimSpeedNormal;
@@ -44,6 +45,8 @@ public class SprintSystem : MonoBehaviour
 
     public float tileSpeedChange;
     public float interpolationSpeed;
+
+    public bool speedBoostModeActive;
 
 
     private void Start()
@@ -107,6 +110,22 @@ public class SprintSystem : MonoBehaviour
             this.StopSprinting();
         }
 
+        if (this.speedBoostModeActive)
+        {
+            if(this.tileSpeedChange != 5)
+            {
+                this.StopSprinting();
+                this.tileSpeedChange = 5;
+                this.StartSprinting();
+                
+            }
+
+            if (this.isSprinting == false)
+            {
+                this.StartSprinting();
+            }
+        }
+
         // Camera fov lerp
         float currentFov = this.playerCamera.m_Lens.FieldOfView;
         currentFov = Mathf.Lerp(currentFov, this.fovTarget, this.interpolationSpeed);
@@ -134,8 +153,8 @@ public class SprintSystem : MonoBehaviour
         if (this.isSprinting == false)
         {
             this.isSprinting = true;
-            this.tileSpeedIncrementation.speedLimit += 2.0f;
-            this.fovTarget = this.fovSprinting;
+            this.tileSpeedIncrementation.speedLimit += this.tileSpeedChange;
+            this.fovTarget = this.speedBoostModeActive ? this.fovSpeedboost : this.fovSprinting;
             this.camZTarget = this.camZSprinting;
             this.runAnimSpeedTarget = this.runAnimSpeedSprinting;
         }

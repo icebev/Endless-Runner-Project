@@ -219,7 +219,7 @@ public class CollidableObjects : MonoBehaviour, iCollidable
 
                 break;
             case CollisionBehaviour.Stumble:
-                if (CollidableObjects.stumbleCoolDown > 0) return; 
+                if (CollidableObjects.stumbleCoolDown > 0 || GameObject.FindObjectOfType<SprintSystem>().speedBoostModeActive == true || GameOverEvent.isPlayerDead == true) return; 
                 CollidableObjects.stumbleCoolDown = 0.3f;
                 if (GameObject.FindObjectOfType<SprintSystem>().isSprinting == false)
                 {

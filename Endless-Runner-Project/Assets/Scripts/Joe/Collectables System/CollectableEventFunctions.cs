@@ -29,6 +29,7 @@ public class CollectableEventFunctions : MonoBehaviour
     public GameObject coinMagnetIndicator;
 
     public GameObject coinMultiplierIndicator;
+    public GameObject boostIndicator;
 
     private void Awake()
     {
@@ -64,6 +65,13 @@ public class CollectableEventFunctions : MonoBehaviour
         {
             this.ActivateMultiplier(powerUpRef.powerUpDuration);
         }
+
+        // Speed boost activation
+        if (powerUpRef.powerUpName == "MaxSpeed")
+        {
+            this.ActivateSpeedBoost(powerUpRef.powerUpDuration);
+        }
+
     }
 
     public void ActivateMagnet(float activeDuration)
@@ -96,6 +104,24 @@ public class CollectableEventFunctions : MonoBehaviour
         this.multiplierActive = false;
     }
 
+    public void ActivateSpeedBoost(float activeDuration)
+    {
+        this.remainingBoostTime = activeDuration;
+        this.boostIndicator.SetActive(true);
+        FindObjectOfType<SprintSystem>().speedBoostModeActive = true;
+        this.boostActive = true;
+    }
+
+    public void DeactivateSpeedBoost()
+    {
+        SprintSystem sprintSystem = FindObjectOfType<SprintSystem>();
+        sprintSystem.speedBoostModeActive = false;
+        this.boostIndicator.SetActive(false);
+        sprintSystem.StopSprinting();
+        sprintSystem.tileSpeedChange = 2;
+        this.boostActive = false;
+
+    }
 
     private void Update()
     {
@@ -118,5 +144,19 @@ public class CollectableEventFunctions : MonoBehaviour
         {
             this.DeactivateMultiplier();
         }
+
+        // Boost powerup
+        if (this.remainingBoostTime >= 0)
+        {
+            this.remainingBoostTime -= Time.deltaTime;
+
+        }
+        else if (this.boostActive == true)
+        {
+            this.DeactivateSpeedBoost();
+ 
+
+        }
+
     }
 }

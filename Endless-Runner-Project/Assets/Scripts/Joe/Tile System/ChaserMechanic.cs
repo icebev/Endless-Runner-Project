@@ -58,7 +58,7 @@ public class ChaserMechanic : MonoBehaviour
             this.sprintIndicatorAnimator.SetBool("IndicateSprint", false);
         }
         // Game over trigger
-        if (sliderValue > 0.99)
+        if (sliderValue > 0.99 && GameOverEvent.isPlayerDead == false)
         {
             this.gameOverEvent.playerDeath.Invoke();
             this.chaserCurrentDistance = 0;
