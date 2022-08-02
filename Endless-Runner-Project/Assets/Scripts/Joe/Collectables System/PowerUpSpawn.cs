@@ -11,12 +11,14 @@ public class PowerUpType
     public UnityAction eventFunction;
     public GameObject powerUpPrefab;
     public float powerUpRarityWeighting;
+   
 }
 
 public class PowerUpSpawn : MonoBehaviour
 {
     public PowerUpType[] powerUpTypes;
     public int chosenPowerUpIndex;
+    public float overallSpawnChance;
 
     private void Awake()
     {
@@ -40,8 +42,12 @@ public class PowerUpSpawn : MonoBehaviour
     }
     private void Start()
     {
-        GameObject newPowerUp = Instantiate(this.powerUpTypes[this.chosenPowerUpIndex].powerUpPrefab, this.transform.position, this.transform.rotation);
-        newPowerUp.transform.parent = this.transform;
-        newPowerUp.GetComponent<PowerUp>().powerUpType = this.powerUpTypes[this.chosenPowerUpIndex];
+
+        if (Random.Range(0.0f, 1.0f) <= this.overallSpawnChance)
+        {
+            GameObject newPowerUp = Instantiate(this.powerUpTypes[this.chosenPowerUpIndex].powerUpPrefab, this.transform.position, this.transform.rotation);
+            newPowerUp.transform.parent = this.transform;
+            newPowerUp.GetComponent<PowerUp>().powerUpType = this.powerUpTypes[this.chosenPowerUpIndex];
+        }
     }
 }

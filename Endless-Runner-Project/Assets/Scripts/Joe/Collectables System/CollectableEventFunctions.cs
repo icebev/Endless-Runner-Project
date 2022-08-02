@@ -15,7 +15,13 @@ public class CollectableEventFunctions : MonoBehaviour
     public AudioSource coinCollectSound;
     public ParticleSystem powerUpCollectParticles;
     public ParticleSystem coinCollectParticles;
-    
+    public float remainingMagnetTime;
+    public float remainingMultiplierTime;
+    public float remainingBoostTime;
+    public bool magnetActive;
+    public bool multiplierActive;
+    public bool boostActive;
+
 
     public TextMeshProUGUI coinCountText;
 
@@ -46,38 +52,71 @@ public class CollectableEventFunctions : MonoBehaviour
     public void TriggerPowerUp(PowerUpType powerUpRef)
     {
         this.powerUpCollectParticles.Play();
+
+        // Magnet activation
         if (powerUpRef.powerUpName == "CoinMagnet")
         {
-            this.coinMagnetField.SetActive(true);
-            this.coinMagnetIndicator.SetActive(true);
-
-            StartCoroutine(DeactivateCoinMagnet(powerUpRef.powerUpDuration));
-
+            this.ActivateMagnet(powerUpRef.powerUpDuration);
         }
 
+        // Multiplier activation
         if (powerUpRef.powerUpName == "CoinMultiplier")
         {
-            CoinCollectable.coinValueMultiplier = 2;
-            this.coinMultiplierIndicator.SetActive(true);
-
-            StartCoroutine(DeactivateCoinMultiplier(powerUpRef.powerUpDuration));
-
+            this.ActivateMultiplier(powerUpRef.powerUpDuration);
         }
     }
 
-    public IEnumerator DeactivateCoinMagnet(float delay)
+    public void ActivateMagnet(float activeDuration)
     {
-        yield return new WaitForSeconds(delay);
-
-        this.coinMagnetField.SetActive(false);
-        this.coinMagnetIndicator.SetActive(false);
+        this.remainingMagnetTime = activeDuration;
+        this.coinMagnetField.SetActive(true);
+        this.coinMagnetIndicator.SetActive(true);
+        this.magnetActive = true;
     }
 
-    public IEnumerator DeactivateCoinMultiplier(float delay)
+    public void DeactivateMagnet()
     {
-        yield return new WaitForSeconds(delay);
+        this.coinMagnetField.SetActive(false);
+        this.coinMagnetIndicator.SetActive(false);
+        this.magnetActive = false;
+    }
 
+    public void ActivateMultiplier(float activeDuration)
+    {
+        this.remainingMultiplierTime = activeDuration;
+        CoinCollectable.coinValueMultiplier = 2;
+        this.coinMultiplierIndicator.SetActive(true);
+        this.multiplierActive = true;
+    }
+
+    public void DeactivateMultiplier()
+    {
         CoinCollectable.coinValueMultiplier = 1;
         this.coinMultiplierIndicator.SetActive(false);
+        this.multiplierActive = false;
+    }
+
+
+    private void Update()
+    {
+        // Magnet powerup
+        if (this.remainingMagnetTime >= 0)
+        {
+            this.remainingMagnetTime -= Time.deltaTime;
+        }
+        else if (this.magnetActive == true)
+        {
+            this.DeactivateMagnet();
+        }
+
+        // Multiplier powerup
+        if (this.remainingMultiplierTime >= 0)
+        {
+            this.remainingMultiplierTime -= Time.deltaTime;
+        }
+        else if (this.multiplierActive == true)
+        {
+            this.DeactivateMultiplier();
+        }
     }
 }

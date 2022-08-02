@@ -22,7 +22,9 @@ public class SprintSystem : MonoBehaviour
     public CinemachineVirtualCamera playerCamera;
     private TileSpeedIncrementation tileSpeedIncrementation;
     public Transform cameraHolder;
+    public TileSpeedManagement tileSpeedManagement;
     public bool isSprinting;
+    public float sprintCooldown;
     
     public float camZNormal;
     public float camZSprinting;
@@ -61,6 +63,7 @@ public class SprintSystem : MonoBehaviour
         // END OF QUICK FIX
 
         this.tileSpeedIncrementation = FindObjectOfType<TileSpeedIncrementation>();
+        this.tileSpeedManagement = FindObjectOfType<TileSpeedManagement>();
         this.fovTarget = this.fovNormal;
         this.camZTarget = this.camZNormal;
         this.runAnimSpeedTarget = this.runAnimSpeedNormal;
@@ -70,19 +73,22 @@ public class SprintSystem : MonoBehaviour
 
     public void ProcessSprintInput(InputAction.CallbackContext press)
     {
-        if (press.performed)
+        if (press.performed && this.tileSpeedManagement.externalSpeedMultiplier == 1)
         {
             this.StartSprinting();
-            this.isSprinting = true;
         }
         if (press.canceled)
         {
             this.StopSprinting();
-            this.isSprinting = false;
         }
     }
     private void FixedUpdate()
     {
+        if (this.tileSpeedManagement.externalSpeedMultiplier < 1 && this.isSprinting)
+        {
+            this.StopSprinting();
+        }
+
         // Camera fov lerp
         float currentFov = this.playerCamera.m_Lens.FieldOfView;
         currentFov = Mathf.Lerp(currentFov, this.fovTarget, this.interpolationSpeed);
@@ -107,21 +113,26 @@ public class SprintSystem : MonoBehaviour
 
     public void StartSprinting()
     {
-        //this.tileSpeedIncrementation.currentTileSpeed += 2.0f;
-        this.tileSpeedIncrementation.speedLimit += 2.0f;
-
-        this.fovTarget = this.fovSprinting;
-        this.camZTarget = this.camZSprinting;
-        this.runAnimSpeedTarget = this.runAnimSpeedSprinting;
+        if (this.isSprinting == false)
+        {
+            this.isSprinting = true;
+            this.tileSpeedIncrementation.speedLimit += 2.0f;
+            this.fovTarget = this.fovSprinting;
+            this.camZTarget = this.camZSprinting;
+            this.runAnimSpeedTarget = this.runAnimSpeedSprinting;
+        }
     }
 
     public void StopSprinting()
     {
-        //this.tileSpeedIncrementation.currentTileSpeed -= this.tileSpeedChange;
-        this.tileSpeedIncrementation.speedLimit -= this.tileSpeedChange;
 
-        this.fovTarget = this.fovNormal;
-        this.camZTarget = this.camZNormal;
-        this.runAnimSpeedTarget = this.runAnimSpeedNormal;
+        if (this.isSprinting)
+        {
+            this.isSprinting = false;
+            this.tileSpeedIncrementation.speedLimit -= this.tileSpeedChange;
+            this.fovTarget = this.fovNormal;
+            this.camZTarget = this.camZNormal;
+            this.runAnimSpeedTarget = this.runAnimSpeedNormal;
+        }
     }
 }
