@@ -174,6 +174,7 @@ public class CharacterManager : MonoBehaviour
         UpdateLanePositionAndRotation();
         UpdatePhysics();
         this.animManager.ManageAnimation(this.currentState);
+        this.animManager.UpdateVelocity(this.playerYSpeed);
 
     }
     private void UpdateCharacterData()
@@ -376,7 +377,7 @@ public class CharacterManager : MonoBehaviour
         else
         {
             this.isGrounded = false; //If it is null, the character is not grounded.
-            if(this.currentState != playerStates.jumping && this.playerYSpeed<-0.23f) this.currentState = playerStates.quickfall;
+            if(this.playerYSpeed<-0f) this.currentState = playerStates.quickfall;
         }
 
         //Check to see if the player is moving left or right.

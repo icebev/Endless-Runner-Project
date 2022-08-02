@@ -62,6 +62,14 @@ public class LoadingManager : MonoBehaviour
     {
         //-----Insert transition Animation Here-----//
         print("loading");
+
+        GameObject Transition = GameObject.FindGameObjectWithTag("Transitions");
+        if (Transition != null)
+        {
+            Transform FadeObject = Transition.transform.Find("Fade");
+            Animator FadeAnim = FadeObject.GetComponent<Animator>();
+            FadeAnim.Play("FadeOut");
+        }
         yield return new WaitForSeconds(2);
         AsyncOperation asyncLoading = SceneManager.LoadSceneAsync(Scene); //Loads the Scene without freezing the game.
         while (!asyncLoading.isDone)
