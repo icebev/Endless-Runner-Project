@@ -25,6 +25,9 @@ public class SprintSystem : MonoBehaviour
     public TileSpeedManagement tileSpeedManagement;
     public bool isSprinting;
     public float sprintCooldown;
+
+    public PlayerControls inputActionsForSprint;
+    public InputAction sprintAction;
     
     public float camZNormal;
     public float camZSprinting;
@@ -46,6 +49,9 @@ public class SprintSystem : MonoBehaviour
     private void Start()
     {
         // QUICK FIX FOR JOE. (i know this would break in your scene, so I made this to fix itself)
+        this.inputActionsForSprint = new PlayerControls();
+        this.sprintAction = this.inputActionsForSprint.PlayerCharacter.Sprint;
+        this.sprintAction.Enable();
 
         if(this.runAnimSpeedNormal == 0) 
         { 
@@ -77,13 +83,25 @@ public class SprintSystem : MonoBehaviour
         {
             this.StartSprinting();
         }
+        
         if (press.canceled)
         {
             this.StopSprinting();
         }
     }
+
+    public void HoldingSprintButtonUpdate()
+    {
+        if (this.isSprinting == false && this.sprintAction.IsPressed() == true && this.tileSpeedManagement.externalSpeedMultiplier == 1)
+        {
+            this.StartSprinting();
+        }
+    }
+
     private void FixedUpdate()
     {
+        this.HoldingSprintButtonUpdate();
+
         if (this.tileSpeedManagement.externalSpeedMultiplier < 1 && this.isSprinting)
         {
             this.StopSprinting();
