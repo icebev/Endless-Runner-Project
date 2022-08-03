@@ -13,6 +13,7 @@ public class CollectableEventFunctions : MonoBehaviour
 
     public int coinsCollected = 0;
     public AudioSource coinCollectSound;
+    public AudioSource powerUpCollectSound;
     public ParticleSystem powerUpCollectParticles;
     public ParticleSystem coinCollectParticles;
     public float remainingMagnetTime;
@@ -73,6 +74,7 @@ public class CollectableEventFunctions : MonoBehaviour
     public void TriggerPowerUp(PowerUpType powerUpRef)
     {
         this.powerUpCollectParticles.Play();
+        this.powerUpCollectSound.Play();
 
         // Magnet activation
         if (powerUpRef.powerUpName == "CoinMagnet")

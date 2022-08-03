@@ -61,7 +61,7 @@ public class LoadingManager : MonoBehaviour
     private IEnumerator LoadGameScene2(int Scene) //This part loads the next scene with a delay and Async.
     {
         //-----Insert transition Animation Here-----//
-        print("loading");
+        //print("loading");
 
         GameObject Transition = GameObject.FindGameObjectWithTag("Transitions");
         if (Transition != null)
@@ -80,7 +80,7 @@ public class LoadingManager : MonoBehaviour
                 this.loadingBar.value = 0.1f + asyncLoading.progress;
             }
 
-            print(asyncLoading.progress);
+            //print(asyncLoading.progress);
             yield return null;
         }
         this.currentlyLoading = false;
