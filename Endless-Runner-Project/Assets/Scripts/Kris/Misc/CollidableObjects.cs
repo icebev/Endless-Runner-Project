@@ -210,6 +210,8 @@ public class CollidableObjects : MonoBehaviour, iCollidable
 
                 break;
             case CollisionBehaviour.HopUp:
+                if (GameOverEvent.isPlayerDead == true) return;
+
                 this.charManager.HopUpCharacter();
                 break;
             case CollisionBehaviour.GoDown:
@@ -219,7 +221,9 @@ public class CollidableObjects : MonoBehaviour, iCollidable
 
                 break;
             case CollisionBehaviour.Stumble:
-                if (CollidableObjects.stumbleCoolDown > 0 || GameObject.FindObjectOfType<SprintSystem>().speedBoostModeActive == true || GameOverEvent.isPlayerDead == true) return; 
+                if (GameOverEvent.isPlayerDead == true) return;
+
+                if (CollidableObjects.stumbleCoolDown > 0 || GameObject.FindObjectOfType<SprintSystem>().speedBoostModeActive == true) return; 
                 CollidableObjects.stumbleCoolDown = 0.3f;
                 if (GameObject.FindObjectOfType<SprintSystem>().isSprinting == false)
                 {
@@ -232,12 +236,16 @@ public class CollidableObjects : MonoBehaviour, iCollidable
                 break;
                 
             case CollisionBehaviour.MoveLeft:
+                if (GameOverEvent.isPlayerDead == true) return;
+
                 if (CollidableObjects.pushLeftCoolDown > 0) return;
                 CollidableObjects.pushLeftCoolDown = 0.3f;
                 this.charManager.AddPlayerLaneTarget(-1);
                 break;
                 
             case CollisionBehaviour.MoveRight:
+                if (GameOverEvent.isPlayerDead == true) return;
+
                 if (CollidableObjects.pushLeftCoolDown > 0) return; 
                 CollidableObjects.pushLeftCoolDown = 0.3f;
                 this.charManager.AddPlayerLaneTarget(1);

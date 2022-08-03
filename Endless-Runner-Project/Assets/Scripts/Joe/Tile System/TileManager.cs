@@ -67,6 +67,7 @@ public class TileManager : MonoBehaviour
 
     private TileDifficulty lastNonFillerTileDifficulty;
     private int spawnFillersNextCount;
+    private float runPlaytime;
     #endregion
 
     public float CurrentTileSpeed
@@ -76,6 +77,8 @@ public class TileManager : MonoBehaviour
 
     private void Start()
     {
+        this.runPlaytime = 0.0f;
+
         // Reference speed incrementation script
         this.tileSpeedIncrementation = FindObjectOfType<TileSpeedIncrementation>();
         this.tileSpeedManagement = FindObjectOfType<TileSpeedManagement>();
@@ -142,11 +145,15 @@ public class TileManager : MonoBehaviour
             //if (z == this.tileSpawnCount)
             //{
             //    this.finalTile = newTile;
-            //}
+            //}fixedUpdate
         }
         //this.spawnHeightChange = 0;
     }
 
+    private void Update()
+    {
+        this.runPlaytime += Time.deltaTime;
+    }
 
     public Vector3 CalculateSpawnPosition()
     {
@@ -254,7 +261,7 @@ public class TileManager : MonoBehaviour
         else
         {
             int currentProbabilitySetIndex = 0;
-            while (Time.timeSinceLevelLoad > this.tileSpawnWeightings.spawnProbabilitySets[currentProbabilitySetIndex].maxSetTime)
+            while (this.runPlaytime > this.tileSpawnWeightings.spawnProbabilitySets[currentProbabilitySetIndex].maxSetTime)
             {
                 currentProbabilitySetIndex++;
             }

@@ -11,6 +11,7 @@ public class PowerUp : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             CollectableEventFunctions.OnPowerUpCollect.Invoke(this.powerUpType);
+            Destroy(this.gameObject);
         }
     }
 }

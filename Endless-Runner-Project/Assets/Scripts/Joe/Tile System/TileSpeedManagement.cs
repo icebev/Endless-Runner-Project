@@ -13,6 +13,7 @@ public class TileSpeedManagement : MonoBehaviour
     private float currentScore;
     private TileSpeedIncrementation tileSpeedIncrementation;
     private SprintSystem sprintSystem;
+    [SerializeField] private TextMeshProUGUI finalDistanceText;
 
     private void Start()
     {
@@ -29,12 +30,13 @@ public class TileSpeedManagement : MonoBehaviour
                 this.currentTileSpeed += this.sprintSystem.tileSpeedChange;
             }
             this.distanceTravelled += this.currentTileSpeed * Time.fixedDeltaTime;
-            this.currentScore = this.distanceTravelled * 10;
-            this.distanceTravelledText.text = Mathf.Round(this.currentScore).ToString();
+            this.currentScore = this.distanceTravelled;
+            this.distanceTravelledText.text = Mathf.Round(this.currentScore).ToString() + "m";
         }
         else
         {
             this.currentTileSpeed = 0.0f;
+            this.finalDistanceText.text = "Distance: " + Mathf.Round(this.distanceTravelled).ToString() + "m";
         }
 
     }

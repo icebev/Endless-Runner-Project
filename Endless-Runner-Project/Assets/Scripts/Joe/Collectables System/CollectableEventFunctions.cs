@@ -25,6 +25,10 @@ public class CollectableEventFunctions : MonoBehaviour
 
     public TextMeshProUGUI coinCountText;
 
+    public TextMeshProUGUI gameOverRunCoinCountText;
+    public TextMeshProUGUI gameOverTotalCoinText;
+
+
     public GameObject coinMagnetField;
     public GameObject coinMagnetIndicator;
 
@@ -37,6 +41,22 @@ public class CollectableEventFunctions : MonoBehaviour
         CollectableEventFunctions.OnPowerUpCollect = new UnityEvent<PowerUpType>();
         CollectableEventFunctions.OnCoinCollect.AddListener(IncrementCoinCount);
         CollectableEventFunctions.OnPowerUpCollect.AddListener(TriggerPowerUp);
+    }
+
+    public void RunEndCoinUpdate()
+    {
+        if (PlayerPrefs.GetInt("TotalPlayerCoins") == 0)
+        {
+            PlayerPrefs.SetInt("TotalPlayerCoins", this.coinsCollected);
+        }
+        else
+        {
+            int currentPlayerCoins = PlayerPrefs.GetInt("TotalPlayerCoins");
+            PlayerPrefs.SetInt("TotalPlayerCoins", currentPlayerCoins + this.coinsCollected);
+        }
+
+        this.gameOverRunCoinCountText.text = this.coinsCollected.ToString();
+        this.gameOverTotalCoinText.text = PlayerPrefs.GetInt("TotalPlayerCoins").ToString();
 
     }
 
