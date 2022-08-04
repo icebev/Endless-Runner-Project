@@ -331,8 +331,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DownwardsCollision: 01000000
   UpwardsCollision: 05000000
-  FrontUpperCollision: 04000000
-  FrontLowerCollision: 
+  FrontUpperCollision: 
+  FrontLowerCollision: 04000000
   FrontBothCollision: 
   LeftUpperCollision: 09000000
   LeftLowerCollision: 09000000
