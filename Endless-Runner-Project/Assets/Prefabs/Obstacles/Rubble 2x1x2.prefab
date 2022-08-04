@@ -332,7 +332,7 @@ MonoBehaviour:
   DownwardsCollision: 01000000
   UpwardsCollision: 
   FrontUpperCollision: 
-  FrontLowerCollision: 0400000007000000
+  FrontLowerCollision: 0900000007000000
   FrontBothCollision: 
   LeftUpperCollision: 09000000
   LeftLowerCollision: 09000000
