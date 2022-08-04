@@ -36,7 +36,7 @@ public class CharacterAnimManager : MonoBehaviour
 
     public void ManageAnimation(CharacterManager.playerStates playerState)
     {
-        if (this.charAnimator.GetCurrentAnimatorStateInfo(0).IsName("FallingIdle") && playerState == CharacterManager.playerStates.grounded) //To fix a bug where animation can get stuck at "Falling Idle" when grounded
+        if (this.charAnimator.GetCurrentAnimatorStateInfo(0).IsName("Running") && playerState == CharacterManager.playerStates.grounded && this.charAnimator.GetBool("Run")) //To fix a bug where animation can get stuck at "Falling Idle" when grounded
         {
             this.charAnimator.SetTrigger("Run");
 

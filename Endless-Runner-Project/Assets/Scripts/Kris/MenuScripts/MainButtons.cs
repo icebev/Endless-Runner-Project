@@ -7,13 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class MainButtons : MonoBehaviour
 {
-
+    [SerializeField] private GameObject fadeObj;
     [SerializeField] private MenuHandler _menuHandler;
 
     [SerializeField] private Button[] _menuButtons;
     [SerializeField] private Button[] _optionsButtons;
     [SerializeField] private Button[] _creditsButtons;
     [SerializeField] private Button[] _quitButtons;
+    [SerializeField] private Button[] _storeButtons;
     //[SerializeField] private Button[] _;
 
 
@@ -38,7 +39,7 @@ public class MainButtons : MonoBehaviour
                 _GameButtons = this._quitButtons;
                 break;
             case MenuHandler.gameMenus.Store:
-
+                _GameButtons = this._storeButtons;
                 break;
 
         }
@@ -63,6 +64,7 @@ public class MainButtons : MonoBehaviour
 
     public void PlayGame()
     {
+        this.fadeObj.SetActive(true);
         GameObject _loadingManagerObject = GameObject.FindGameObjectWithTag("LoadManager");
         LoadingManager _loadingManagerScript = _loadingManagerObject.GetComponent<LoadingManager>();
         _loadingManagerScript.LoadGameScene1(3, true, 0);

@@ -6,13 +6,18 @@ using UnityEngine.UI;
 public class MenuHandler : MonoBehaviour
 {
     // Start is called before the first frame update
-    
-    
+
+    [SerializeField] private Animator blocksAnim;
     [SerializeField] private GameObject[] _menus;
     [SerializeField] private Animator[] _menusAnimator;
     [SerializeField] private MainButtons _buttonManager;
     private gameMenus _menuState = gameMenus.Main;
     private gameMenus _previousMenu;
+
+    private void Start()
+    {
+        this.blocksAnim.gameObject.SetActive(true);
+    }
 
     public enum gameMenus
     {
@@ -25,25 +30,40 @@ public class MenuHandler : MonoBehaviour
 
     public void ReturnMenuState()
     {
-        ChangeMenuState(_previousMenu);
+        ChangeMenuState(this._previousMenu);
     }
 
     public void ChangeMenuState(gameMenus targetMenu)
     {
 
-        if (_menuState != targetMenu)
-        {
-            
-            this._previousMenu = this._menuState;
-            this._menuState = targetMenu;
-            this._buttonManager.ToggleButtons(this._previousMenu, false);
-            this._menus[(int)this._previousMenu].SetActive(false);  //Change this for animation
-            this._buttonManager.ToggleButtons(this._menuState, true);
-            this._menus[(int)this._menuState].SetActive(true); //Change this for animation
+        if (this._menuState == targetMenu) return;
+        StartCoroutine(transitionMenu(targetMenu));
+        /*
+        this._previousMenu = this._menuState;
+        this._menuState = targetMenu;
+        this._buttonManager.ToggleButtons(this._previousMenu, false);
+        this._menus[(int)this._previousMenu].SetActive(false);  //Change this for animation
+        this._buttonManager.ToggleButtons(this._menuState, true);
+        this._menus[(int)this._menuState].SetActive(true); //Change this for animation
+        */
 
-        }
     }
 
+    IEnumerator transitionMenu(gameMenus targetMenu)
+    {
+        this._previousMenu = this._menuState;
+        this._menuState = targetMenu;
+        this._buttonManager.ToggleButtons(this._previousMenu, false);
+        this.blocksAnim.Play("BlocksOut");
+        yield return new WaitForSeconds(0.75f);
+        this._menus[(int)this._previousMenu].SetActive(false);
+        this._menus[(int)this._menuState].SetActive(true);
+        this._buttonManager.ToggleButtons(this._menuState, false);
+        this.blocksAnim.Play("BlocksIn");
+        yield return new WaitForSeconds(0.75f);
+        this._buttonManager.ToggleButtons(this._menuState, true);
+        yield return null;
+    }
 
     /*
 
