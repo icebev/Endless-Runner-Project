@@ -55,12 +55,12 @@ public class MenuHandler : MonoBehaviour
         this._menuState = targetMenu;
         this._buttonManager.ToggleButtons(this._previousMenu, false);
         this.blocksAnim.Play("BlocksOut");
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(1f);
         this._menus[(int)this._previousMenu].SetActive(false);
         this._menus[(int)this._menuState].SetActive(true);
         this._buttonManager.ToggleButtons(this._menuState, false);
         this.blocksAnim.Play("BlocksIn");
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(1f);
         this._buttonManager.ToggleButtons(this._menuState, true);
         yield return null;
     }
