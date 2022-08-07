@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Pause : MonoBehaviour
 {
     private GameStateControls gameStateControls;
     private InputAction pauseAction;
+
+    [SerializeField] private Button pauseButton;
+    [SerializeField] private Button resumeButton;
 
     private void OnEnable()
     {
@@ -21,11 +25,11 @@ public class Pause : MonoBehaviour
     {
         if (Time.timeScale != 0)
         {
-            this.PauseGame();
+            this.pauseButton.onClick.Invoke();
         }
         else
         {
-            this.UnpauseGame();
+            this.resumeButton.onClick.Invoke();
         }
     }
 

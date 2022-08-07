@@ -79,6 +79,7 @@ public class CharacterManager : MonoBehaviour
     //[SerializeField] private animationStates animationState = animationStates.RegularRun;
     [SerializeField] private Animator playerAnimator;
     private CharacterAnimManager animManager;
+    [SerializeField] private CharacterMovementSFXPlayer characterMovementSFXPlayer;
 
     [SerializeField] private bool doPhysics = true;
     private bool isGrounded = true;
@@ -277,8 +278,14 @@ public class CharacterManager : MonoBehaviour
                 }
                 break;
         }
+
+
         this.recentMove = Direction;
         this.CheckLaneBounds();
+        if (this.targetLane != this.playerPosition.x && !this.transitioning)
+        {
+            this.characterMovementSFXPlayer.PlayLaneChangeSound();
+        }
     }
 
     public void Rotate(TurnDirection turnDirection)
@@ -340,6 +347,10 @@ public class CharacterManager : MonoBehaviour
                 this.targetLane += this.recentMoveScheduled;
                 this.recentMoveScheduled = 0;
                 this.CheckLaneBounds();
+                if (this.targetLane != this.playerPosition.x)
+                { 
+                    this.characterMovementSFXPlayer.PlayLaneChangeSound();
+                }
             }
 
         }
@@ -479,6 +490,7 @@ public class CharacterManager : MonoBehaviour
             return;
         }
         if (!this.isGrounded) return;
+        this.characterMovementSFXPlayer.PlaySlideSound();
         this.slideTick = 0;
         
         this.currentState = playerStates.crouching;
@@ -486,7 +498,8 @@ public class CharacterManager : MonoBehaviour
 
     public void Jump()
     {
-        if (!this.isGrounded) return; 
+        if (!this.isGrounded) return;
+        this.characterMovementSFXPlayer.PlayJumpSound();
         this.currentState = playerStates.jumping;
         this.playerYSpeed += this.jumpVelocity;
         this.isGrounded = false;

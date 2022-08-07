@@ -41,6 +41,9 @@ public class ObstacleCollisionConsequences : MonoBehaviour
     public void StumbleSlowDown(int slowDownIndex)
     {
         this.playerAnimator.Play("Stumble");
+        this.playerAnimator.ResetTrigger("Run");
+        this.playerAnimator.ResetTrigger("Slide");
+        this.playerAnimator.ResetTrigger("Jump");
         this.collisionParticles.Play();
         this.collisionAudio.Play();
 

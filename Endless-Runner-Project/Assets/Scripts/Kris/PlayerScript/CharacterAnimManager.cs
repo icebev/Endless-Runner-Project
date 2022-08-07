@@ -36,14 +36,22 @@ public class CharacterAnimManager : MonoBehaviour
 
     public void ManageAnimation(CharacterManager.playerStates playerState)
     {
-        if (this.charAnimator.GetCurrentAnimatorStateInfo(0).IsName("Running") && playerState == CharacterManager.playerStates.grounded && this.charAnimator.GetBool("Run")) //To fix a bug where animation can get stuck at "Falling Idle" when grounded
-        {
-            this.charAnimator.SetTrigger("Run");
+        //if (this.charAnimator.GetCurrentAnimatorStateInfo(0).IsName("Running") && playerState == CharacterManager.playerStates.grounded && this.charAnimator.GetBool("Run")) //To fix a bug where animation can get stuck at "Falling Idle" when grounded
+        //{
+        //    this.charAnimator.ResetTrigger("Run");
 
-        }
+        //}
         if (this.previousAnimationState == playerState) return; //Check whether or not the animation has already been set to play.
 
         this.previousAnimationState = playerState;
+
+        this.charAnimator.ResetTrigger("Run");
+        this.charAnimator.ResetTrigger("Slide");
+        this.charAnimator.ResetTrigger("Fall");
+        this.charAnimator.ResetTrigger("Jump");
+
+
+
         switch (playerState)                                //These play the animations based on the character's States.
         {
             case CharacterManager.playerStates.grounded:
