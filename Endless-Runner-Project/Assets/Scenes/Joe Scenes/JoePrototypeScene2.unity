@@ -15498,7 +15498,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 0
-    chaserCatchUpAmount: 0.1
+    chaserCatchUpAmount: 0.2
     specificSlowDownDuration: 2
   - slowDownCurve:
       serializedVersion: 2
@@ -15533,7 +15533,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 0
-    chaserCatchUpAmount: 0.2
+    chaserCatchUpAmount: 0.4
     specificSlowDownDuration: 2
   collisionParticles: {fileID: 1144908402}
   collisionImpactAudio: {fileID: 2096038434}
@@ -22944,7 +22944,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f13725797461b684597d5543556319b2, type: 3}
   jumpGaspSounds:
   - {fileID: 8300000, guid: cceb8f6b4245fa444b38bcb8f7e36253, type: 3}
-  - {fileID: 8300000, guid: 1dc86016cdd3d62459f648d45590fa51, type: 3}
   - {fileID: 8300000, guid: 4d340506a97349b41b2acc436ea0fd78, type: 3}
   whooshPitchVariance: 0.1
 --- !u!1 &1533793778
@@ -35272,6 +35271,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3dd76ad90ca351148b5aac3719ea127f, type: 2}
   - {fileID: 11400000, guid: d2ca77aeba2cefb45a5cefbd9cb4e625, type: 2}
   - {fileID: 11400000, guid: d34939d6de2ba9647bdfad77ffd8e1e3, type: 2}
+  - {fileID: 11400000, guid: f5b432cb712b5134f9ef972aa94b5b8b, type: 2}
+  - {fileID: 11400000, guid: 1d7b36f129d432549858e61460d9c3c3, type: 2}
   startingTile: {fileID: 11400000, guid: 4c9692487ae43034ab5b141653cb50de, type: 2}
   tileSpawnCount: 8
   initialFillerCount: 3

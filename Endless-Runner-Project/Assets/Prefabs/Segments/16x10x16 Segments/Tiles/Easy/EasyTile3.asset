@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 9103113601374574471, guid: 8256718c164983f4f99f718d9294b6ac, type: 3}
   difficulty: 2
-  tileLength: 1
+  tileLength: 2
   spawnProbability: 1
   hasCorner: 0
   hasJunction: 0

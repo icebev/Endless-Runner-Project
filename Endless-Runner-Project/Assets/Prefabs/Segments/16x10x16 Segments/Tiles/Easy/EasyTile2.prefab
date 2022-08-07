@@ -449,6 +449,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8751077177559328983, guid: 733c254db220b5849948b8fc5bc8e62c, type: 3}
+      propertyPath: FrontBothCollision.Array.data[0]
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8751077177559328983, guid: 733c254db220b5849948b8fc5bc8e62c, type: 3}
+      propertyPath: FrontUpperCollision.Array.data[0]
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 733c254db220b5849948b8fc5bc8e62c, type: 3}
 --- !u!4 &7535824723732094854 stripped
@@ -1324,6 +1332,14 @@ PrefabInstance:
     - target: {fileID: 8412267074745641496, guid: 733c254db220b5849948b8fc5bc8e62c, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8751077177559328983, guid: 733c254db220b5849948b8fc5bc8e62c, type: 3}
+      propertyPath: FrontBothCollision.Array.data[0]
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8751077177559328983, guid: 733c254db220b5849948b8fc5bc8e62c, type: 3}
+      propertyPath: FrontUpperCollision.Array.data[0]
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 733c254db220b5849948b8fc5bc8e62c, type: 3}
