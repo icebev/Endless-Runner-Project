@@ -17,7 +17,8 @@ public class ObstacleCollisionConsequences : MonoBehaviour
 
     public ConfigurablePlayerSlowDown[] playerSlowDowns;
     public ParticleSystem collisionParticles;
-    public AudioSource collisionAudio;
+    public AudioSource collisionImpactAudio;
+    public AudioSource collisionGruntAudio;
 
     [System.Serializable]
     public struct ConfigurablePlayerSlowDown
@@ -45,7 +46,8 @@ public class ObstacleCollisionConsequences : MonoBehaviour
         this.playerAnimator.ResetTrigger("Slide");
         this.playerAnimator.ResetTrigger("Jump");
         this.collisionParticles.Play();
-        this.collisionAudio.Play();
+        this.collisionImpactAudio.Play();
+        this.collisionGruntAudio.Play();
 
         ConfigurablePlayerSlowDown configurablePlayerSlow = this.playerSlowDowns[slowDownIndex];
         this.slowDownAnimationTime = 0.0f;

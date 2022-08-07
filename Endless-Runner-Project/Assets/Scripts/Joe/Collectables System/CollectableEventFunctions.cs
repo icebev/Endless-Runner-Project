@@ -35,6 +35,7 @@ public class CollectableEventFunctions : MonoBehaviour
 
     public GameObject coinMultiplierIndicator;
     public GameObject boostIndicator;
+    public GameObject boostShield;
 
     private void Awake()
     {
@@ -130,6 +131,7 @@ public class CollectableEventFunctions : MonoBehaviour
     {
         this.remainingBoostTime = activeDuration;
         this.boostIndicator.SetActive(true);
+        this.boostShield.SetActive(true);
         FindObjectOfType<SprintSystem>().speedBoostModeActive = true;
         this.boostActive = true;
     }
@@ -139,6 +141,7 @@ public class CollectableEventFunctions : MonoBehaviour
         SprintSystem sprintSystem = FindObjectOfType<SprintSystem>();
         sprintSystem.speedBoostModeActive = false;
         this.boostIndicator.SetActive(false);
+        this.boostShield.SetActive(false);
         sprintSystem.StopSprinting();
         sprintSystem.tileSpeedChange = 2;
         this.boostActive = false;
