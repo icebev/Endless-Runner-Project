@@ -16,8 +16,8 @@ public class CollidableObjects : MonoBehaviour, iCollidable
 {
     //Cooldowns as to not collide every frame
     public static float stumbleCoolDown = 0.3f;     
-    public static float pushRightCoolDown = 0.3f; //Push is when the character is moved left or right
-    public static float pushLeftCoolDown = 0.3f;
+    public static float pushRightCoolDown = 0.04f; //Push is when the character is moved left or right
+    public static float pushLeftCoolDown = 0.04f;
     
     //List of the different type of collision behaviours.
     private enum CollisionBehaviour
@@ -239,7 +239,7 @@ public class CollidableObjects : MonoBehaviour, iCollidable
                 if (GameOverEvent.isPlayerDead == true) return;
 
                 if (CollidableObjects.pushLeftCoolDown > 0) return;
-                CollidableObjects.pushLeftCoolDown = 0.3f;
+                CollidableObjects.pushLeftCoolDown = 0.04f;
                 this.charManager.AddPlayerLaneTarget(-1);
                 break;
                 
@@ -247,7 +247,7 @@ public class CollidableObjects : MonoBehaviour, iCollidable
                 if (GameOverEvent.isPlayerDead == true) return;
 
                 if (CollidableObjects.pushLeftCoolDown > 0) return; 
-                CollidableObjects.pushLeftCoolDown = 0.3f;
+                CollidableObjects.pushLeftCoolDown = 0.04f;
                 this.charManager.AddPlayerLaneTarget(1);
                 break;
                 
