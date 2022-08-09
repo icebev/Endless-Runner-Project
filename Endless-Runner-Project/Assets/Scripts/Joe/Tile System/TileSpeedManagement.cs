@@ -41,4 +41,17 @@ public class TileSpeedManagement : MonoBehaviour
 
     }
 
+    public void RunEndDistanceUpdate()
+    {
+        int lifeTimeTotalDistance = PlayerPrefs.GetInt("LifetimeTotalDistance");
+        lifeTimeTotalDistance += Mathf.RoundToInt(this.distanceTravelled);
+        PlayerPrefs.SetInt("LifetimeTotalDistance", lifeTimeTotalDistance);
+
+        int lifeTimeBestDistance = PlayerPrefs.GetInt("LifetimeBestDistance");
+        if (this.distanceTravelled > lifeTimeBestDistance)
+        {
+            PlayerPrefs.SetInt("LifetimeBestDistance", Mathf.RoundToInt(this.distanceTravelled));
+        }
+    }
+
 }

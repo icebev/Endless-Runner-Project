@@ -19,6 +19,9 @@ public class GameOverEvent : MonoBehaviour
     public void KillPlayer()
     {
         GameOverEvent.isPlayerDead = true;
+        int totalPlayerDeaths = PlayerPrefs.GetInt("LifetimeTotalDeaths");
+        totalPlayerDeaths++;
+        PlayerPrefs.SetInt("LifetimeTotalDeaths", totalPlayerDeaths);
     }
 
 }

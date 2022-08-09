@@ -33,7 +33,6 @@ public class StoreManager : MonoBehaviour
     {
 
         this.coins = PlayerPrefs.GetInt("TotalPlayerCoins");
-        this.coins = 100000;
         this.upgrades[(int)GameUpgrades.Coin] = PlayerPrefs.GetInt(PlayerPrefStrings[(int)GameUpgrades.Coin]);
         this.upgrades[(int)GameUpgrades.Magnet] = PlayerPrefs.GetInt(PlayerPrefStrings[(int)GameUpgrades.Magnet]);
         this.upgrades[(int)GameUpgrades.Boost] = PlayerPrefs.GetInt(PlayerPrefStrings[(int)GameUpgrades.Boost]);

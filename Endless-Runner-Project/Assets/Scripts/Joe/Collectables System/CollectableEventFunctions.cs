@@ -12,6 +12,8 @@ public class CollectableEventFunctions : MonoBehaviour
     public static UnityEvent<PowerUpType> OnPowerUpCollect;
 
     public int coinsCollected = 0;
+    public int powerUpsCollected = 0;
+
     public AudioSource coinCollectSound;
     public AudioSource powerUpCollectSound;
     public ParticleSystem powerUpCollectParticles;
@@ -60,6 +62,16 @@ public class CollectableEventFunctions : MonoBehaviour
         this.gameOverRunCoinCountText.text = this.coinsCollected.ToString();
         this.gameOverTotalCoinText.text = PlayerPrefs.GetInt("TotalPlayerCoins").ToString();
 
+        int lifeTimeTotalCoins = PlayerPrefs.GetInt("LifetimeCoinsCollected");
+        lifeTimeTotalCoins += this.coinsCollected;
+        PlayerPrefs.SetInt("LifetimeCoinsCollected", lifeTimeTotalCoins);
+
+        // Also update total powerups collected here for convenience and prevent having to update on every collect
+        int lifeTimeTotalPowerups = PlayerPrefs.GetInt("LifetimeTotalPowerups");
+        lifeTimeTotalPowerups += this.powerUpsCollected;
+        PlayerPrefs.SetInt("LifetimeTotalPowerups", lifeTimeTotalPowerups);
+
+
     }
 
     public void IncrementCoinCount(int coinVal)
@@ -76,6 +88,9 @@ public class CollectableEventFunctions : MonoBehaviour
     {
         this.powerUpCollectParticles.Play();
         this.powerUpCollectSound.Play();
+
+        this.powerUpsCollected++;
+
 
         // Magnet activation
         if (powerUpRef.powerUpName == "CoinMagnet")

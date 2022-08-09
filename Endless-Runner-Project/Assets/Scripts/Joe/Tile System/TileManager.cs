@@ -133,7 +133,13 @@ public class TileManager : MonoBehaviour
 
         this.lastNonFillerTileDifficulty = TileDifficulty.Easy;
         this.finalTile = Instantiate(this.startingTile.tilePrefab, this.startingTile.tilePrefab.transform.position, this.startingTile.tilePrefab.transform.rotation);
+        
         this.spawnFillersNextCount = this.initialFillerCount;
+        if (PlayerPrefs.GetInt("TutorialComplete") != 1)
+        {
+            this.spawnFillersNextCount = 5;
+        }
+
         ///this.finalTile.transform.Translate(new Vector3(0, 4.5f, 0));
         // Spawn in the starting tile sequence
         for (int z = 0; z <= this.tileSpawnCount; z++)
