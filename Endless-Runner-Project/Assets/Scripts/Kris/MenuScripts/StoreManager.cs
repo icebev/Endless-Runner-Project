@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class StoreManager : MonoBehaviour
 {
     private int coins;
+    [SerializeField] private float subsequentPurchaseAudioPitchIncrease;
     [SerializeField] private TextMeshProUGUI[] coinsText;
     [SerializeField] private TextMeshProUGUI[] UpgradesText;
     [SerializeField] private TextMeshProUGUI[] PurchaseText;
@@ -32,7 +33,7 @@ public class StoreManager : MonoBehaviour
     {
 
         this.coins = PlayerPrefs.GetInt("TotalPlayerCoins");
-
+        this.coins = 100000;
         this.upgrades[(int)GameUpgrades.Coin] = PlayerPrefs.GetInt(PlayerPrefStrings[(int)GameUpgrades.Coin]);
         this.upgrades[(int)GameUpgrades.Magnet] = PlayerPrefs.GetInt(PlayerPrefStrings[(int)GameUpgrades.Magnet]);
         this.upgrades[(int)GameUpgrades.Boost] = PlayerPrefs.GetInt(PlayerPrefStrings[(int)GameUpgrades.Boost]);
@@ -94,10 +95,12 @@ public class StoreManager : MonoBehaviour
     {
         if (this.coins < this.finalCost[(int)whichUpgrade] || this.finalCost[(int)whichUpgrade] == 3200)
         {
+            this.PurchaseAudio.pitch = 1.0f;
             this.PurchaseAudio.clip = this.PuchaseAudioClips[1];
             this.PurchaseAudio.Play();
             return;
         }
+        this.PurchaseAudio.pitch = 1.0f + (this.subsequentPurchaseAudioPitchIncrease * this.upgrades[(int)whichUpgrade]);
         this.PurchaseAudio.clip = this.PuchaseAudioClips[0];
         this.PurchaseAudio.Play();
         this.coins -= this.finalCost[(int)whichUpgrade];

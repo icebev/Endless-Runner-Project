@@ -80,19 +80,22 @@ public class CollectableEventFunctions : MonoBehaviour
         // Magnet activation
         if (powerUpRef.powerUpName == "CoinMagnet")
         {
-            this.ActivateMagnet(powerUpRef.powerUpDuration);
+            float activeTime = 3 + (2 * PlayerPrefs.GetInt("GameUpgradeMagnet"));
+            this.ActivateMagnet(activeTime);
         }
 
         // Multiplier activation
         if (powerUpRef.powerUpName == "CoinMultiplier")
         {
-            this.ActivateMultiplier(powerUpRef.powerUpDuration);
+            float activeTime = 3 + (2 * PlayerPrefs.GetInt("GameUpgradeCoin"));
+            this.ActivateMultiplier(activeTime);
         }
 
         // Speed boost activation
         if (powerUpRef.powerUpName == "MaxSpeed")
         {
-            this.ActivateSpeedBoost(powerUpRef.powerUpDuration);
+            float activeTime = 2 + (2 * PlayerPrefs.GetInt("GameUpgradeBoost"));
+            this.ActivateSpeedBoost(activeTime);
         }
 
     }
