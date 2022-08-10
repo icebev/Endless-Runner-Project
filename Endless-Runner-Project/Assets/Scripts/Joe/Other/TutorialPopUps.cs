@@ -6,19 +6,20 @@ using UnityEngine.InputSystem;
 public class TutorialPopUps : MonoBehaviour
 {
 
-    public PlayerControls tutorialInputActions;
-    public InputAction jump;
-    public InputAction slide;
-    public InputAction moveLeft;
-    public InputAction moveRight;
-    public InputAction sprint;
-    public GameObject[] popUps;
-    public int currentPopUpNumber;
-    public PauseScipt pauseScript;
+    private PlayerControls tutorialInputActions;
+    private InputAction jump;
+    private InputAction slide;
+    private InputAction moveLeft;
+    private InputAction moveRight;
+    private InputAction sprint;
 
-    public float timeUntilFirstPause;
+    [SerializeField] private GameObject[] popUps;
+    [SerializeField] private int currentPopUpNumber;
+    [SerializeField] private PauseScipt pauseScript;
 
-    public float timeBetweenPopups;
+    [SerializeField] private float timeUntilFirstPause;
+    [SerializeField] private float timeBetweenPopups;
+
     private bool waitingForNextPopup;
     private float timeUntilNextPopUp;
 

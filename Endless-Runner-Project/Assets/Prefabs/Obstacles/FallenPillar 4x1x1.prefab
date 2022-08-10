@@ -44,8 +44,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 376.3202, y: 71.66003, z: 79.26849}
-  m_Center: {x: -212.54904, y: 34.136265, z: 60.27419}
+  m_Size: {x: 376.32016, y: 71.66003, z: 68.77262}
+  m_Center: {x: -212.54907, y: 34.136265, z: 65.52211}
 --- !u!114 &956029495445597096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DownwardsCollision: 01000000
-  UpwardsCollision: 05000000
+  UpwardsCollision: 
   FrontUpperCollision: 07000000
   FrontLowerCollision: 07000000
   FrontBothCollision: 07000000
