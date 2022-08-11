@@ -132,11 +132,4 @@ public class StoreManager : MonoBehaviour
         this._blockManagers[(int)GameUpgrades.Magnet].RedifyBlocks();
         this._blockManagers[(int)GameUpgrades.Boost].RedifyBlocks();
     }
-
-    private void FixedUpdate()
-    {
-        print(this.upgrades[(int)GameUpgrades.Coin]);
-        
-    }
-
 }

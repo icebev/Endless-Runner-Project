@@ -4393,7 +4393,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: a800267eb893a2a42a8ac7df1b566714, type: 2}
   m_audioClip: {fileID: 8300000, guid: c540df07570e65c4db5ea12561ac4914, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.12
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -10051,6 +10051,10 @@ PrefabInstance:
     - target: {fileID: 7050340050899332785, guid: db81c186dafe0d347813a8c738eb3c61, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7050340050899332785, guid: db81c186dafe0d347813a8c738eb3c61, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7050340050899332785, guid: db81c186dafe0d347813a8c738eb3c61, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName

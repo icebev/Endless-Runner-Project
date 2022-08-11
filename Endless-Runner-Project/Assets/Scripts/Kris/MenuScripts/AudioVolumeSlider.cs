@@ -42,11 +42,11 @@ public class AudioVolumeSlider : MonoBehaviour
 
     public void MouseUpEvent()
     {
-        print("Test");
         switch (this.isSfxSlider)
         {
             case true:
                 PlayerPrefs.SetFloat("SfxMixerValue", this.storedVolume);
+                this.slideSound.Play();
                 break;
 
             case false:

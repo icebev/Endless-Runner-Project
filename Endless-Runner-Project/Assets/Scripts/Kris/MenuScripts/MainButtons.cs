@@ -44,26 +44,16 @@ public class MainButtons : MonoBehaviour
 
         }
 
-        foreach(Button _button in _GameButtons)
+        foreach (Button _button in _GameButtons)
         {
-            switch (ButtonEnable)
-            {
-                case true:
-                    _button.interactable = true;
-                    break;
-                case false:
-                    _button.interactable = false;
-                    break;
 
-            }
-            
+            _button.interactable = ButtonEnable;
         }
-
-       
     }
 
     public void PlayGame()
     {
+        ToggleButtons(MenuHandler.gameMenus.Main, false);
         this.fadeObj.SetActive(true);
         GameObject _loadingManagerObject = GameObject.FindGameObjectWithTag("LoadManager");
         LoadingManager _loadingManagerScript = _loadingManagerObject.GetComponent<LoadingManager>();
