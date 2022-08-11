@@ -17,4 +17,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Joe Scenes/Main.unity
     guid: 88d64ee94e6af3e4993580c1d4b81bd8
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 875ff9443e0adaa43b9fe62fb058730a, type: 2}

@@ -3,23 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/* CHASER MECHANIC CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 11/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Commenting pass
+ * 
+ */
+
+/// <summary>
+/// Implements the fog chaser mechanic, moves the GUI fog, and triggers game over.
+/// </summary>
 public class ChaserMechanic : MonoBehaviour
 {
-    public GameObject movingFog;
-    public AnimationCurve fogYPositionCurve;
-
+    // Inspector set references
+    [Header("Private References")]
     [SerializeField] private Animator sprintIndicatorAnimator;
+    [SerializeField] private GameObject movingFog;
+    [SerializeField] private Slider chaserSlider;
+    [SerializeField] private GameOverEvent gameOverEvent;
 
-    public Slider chaserSlider;
-    public float chaserStartDistance;
-    public float chaserCurrentDistance;
-    public float chaserMaxDistance;
-    public GameOverEvent gameOverEvent;
-    public float fogMoveSpeed;
+    [Header("Configurable Values")]
+    [Tooltip("A curve for the y position of the GUI fog as the slider value changes.")]
+    [SerializeField] private AnimationCurve fogYPositionCurve;
+    [SerializeField] private float chaserStartDistance;
+    [SerializeField] private float chaserMaxDistance;
+    [SerializeField] private float fogMoveSpeed;
 
+    [Tooltip("How quickly the chaser catches up the the player when not sprinting.")]
+    [SerializeField] private float chaserCloseInRate; //0.025f
+    [Tooltip("How quickly the player gets away from the chaser when sprinting.")]
+    [SerializeField] private float sprintEscapeRate; // 0.1f
     private SprintSystem sprintSystem;
-    public float chaserCloseInRate; //0.025f
-    public float sprintEscapeRate; // 0.1f
+
+    public float chaserCurrentDistance;
 
     private void Start()
     {
@@ -31,6 +49,7 @@ public class ChaserMechanic : MonoBehaviour
     {
         if (GameOverEvent.isPlayerDead == false)
         {
+            // We change the chaser distance sbsed on whether the player is sprinting or not,  
             if (this.sprintSystem.isSprinting)
             {
                 if (this.chaserCurrentDistance < this.chaserMaxDistance)
