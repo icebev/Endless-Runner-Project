@@ -15,6 +15,7 @@ public class MainButtons : MonoBehaviour
     [SerializeField] private Button[] _creditsButtons;
     [SerializeField] private Button[] _quitButtons;
     [SerializeField] private Button[] _storeButtons;
+    [SerializeField] private Button[] _statsButtons;
     //[SerializeField] private Button[] _;
 
 
@@ -41,12 +42,14 @@ public class MainButtons : MonoBehaviour
             case MenuHandler.gameMenus.Store:
                 _GameButtons = this._storeButtons;
                 break;
+            case MenuHandler.gameMenus.Stats:
+                _GameButtons = this._statsButtons;
+                break;
 
         }
 
         foreach (Button _button in _GameButtons)
         {
-
             _button.interactable = ButtonEnable;
         }
     }
@@ -84,6 +87,11 @@ public class MainButtons : MonoBehaviour
     public void Store()
     {
         _menuHandler.ChangeMenuState(MenuHandler.gameMenus.Store);
+    }
+
+    public void Stats()
+    {
+        _menuHandler.ChangeMenuState(MenuHandler.gameMenus.Stats);
     }
 
     public void ExitGame()

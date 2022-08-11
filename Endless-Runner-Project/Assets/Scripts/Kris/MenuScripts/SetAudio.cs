@@ -15,7 +15,6 @@ public class SetAudio : MonoBehaviour
     private void Start()
     {
         int FirstTimeLaunch = PlayerPrefs.GetInt("FirstTimeLaunch");
-        print(FirstTimeLaunch);
         float sfxVolume;
         float musicVolume;
 
