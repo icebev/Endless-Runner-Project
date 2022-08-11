@@ -9169,6 +9169,10 @@ PrefabInstance:
       propertyPath: _audioMixer
       value: 
       objectReference: {fileID: 24100000, guid: a800267eb893a2a42a8ac7df1b566714, type: 2}
+    - target: {fileID: 3192495308657368449, guid: b7e43e29eb2262f46b98efe23c47b820, type: 3}
+      propertyPath: isSfxSlider
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5277302259726790727, guid: b7e43e29eb2262f46b98efe23c47b820, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -5

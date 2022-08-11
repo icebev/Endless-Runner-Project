@@ -12,23 +12,23 @@ public class SetAudio : MonoBehaviour
         Music,
     }
 
-    private void Awake()
+    private void Start()
     {
         int FirstTimeLaunch = PlayerPrefs.GetInt("FirstTimeLaunch");
-
+        print(FirstTimeLaunch);
         float sfxVolume;
         float musicVolume;
 
         switch (FirstTimeLaunch)
         {
-            case 0:
+            case 1:
+                sfxVolume = PlayerPrefs.GetFloat("SfxMixerValue");
+                musicVolume = PlayerPrefs.GetFloat("MusicMixerValue");
+                break;
+            default:
                 sfxVolume = 1;
                 musicVolume = 1;
                 PlayerPrefs.SetInt("FirstTimeLaunch", 1);
-                break;
-            default:
-                sfxVolume = PlayerPrefs.GetFloat("SfxMixerValue");
-                musicVolume = PlayerPrefs.GetFloat("MusicMixerValue");
                 break;
         }
         
