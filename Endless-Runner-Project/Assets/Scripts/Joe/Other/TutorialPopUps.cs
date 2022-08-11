@@ -14,6 +14,8 @@ public class TutorialPopUps : MonoBehaviour
     private InputAction sprint;
 
     [SerializeField] private GameObject[] popUps;
+    [SerializeField] private AudioSource popUpSound;
+    [SerializeField] private AudioClip[] popUpSoundClips;
     [SerializeField] private int currentPopUpNumber;
     [SerializeField] private PauseScipt pauseScript;
 
@@ -21,6 +23,7 @@ public class TutorialPopUps : MonoBehaviour
     [SerializeField] private float timeBetweenPopups;
 
     private bool waitingForNextPopup;
+    private bool popUpActive;
     private float timeUntilNextPopUp;
 
     // Start is called before the first frame update
@@ -50,14 +53,14 @@ public class TutorialPopUps : MonoBehaviour
         {
             case 0:
                 {
-                    if (this.timeUntilFirstPause <= 0.0f)
+                    if (this.timeUntilFirstPause <= 0.0f && this.popUpActive == false)
                     {
                         this.DisplayPopUp(this.currentPopUpNumber);
                         this.jump.Enable();
 
                     }
 
-                    if (this.jump.IsPressed())
+                    if (this.jump.IsPressed() && this.popUpActive == true)
                     {
                         this.HidePopUp(this.currentPopUpNumber);
                     }
@@ -115,9 +118,18 @@ public class TutorialPopUps : MonoBehaviour
 
     private void DisplayPopUp(int popUpNumber)
     {
+        if (popUpNumber % 2 == 0)
+        {
+            this.popUpSound.PlayOneShot(this.popUpSoundClips[0]);
+        }
+        else
+        {
+            this.popUpSound.PlayOneShot(this.popUpSoundClips[1]);
+        }
         this.popUps[popUpNumber].SetActive(true);
         this.pauseScript.PauseGame();
         this.waitingForNextPopup = false;
+        this.popUpActive = true;
     }
 
     private void HidePopUp(int popUpNumber)
@@ -127,6 +139,7 @@ public class TutorialPopUps : MonoBehaviour
         this.currentPopUpNumber++;
         this.timeUntilNextPopUp = this.timeBetweenPopups;
         this.waitingForNextPopup = true;
+        this.popUpActive = false;
     }
 
     private void SelfDestruct()
