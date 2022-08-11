@@ -252,6 +252,8 @@ public class CollidableObjects : MonoBehaviour, iCollidable
                 break;
                 
             case CollisionBehaviour.Kill:
+                if (GameOverEvent.isPlayerDead == true) return;
+                GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(2);
 
                 break;
         }

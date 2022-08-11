@@ -21,8 +21,6 @@ public class JunctionTileBehaviour : MonoBehaviour
     private TileManager tileManager;
     private CharacterManager characterManager;
     private bool hasRotated = false;
-    private float turnDist = 0.1f;
-
     public JunctionTurnPositionOverride positionOverride;
 
     [SerializeField] private bool hasLeftTurn;
