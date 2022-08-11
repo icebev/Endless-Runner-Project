@@ -62,9 +62,6 @@ public class LoadingManager : MonoBehaviour
 
     private IEnumerator LoadGameScene2(int Scene) //This part loads the next scene with a delay and Async.
     {
-        //-----Insert transition Animation Here-----//
-        //print("loading");
-
 
         FindAnimator();
         yield return new WaitForSeconds(2);
