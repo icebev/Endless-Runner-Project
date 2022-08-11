@@ -76,7 +76,14 @@ public class StoreManager : MonoBehaviour
     private void UpdateSeconds(GameUpgrades whichUpgrade)
     {
         this.extraSeconds[(int)whichUpgrade] = (this.upgrades[(int)whichUpgrade]) * 2;
-        this.UpgradesText[(int)whichUpgrade].text = PurchaseTextPreset[(int)whichUpgrade] + this.extraSeconds[(int)whichUpgrade] + "s";
+        if (this.extraSeconds[(int)whichUpgrade] == 0)
+        {
+            this.UpgradesText[(int)whichUpgrade].text = "None";        
+        }
+        else
+        {
+            this.UpgradesText[(int)whichUpgrade].text = "+" + this.extraSeconds[(int)whichUpgrade] + " Seconds";
+        }
     }
 
     private void UpdateGUI()
