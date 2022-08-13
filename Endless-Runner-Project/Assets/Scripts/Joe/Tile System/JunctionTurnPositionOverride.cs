@@ -3,22 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/* JUNCTION TURN POSITION OVERRIDE CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 13/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Commenting pass
+ * Improved protection level of variables that don't need to be accessed from outside the script
+ * 
+ */
+
+/// <summary>
+/// Defines how the player character should act when they reach a corner of a junction tile.
+/// </summary>
 public class JunctionTurnPositionOverride : MonoBehaviour
 {
-    public GameObject playerGameobject;
-    public Transform leftTurnPoint;
-    public Transform rightTurnPoint;
-    public bool leftTurning;
-    public bool rightTurning;
-    public AnimationCurve speedToTurnTimeCurve;
-    public GameObject disappearingPieces;
+    [SerializeField] private GameObject playerGameobject;
+    [SerializeField] private Transform leftTurnPoint;
+    [SerializeField] private Transform rightTurnPoint;
+    [Tooltip("An animation curve to calculate how long the player should be positioned at the turn point based on the tile movement speed.")]
+    [SerializeField] private AnimationCurve speedToTurnTimeCurve;
+    // The disappearing pieces give the illusion that there have been tiles around the corner the entire time as the player is turning.
+    [Tooltip("The pieces that are no longer visible after the turn has taken place.")]
+    [SerializeField] private GameObject disappearingPieces;
 
     private TileSpeedIncrementation tileSpeedIncrementation;
-
-
     private CharacterManager characterManager;
-    public CinemachineVirtualCamera closeCam;
-    public CinemachineVirtualCamera normalCam;
+
+    private bool leftTurning;
+    private bool rightTurning;
+
+    [SerializeField] private CinemachineVirtualCamera closeCam;
+    [SerializeField] private CinemachineVirtualCamera normalCam;
 
     
 
@@ -64,6 +81,9 @@ public class JunctionTurnPositionOverride : MonoBehaviour
         this.tileSpeedIncrementation = FindObjectOfType<TileSpeedIncrementation>();
     }
 
+    // We use late update to change the player character's position while they are turning
+    // to be the exact point on the corner of the turn within the junction corridor,
+    // set by the left and right turn point transforms
     private void LateUpdate()
     {
         if (this.leftTurning)
@@ -77,6 +97,7 @@ public class JunctionTurnPositionOverride : MonoBehaviour
         }
     }
 
+    // Trigger volume upon entering a junction - switch to the close up camera
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -85,6 +106,8 @@ public class JunctionTurnPositionOverride : MonoBehaviour
             this.characterManager.LockLaneSwitching(true);
         }
     }
+
+    // Upon leaving a junction - switch to the regular camera
 
     private void OnTriggerExit(Collider other)
     {

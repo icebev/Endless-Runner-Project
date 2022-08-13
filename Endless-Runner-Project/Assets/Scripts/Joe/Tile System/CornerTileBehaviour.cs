@@ -8,7 +8,7 @@ using UnityEngine;
  *******************************************************************************
  * CHANGE NOTES:
  * Commenting pass
- * 
+ * Added hiddenExtension which stops the player being able to see into the abyss after turning.
  */
 
 /// <summary>
@@ -20,6 +20,7 @@ public class CornerTileBehaviour : MonoBehaviour
     private TileManager tileManager;
     private CharacterManager characterManager;
     private bool hasRotated = false;
+    [SerializeField] private GameObject hiddenExtension;
 
     // Start is called before the first frame update
     void Start()
@@ -83,7 +84,8 @@ public class CornerTileBehaviour : MonoBehaviour
         if (turnReady == true && this.hasRotated == false)
         {
             this.characterManager.Rotate(this.turnDirection);
-
+            // Add an extra wall behind the tile to fill blank space that sometimes appeared when travelling at high speeds.
+            this.hiddenExtension.SetActive(true);
             // Return the character to the center lane
             this.characterManager.SetLanePos(0);
 

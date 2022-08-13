@@ -11,6 +11,7 @@ using UnityEngine.UI;
  * Commenting pass
  * Replaced hard coded indicator threshold value with a configurable variable
  * Gave the ChaserCurrentDistance property a getter and setter that ensures correct usage
+ * Fixed an issue where the player didn't die because the ChaserCurrentDistance setter prevented negative values
  */
 
 /// <summary>
@@ -43,8 +44,8 @@ public class ChaserMechanic : MonoBehaviour
     private SprintSystem sprintSystem;
 
     /// <summary>
-    /// Chaser current distance property is restricted to be positive and less than the max chaser distance
-    /// The property is accessed when the player collides with objects, is public.
+    /// Chaser current distance property is restricted to be less than the max chaser distance
+    /// The property is accessed when the player collides with objects, so is public.
     /// </summary>
     public float ChaserCurrentDistance 
     {
