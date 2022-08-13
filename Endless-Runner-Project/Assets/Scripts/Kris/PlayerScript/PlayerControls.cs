@@ -248,6 +248,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""ae5a24f3-ad93-4e8a-9bdd-bd4985ccfc9a"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""073c39d3-1b63-4f28-8a7a-9af5cddc4260"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",

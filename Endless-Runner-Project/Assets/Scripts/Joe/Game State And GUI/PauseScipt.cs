@@ -35,11 +35,13 @@ public class PauseScipt : MonoBehaviour
 
     public void PauseGame()
     {
+        GamepadRumbleManager.disableRumble = true;
         Time.timeScale = 0;
     }
 
     public void UnpauseGame()
     {
+        GamepadRumbleManager.disableRumble = false;
         Time.timeScale = 1f;
     }
 }

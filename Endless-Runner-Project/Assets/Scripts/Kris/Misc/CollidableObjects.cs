@@ -227,11 +227,11 @@ public class CollidableObjects : MonoBehaviour, iCollidable
                 CollidableObjects.stumbleCoolDown = 0.3f;
                 if (GameObject.FindObjectOfType<SprintSystem>().isSprinting == false)
                 {
-                    GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(0);
+                    GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(CollisionConsequenceType.RegularTrip);
                 }
                 else
                 {
-                    GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(1);
+                    GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(CollisionConsequenceType.SprintingTrip);
                 }
                 break;
                 
@@ -253,7 +253,7 @@ public class CollidableObjects : MonoBehaviour, iCollidable
                 
             case CollisionBehaviour.Kill:
                 if (GameOverEvent.isPlayerDead == true) return;
-                GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(2);
+                GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(CollisionConsequenceType.LethalCollision);
 
                 break;
         }

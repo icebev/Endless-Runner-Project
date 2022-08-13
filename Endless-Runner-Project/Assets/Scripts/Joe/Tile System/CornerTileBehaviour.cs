@@ -2,7 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* CORNER TILE BEHAVIOUR CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 13/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Commenting pass
+ * 
+ */
 
+/// <summary>
+/// Defines behaviour of turning at a corner tile.
+/// </summary>
 public class CornerTileBehaviour : MonoBehaviour
 {
     public TurnDirection turnDirection;
@@ -17,19 +28,18 @@ public class CornerTileBehaviour : MonoBehaviour
         this.characterManager = FindObjectOfType<CharacterManager>();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    /// <summary>
+    /// Check if the turn is ready by comparing the transform position against the origin based on the current run direction 
+    /// </summary>
+    private bool CheckIfTurnReady()
     {
-
-        bool turnReady = false;
-
         switch (this.tileManager.runDirection)
         {
             case (TrackDirection.negativeX):
                 {
                     if (this.transform.position.x >= 0.0f)
                     {
-                        turnReady = true;
+                        return true;
                     }
                     break;
                 }
@@ -37,7 +47,7 @@ public class CornerTileBehaviour : MonoBehaviour
                 {
                     if (this.transform.position.x <= 0.0f)
                     {
-                        turnReady = true;
+                        return true;
                     }
                     break;
                 }
@@ -45,7 +55,7 @@ public class CornerTileBehaviour : MonoBehaviour
                 {
                     if (this.transform.position.z >= 0.0f)
                     {
-                        turnReady = true;
+                        return true;
                     }
                     break;
                 }
@@ -53,23 +63,36 @@ public class CornerTileBehaviour : MonoBehaviour
                 {
                     if (this.transform.position.z <= 0.0f)
                     {
-                        turnReady = true;
+                        return true;
                     }
                     break;
                 }
         }
 
+        return false;
+    }
+
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+
+        bool turnReady = this.CheckIfTurnReady();
+
+        // If the turn is ready but has not been completed yet then the code is executed
         if (turnReady == true && this.hasRotated == false)
         {
-            if (this.hasRotated == false)
-            {
-                this.characterManager.Rotate(this.turnDirection);
-                this.characterManager.SetLanePos(0);
+            this.characterManager.Rotate(this.turnDirection);
 
-                this.hasRotated = true;
-                this.tileManager.runDirection = this.tileManager.spawnDirection;
+            // Return the character to the center lane
+            this.characterManager.SetLanePos(0);
 
-            }
+            // Set the new run direction as the current direction at which the tiles are spawning.
+            // This works because only one corner tile can ever exist at a time, so the spawn direction
+            // is always the direction after the corner when the corner is reached.
+            this.tileManager.runDirection = this.tileManager.spawnDirection;
+            this.hasRotated = true;
+
         }
     }
 }
