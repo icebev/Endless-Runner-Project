@@ -4,6 +4,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+/* PAUSE SCRIPT CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 14/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Corrected class name typo
+ * Commenting pass
+ */
+/// <summary>
+/// A class for pausing the game mid run by setting the timescale to zero.
+/// </summary>
 public class PauseScript : MonoBehaviour
 {
     private GameStateControls gameStateControls;
@@ -20,10 +31,13 @@ public class PauseScript : MonoBehaviour
         this.pauseAction.performed += this.TogglePause;
     }
 
-
+    // When there is a pause input such as escape or start on the controller, toggles pause.
     public void TogglePause(InputAction.CallbackContext obj)
     {
-        if (Time.timeScale != 0 && GameOverEvent.isPlayerDead == false)
+        // Only toggle if the player is still alive
+        if (GameOverEvent.isPlayerDead == false) return;
+
+        if (Time.timeScale != 0)
         {
             this.pauseButton.onClick.Invoke();
         }
@@ -35,13 +49,15 @@ public class PauseScript : MonoBehaviour
 
     public void PauseGame()
     {
+        // We must disable the gamepad rumble while the game is paused
+        // since the gampad rumble uses time to determine how long it should rumble for.
         GamepadRumbleManager.disableRumble = true;
-        Time.timeScale = 0;
+        Time.timeScale = 0.0f;
     }
 
     public void UnpauseGame()
     {
         GamepadRumbleManager.disableRumble = false;
-        Time.timeScale = 1f;
+        Time.timeScale = 1.0f;
     }
 }
