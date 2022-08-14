@@ -171,7 +171,7 @@ public class CharacterManager : MonoBehaviour
         this.animManager.UpdateVelocity(this.playerYSpeed);
         CollidableObjects.TickCooldowns();
         UpdateTimers();
-        ScheduledMovements();
+        //ScheduledMovements();
         UpdateCharacterData();
         UpdateLanePositionAndRotation();
         UpdatePhysics();
