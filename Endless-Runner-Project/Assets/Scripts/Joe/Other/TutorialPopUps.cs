@@ -17,7 +17,7 @@ public class TutorialPopUps : MonoBehaviour
     [SerializeField] private AudioSource popUpSound;
     [SerializeField] private AudioClip[] popUpSoundClips;
     [SerializeField] private int currentPopUpNumber;
-    [SerializeField] private PauseScipt pauseScript;
+    [SerializeField] private PauseScript pauseScript;
 
     [SerializeField] private float timeUntilFirstPause;
     [SerializeField] private float timeBetweenPopups;

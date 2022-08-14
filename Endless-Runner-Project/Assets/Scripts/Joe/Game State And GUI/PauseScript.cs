@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class PauseScipt : MonoBehaviour
+public class PauseScript : MonoBehaviour
 {
     private GameStateControls gameStateControls;
     private InputAction pauseAction;
@@ -23,7 +23,7 @@ public class PauseScipt : MonoBehaviour
 
     public void TogglePause(InputAction.CallbackContext obj)
     {
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0 && GameOverEvent.isPlayerDead == false)
         {
             this.pauseButton.onClick.Invoke();
         }
