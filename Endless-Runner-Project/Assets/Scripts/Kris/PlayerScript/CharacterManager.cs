@@ -99,6 +99,8 @@ public class CharacterManager : MonoBehaviour
     private float slideTick;
     private bool slideScheduled;
 
+    [SerializeField] bool moveWhileSliding = false;
+
     [SerializeField] private bool IgnoreGroundCollision = false;
 
     private RaycastHit GroundRayHit;
@@ -252,7 +254,7 @@ public class CharacterManager : MonoBehaviour
 
     public void Move(movementDirections Direction)
     {
-        if (!(!this.lockLaneSwitch && this.currentState != playerStates.crouching)) return;
+        if (!(!this.lockLaneSwitch && ((this.currentState != playerStates.crouching) || this.moveWhileSliding))) return;
         this.previousLane = this.targetLane;
         switch (Direction)
         {
