@@ -24022,26 +24022,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24156c7e9d9bdce488fce77ae3448b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinsCollected: 0
-  powerUpsCollected: 0
   coinCollectSound: {fileID: 339412732}
   powerUpCollectSound: {fileID: 1160939608}
   powerUpCollectParticles: {fileID: 1626487824}
   coinCollectParticles: {fileID: 1885040647}
-  remainingMagnetTime: 0
-  remainingMultiplierTime: 0
-  remainingBoostTime: 0
-  magnetActive: 0
-  multiplierActive: 0
-  boostActive: 0
+  boostShield: {fileID: 2320416310064444454}
+  coinMagnetField: {fileID: 1010538809}
   coinCountText: {fileID: 401848385}
   gameOverRunCoinCountText: {fileID: 1935568402}
   gameOverTotalCoinText: {fileID: 629587374}
-  coinMagnetField: {fileID: 1010538809}
   coinMagnetIndicator: {fileID: 937714750}
   coinMultiplierIndicator: {fileID: 270913158}
   boostIndicator: {fileID: 366241112}
-  boostShield: {fileID: 2320416310064444454}
 --- !u!4 &1441933269
 Transform:
   m_ObjectHideFlags: 0
@@ -24616,7 +24608,7 @@ MonoBehaviour:
   jumpGaspSounds:
   - {fileID: 8300000, guid: cceb8f6b4245fa444b38bcb8f7e36253, type: 3}
   - {fileID: 8300000, guid: 4d340506a97349b41b2acc436ea0fd78, type: 3}
-  whooshPitchVariance: 0.1
+  whooshPitchVariance: 0.2
 --- !u!1 &1533793778
 GameObject:
   m_ObjectHideFlags: 0

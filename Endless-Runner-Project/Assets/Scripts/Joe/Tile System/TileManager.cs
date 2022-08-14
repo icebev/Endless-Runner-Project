@@ -16,8 +16,6 @@ using UnityEngine.Events;
 /// </summary>
 public class TileManager : MonoBehaviour
 {
-
-
     #region Configurable Inspector Variables
     [Header("Tile Scriptable Objects")]
     [SerializeField] private ScriptableTileObject[] scriptableTiles;

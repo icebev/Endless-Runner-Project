@@ -5,48 +5,71 @@ using UnityEngine.Events;
 using TMPro;
 using System;
 
-public class CollectableEventFunctions : MonoBehaviour
+/* COLLECTIBLE EVENT FUNCTIONS CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 14/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Variable protection levels pass
+ * Commenting pass
+ */
+/// <summary>
+/// A class for implementing the results of the player picking up a coin or powerup during their run.
+/// </summary>
+public class CollectibleEventFunctions : MonoBehaviour
 {
-    public static UnityEvent<int> OnCoinCollect;
 
+    // Public static UnityEvents can be invoked from any other script
+    // without needing a specific reference, which avoids slowing down execution for situations
+    // where a lot of the same objects are spawning and all need access to the event.
+    public static UnityEvent<int> OnCoinCollect;
     public static UnityEvent<PowerUpType> OnPowerUpCollect;
 
-    public int coinsCollected = 0;
-    public int powerUpsCollected = 0;
+    [Header("Inspector References - Collection Special Effects")]
+    [SerializeField] private AudioSource coinCollectSound;
+    [SerializeField] private AudioSource powerUpCollectSound;
+    [SerializeField] private ParticleSystem powerUpCollectParticles;
+    [SerializeField] private ParticleSystem coinCollectParticles;
+    [SerializeField] private GameObject boostShield;
+    [SerializeField] private GameObject coinMagnetField;
 
-    public AudioSource coinCollectSound;
-    public AudioSource powerUpCollectSound;
-    public ParticleSystem powerUpCollectParticles;
-    public ParticleSystem coinCollectParticles;
-    public float remainingMagnetTime;
-    public float remainingMultiplierTime;
-    public float remainingBoostTime;
-    public bool magnetActive;
-    public bool multiplierActive;
-    public bool boostActive;
+    [Header("Inspector References - GUI")]
+    [SerializeField] private TextMeshProUGUI coinCountText;
+    [SerializeField] private TextMeshProUGUI gameOverRunCoinCountText;
+    [SerializeField] private TextMeshProUGUI gameOverTotalCoinText;
+    [SerializeField] private GameObject coinMagnetIndicator;
+    [SerializeField] private GameObject coinMultiplierIndicator;
+    [SerializeField] private GameObject boostIndicator;
 
+    // Coin collect sound randomizer constant values
+    private const float MINCOINPITCH = 0.9f;
+    private const float MAXCOINPITCH = 1.1f;
+    private const float MINCOINVOL = 0.04f;
+    private const float MAXCOINVOL = 0.06f;
 
-    public TextMeshProUGUI coinCountText;
-
-    public TextMeshProUGUI gameOverRunCoinCountText;
-    public TextMeshProUGUI gameOverTotalCoinText;
-
-
-    public GameObject coinMagnetField;
-    public GameObject coinMagnetIndicator;
-
-    public GameObject coinMultiplierIndicator;
-    public GameObject boostIndicator;
-    public GameObject boostShield;
+    // Mid-run tracking variables
+    private int coinsCollected = 0;
+    private int coinValueMultiplier = 1;
+    private int powerUpsCollected = 0;
+    // Private power-up state tracking variables
+    private float remainingMagnetTime;
+    private float remainingMultiplierTime;
+    private float remainingBoostTime;
+    private bool magnetActive;
+    private bool multiplierActive;
+    private bool boostActive;
 
     private void Awake()
     {
-        CollectableEventFunctions.OnCoinCollect = new UnityEvent<int>();
-        CollectableEventFunctions.OnPowerUpCollect = new UnityEvent<PowerUpType>();
-        CollectableEventFunctions.OnCoinCollect.AddListener(IncrementCoinCount);
-        CollectableEventFunctions.OnPowerUpCollect.AddListener(TriggerPowerUp);
+        CollectibleEventFunctions.OnCoinCollect = new UnityEvent<int>();
+        CollectibleEventFunctions.OnPowerUpCollect = new UnityEvent<PowerUpType>();
+        CollectibleEventFunctions.OnCoinCollect.AddListener(IncrementCoinCount);
+        CollectibleEventFunctions.OnPowerUpCollect.AddListener(TriggerPowerUp);
     }
 
+    /// <summary>
+    /// Called upon game over or when the run is quit - adds coins to the player's bank and records stats progress
+    /// </summary>
     public void RunEndCoinUpdate()
     {
         if (PlayerPrefs.GetInt("TotalPlayerCoins") == 0)
@@ -59,6 +82,7 @@ public class CollectableEventFunctions : MonoBehaviour
             PlayerPrefs.SetInt("TotalPlayerCoins", currentPlayerCoins + this.coinsCollected);
         }
 
+        // Update Game over screen GUI text to show the correct value of coins collected
         this.gameOverRunCoinCountText.text = this.coinsCollected.ToString();
         this.gameOverTotalCoinText.text = PlayerPrefs.GetInt("TotalPlayerCoins").ToString();
 
@@ -74,23 +98,29 @@ public class CollectableEventFunctions : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Called to add coins to the mid-run total collected coins
+    /// </summary>
+    /// <param name="coinVal">Value of coins to add to the total</param>
     public void IncrementCoinCount(int coinVal)
     {
-        this.coinCollectSound.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-        this.coinCollectSound.volume = UnityEngine.Random.Range(0.04f, 0.06f);
+        this.coinCollectSound.pitch = UnityEngine.Random.Range(MINCOINPITCH, MAXCOINPITCH);
+        this.coinCollectSound.volume = UnityEngine.Random.Range(MINCOINVOL, MAXCOINVOL);
         this.coinCollectSound.PlayOneShot(this.coinCollectSound.clip);
         this.coinCollectParticles.Play();
-        this.coinsCollected += coinVal;
+        this.coinsCollected += coinVal * this.coinValueMultiplier;
         this.coinCountText.text = this.coinsCollected.ToString();
     }
 
+    /// <summary>
+    /// Called when a power-up is collected to trigger a power-up effect
+    /// </summary>
+    /// <param name="powerUpRef">The power up type used to determine which effect to activate</param>
     public void TriggerPowerUp(PowerUpType powerUpRef)
     {
         this.powerUpCollectParticles.Play();
         this.powerUpCollectSound.Play();
-
         this.powerUpsCollected++;
-
 
         // Magnet activation
         if (powerUpRef.powerUpName == "CoinMagnet")
@@ -112,8 +142,9 @@ public class CollectableEventFunctions : MonoBehaviour
             float activeTime = 2 + (2 * PlayerPrefs.GetInt("GameUpgradeBoost"));
             this.ActivateSpeedBoost(activeTime);
         }
-
     }
+
+    #region Power-Up Activation and Deactivation Methods
 
     public void ActivateMagnet(float activeDuration)
     {
@@ -133,14 +164,14 @@ public class CollectableEventFunctions : MonoBehaviour
     public void ActivateMultiplier(float activeDuration)
     {
         this.remainingMultiplierTime = activeDuration;
-        CoinCollectable.coinValueMultiplier = 2;
+        this.coinValueMultiplier = 2;
         this.coinMultiplierIndicator.SetActive(true);
         this.multiplierActive = true;
     }
 
     public void DeactivateMultiplier()
     {
-        CoinCollectable.coinValueMultiplier = 1;
+        this.coinValueMultiplier = 1;
         this.coinMultiplierIndicator.SetActive(false);
         this.multiplierActive = false;
     }
@@ -163,9 +194,13 @@ public class CollectableEventFunctions : MonoBehaviour
         sprintSystem.StopSprinting();
         sprintSystem.tileSpeedChange = 2;
         this.boostActive = false;
-
     }
 
+    #endregion
+
+
+    // We use the update loop to check whether the power-up has expired
+    // and its effects need to be deactivated
     private void Update()
     {
         // Magnet powerup
@@ -192,14 +227,10 @@ public class CollectableEventFunctions : MonoBehaviour
         if (this.remainingBoostTime >= 0)
         {
             this.remainingBoostTime -= Time.deltaTime;
-
         }
         else if (this.boostActive == true)
         {
             this.DeactivateSpeedBoost();
- 
-
         }
-
     }
 }

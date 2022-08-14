@@ -3,9 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/* TUTORIAL POP UPS CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 14/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Commenting pass
+ */
+/// <summary>
+/// Handles logic for the tutorial sequence the first time the game is played.
+/// </summary>
 public class TutorialPopUps : MonoBehaviour
 {
 
+    // InputAction references are used to check if
+    // the required input is pressed during the tutorial
     private PlayerControls tutorialInputActions;
     private InputAction jump;
     private InputAction slide;
@@ -13,12 +25,14 @@ public class TutorialPopUps : MonoBehaviour
     private InputAction moveRight;
     private InputAction sprint;
 
+    [Header("Inspector Set References")]
     [SerializeField] private GameObject[] popUps;
     [SerializeField] private AudioSource popUpSound;
     [SerializeField] private AudioClip[] popUpSoundClips;
     [SerializeField] private int currentPopUpNumber;
     [SerializeField] private PauseScript pauseScript;
 
+    [Header("Tutorial PopUp Config")]
     [SerializeField] private float timeUntilFirstPause;
     [SerializeField] private float timeBetweenPopups;
 
@@ -36,9 +50,10 @@ public class TutorialPopUps : MonoBehaviour
         this.moveRight = this.tutorialInputActions.PlayerCharacter.MoveRight;
         this.sprint = this.tutorialInputActions.PlayerCharacter.Sprint;
 
+        // If the tutorial has been completed previously, then it gets skipped.
         if (PlayerPrefs.GetInt("TutorialComplete") == 1)
         {
-            this.currentPopUpNumber = 4;
+            this.SelfDestruct();
         }
 
     }
@@ -49,6 +64,7 @@ public class TutorialPopUps : MonoBehaviour
         this.timeUntilFirstPause -= Time.deltaTime;
         this.timeUntilNextPopUp -= Time.deltaTime;
 
+        // Switch statement is used with the current pop-up number to manage tutorial logic
         switch (this.currentPopUpNumber)
         {
             case 0:
@@ -116,6 +132,10 @@ public class TutorialPopUps : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Displays the popup in the popUps array corresponding to the index passed in
+    /// </summary>
+    /// <param name="popUpNumber"></param>
     private void DisplayPopUp(int popUpNumber)
     {
         if (popUpNumber % 2 == 0)
@@ -132,6 +152,10 @@ public class TutorialPopUps : MonoBehaviour
         this.popUpActive = true;
     }
 
+    /// <summary>
+    /// Hides the pop-up and increments the currentPopupNumber awaiting the next popup
+    /// </summary>
+    /// <param name="popUpNumber"></param>
     private void HidePopUp(int popUpNumber)
     {
         this.pauseScript.UnpauseGame();
@@ -142,6 +166,7 @@ public class TutorialPopUps : MonoBehaviour
         this.popUpActive = false;
     }
 
+    // We destroy this gameobject if it is no longer needed to save on unnecessary update calls
     private void SelfDestruct()
     {
         this.jump.Disable();

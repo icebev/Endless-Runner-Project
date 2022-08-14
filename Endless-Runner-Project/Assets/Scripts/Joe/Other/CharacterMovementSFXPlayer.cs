@@ -2,9 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/* CHARACTER MOVEMENT SFX PLAYER CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 14/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Commenting pass
+ */
+/// <summary>
+/// For playing the correct sound effects when the character moves
+/// </summary>
 public class CharacterMovementSFXPlayer : MonoBehaviour
 {
-
+    [Header("Inspector Set References")]
     [SerializeField] private AudioSource jumpSound;
     [SerializeField] private AudioSource jumpGaspSound;
     [SerializeField] private AudioSource slideSound;
@@ -13,8 +24,8 @@ public class CharacterMovementSFXPlayer : MonoBehaviour
     [SerializeField] private AudioClip[] jumpSounds;
     [SerializeField] private AudioClip[] jumpGaspSounds;
 
+    [Tooltip("Alters the pitch of the lane change whoosh and slide sounds each time played")]
     [SerializeField] private float whooshPitchVariance;
-
 
 
     private AudioClip PickRandomClipFromArray(AudioClip[] clipArray)
