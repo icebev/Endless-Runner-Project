@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 /* TILE COIN SPAWN CLASS
  * Author(s): Joe Bevis
- * Date last modified: 03/07/2022
+ * Date last modified: 15/08/2022
  *******************************************************************************
  * CHANGE NOTES:
  * Added the ability to enter coin set spawn probabilities and toggle exclusivity in the inspector
  * Added requirecomponent of type TileMovement to avoid setup errors.
  */
+/// <summary>
+/// Using set probabilities, places coins from the coin pool onto tiles
+/// based on pre-designed patterns ready to be collected by the player.
+/// </summary>
 [RequireComponent(typeof(TileMovement))]
 public class TileCoinSpawn : MonoBehaviour
 {
@@ -17,6 +22,7 @@ public class TileCoinSpawn : MonoBehaviour
     private int totalCoinSets;
     [SerializeField] private bool exclusiveCoinSets;
     [SerializeField] private float[] coinSetSpawnProbabilities;
+
     private void Awake()
     {
         this.totalCoinSets = this.coinContainer.childCount;
@@ -44,6 +50,8 @@ public class TileCoinSpawn : MonoBehaviour
             this.shouldSpawnCoinSet[selectedIndex] = true;
         }
         #endregion
+
+        #region Non-Exclusive coin set spawn
         if (this.exclusiveCoinSets == false)
         {
             for (int i = 0; i < this.coinSetSpawnProbabilities.Length; i++)
@@ -55,8 +63,7 @@ public class TileCoinSpawn : MonoBehaviour
                 }
             }
         }
-
-
+        #endregion
 
     }
 
@@ -66,10 +73,12 @@ public class TileCoinSpawn : MonoBehaviour
         {
             Transform coinSet = this.coinContainer.GetChild(i);
 
+            // Spawn the coins in the set if in awake the set was determined as true 
             if (this.shouldSpawnCoinSet[i] == true)
             {
                 for (int c = 0; c < coinSet.childCount; c++)
                 {
+                    // Get a coin from the pool
                     GameObject coin = CoinPool.SharedInstance.GetPooledObject();
 
                     if (coin != null)
@@ -77,13 +86,15 @@ public class TileCoinSpawn : MonoBehaviour
                         coin.transform.position = coinSet.GetChild(c).position;
                         coin.transform.parent = coinSet.GetChild(c).transform;
                         coin.SetActive(true);
-
                     }
                 }
             }
         }
     }
 
+    /// <summary> 
+    /// Releases the coins back to the object pool - to be called before the tile is destroyed
+    /// </summary>
     public void ReleaseCoins()
     {
         for (int i = 0; i < this.totalCoinSets; i++)
@@ -99,9 +110,6 @@ public class TileCoinSpawn : MonoBehaviour
                     coin.gameObject.SetActive(false);
                 }
             }
-
         }
-
     }
-
 }

@@ -13429,7 +13429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &715599937
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13448,8 +13448,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -271.65997}
-  m_SizeDelta: {x: 778.79, y: 363}
+  m_AnchoredPosition: {x: 0, y: -284.18}
+  m_SizeDelta: {x: 778.79, y: 388.04}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &715599938
 MonoBehaviour:
@@ -14884,6 +14884,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
+      propertyPath: slideTime
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
       propertyPath: _character
       value: 
       objectReference: {fileID: 1719365278}
@@ -14899,6 +14903,10 @@ PrefabInstance:
       propertyPath: _characterParent
       value: 
       objectReference: {fileID: 1688633160}
+    - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
+      propertyPath: moveWhileSliding
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 589410188470930475, guid: 0ddbbadd128b7e54ba2f006a52c28453, type: 3}
       propertyPath: characterMovementSFXPlayer
       value: 
@@ -15428,8 +15436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7ca1fb3b823f2940b83b5ca8d21c4e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  caughtCoins: []
-  coinMoveSpeed: 0.3
   coinMoveSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -15472,7 +15478,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  tileSpeedManagement: {fileID: 0}
 --- !u!135 &1010538812
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -23682,17 +23687,6 @@ MonoBehaviour:
   playerCamera: {fileID: 1232365248}
   cameraHolder: {fileID: 197299773}
   tileSpeedManagement: {fileID: 0}
-  isSprinting: 0
-  sprintCooldown: 0
-  sprintAction:
-    m_Name: Sprint
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: f21cf973-3504-469a-9398-8e7ecdf52870
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
   camZNormal: 0
   camZSprinting: 2
   camZTarget: 0
@@ -23704,9 +23698,10 @@ MonoBehaviour:
   runAnimSpeedSprinting: 2.25
   runAnimSpeedCurrent: 0
   runAnimSpeedTarget: 0
-  tileSpeedChange: 2
   interpolationSpeed: 0.05
+  tileSpeedChange: 2
   speedBoostModeActive: 0
+  isSprinting: 0
 --- !u!114 &1395989216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23739,10 +23734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac9108a5eb2e1842a930996911dac7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTileSpeed: 0
   distanceTravelledText: {fileID: 2000956613}
-  externalSpeedMultiplier: 0
-  distanceTravelled: 0
   finalDistanceText: {fileID: 886587021}
 --- !u!1 &1414805672
 GameObject:
@@ -25122,8 +25114,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Looking smooth.\nDon't forget to sprint using [LShift], otherwise the
-    darkness will engulf you. \n\nGood luck, Spartan!"
+  m_text: 'Looking smooth.
+
+    When the darkness is about to engulf you, hold down
+    [LShift] or [Control] to sprint. Sprinting is dangerous, so use it wisely.
+
+
+    Good
+    luck, Spartan!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b31c9cea14ffb4648a1a1add0cc107d9, type: 2}
   m_sharedMaterial: {fileID: 3379272300965572372, guid: b31c9cea14ffb4648a1a1add0cc107d9, type: 2}

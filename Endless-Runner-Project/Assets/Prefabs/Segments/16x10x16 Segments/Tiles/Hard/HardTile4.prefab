@@ -2258,6 +2258,10 @@ PrefabInstance:
       propertyPath: overallSpawnChance
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5482449973683638793, guid: 80123692b55ed0049ace214a2a91139f, type: 3}
+      propertyPath: powerUpTypeConfigs.Array.data[2].powerUpRarityWeighting
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80123692b55ed0049ace214a2a91139f, type: 3}
 --- !u!4 &2676599043304706716 stripped

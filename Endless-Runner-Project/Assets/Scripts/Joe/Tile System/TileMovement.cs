@@ -4,14 +4,13 @@ using UnityEngine;
 
 /* TILE MOVEMENT CLASS
  * Author(s): Joe Bevis
- * Date last modified: 03/07/2022
+ * Date last modified: 15/08/2022
  *******************************************************************************
  * CHANGE NOTES:
- * Script that is added to each tile object to move it towards the origin over time.
- * 
+ * Commenting pass
  */
 /// <summary>
-/// To be added to each tile prefab to make it move.
+/// To be added to each tile prefab to make it move towards the origin over time.
 /// </summary>
 public class TileMovement : MonoBehaviour
 {
@@ -143,7 +142,7 @@ public class TileMovement : MonoBehaviour
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
-                    newTargetPosition = this.transform.position - new Vector3(0, 0, this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime);
+                    newTargetPosition = this.transform.position - new Vector3(0, 0, this.tileManager.GetCurrentTileSpeed * Time.fixedDeltaTime);
                     this.tileRigidbody.MovePosition(newTargetPosition);
                     break;
                 }
@@ -159,7 +158,7 @@ public class TileMovement : MonoBehaviour
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
-                    newTargetPosition = this.transform.position - new Vector3(-this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
+                    newTargetPosition = this.transform.position - new Vector3(-this.tileManager.GetCurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
                     this.tileRigidbody.MovePosition(newTargetPosition);
 
                     break;
@@ -176,7 +175,7 @@ public class TileMovement : MonoBehaviour
                         Destroy(this.gameObject);
                     }
                     Vector3 newTargetPosition = new Vector3();
-                    newTargetPosition = this.transform.position - new Vector3(0, 0, -this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime);
+                    newTargetPosition = this.transform.position - new Vector3(0, 0, -this.tileManager.GetCurrentTileSpeed * Time.fixedDeltaTime);
                     this.tileRigidbody.MovePosition(newTargetPosition);
 
                     break;
@@ -194,7 +193,7 @@ public class TileMovement : MonoBehaviour
 
                     }
                     Vector3 newTargetPosition = new Vector3();
-                    newTargetPosition = this.transform.position - new Vector3(this.tileManager.CurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
+                    newTargetPosition = this.transform.position - new Vector3(this.tileManager.GetCurrentTileSpeed * Time.fixedDeltaTime, 0, 0);
                     this.tileRigidbody.MovePosition(newTargetPosition);
 
                     break;

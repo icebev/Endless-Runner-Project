@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/* STATS UPDATE CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 15/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Commenting pass
+ */
+/// <summary>
+/// Updates the lifetime stats GUI panel values based 
+/// on saved PlayerPref values when the stats GameObject screen is enabled
+/// </summary>
 public class StatsUpdate : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI bestDistanceValue;
@@ -10,7 +21,6 @@ public class StatsUpdate : MonoBehaviour
     [SerializeField] private TextMeshProUGUI totalDistanceValue;
     [SerializeField] private TextMeshProUGUI totalDeathsValue;
     [SerializeField] private TextMeshProUGUI totalPowerupsValue;
-
 
     private void OnEnable()
     {

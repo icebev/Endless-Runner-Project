@@ -12,6 +12,8 @@ using System;
  * CHANGE NOTES:
  * Variable protection levels pass
  * Commenting pass
+ * Refactored power-up type as an enum for readability 
+ * and to avoid passing in excess information about the power-up
  */
 /// <summary>
 /// A class for implementing the results of the player picking up a coin or powerup during their run.
@@ -116,28 +118,28 @@ public class CollectibleEventFunctions : MonoBehaviour
     /// Called when a power-up is collected to trigger a power-up effect
     /// </summary>
     /// <param name="powerUpRef">The power up type used to determine which effect to activate</param>
-    public void TriggerPowerUp(PowerUpType powerUpRef)
+    public void TriggerPowerUp(PowerUpType powerUpType)
     {
         this.powerUpCollectParticles.Play();
         this.powerUpCollectSound.Play();
         this.powerUpsCollected++;
 
         // Magnet activation
-        if (powerUpRef.powerUpName == "CoinMagnet")
+        if (powerUpType == PowerUpType.CoinMagnet)
         {
             float activeTime = 3 + (2 * PlayerPrefs.GetInt("GameUpgradeMagnet"));
             this.ActivateMagnet(activeTime);
         }
 
         // Multiplier activation
-        if (powerUpRef.powerUpName == "CoinMultiplier")
+        if (powerUpType == PowerUpType.CoinMultiplier)
         {
             float activeTime = 3 + (2 * PlayerPrefs.GetInt("GameUpgradeCoin"));
             this.ActivateMultiplier(activeTime);
         }
 
         // Speed boost activation
-        if (powerUpRef.powerUpName == "MaxSpeed")
+        if (powerUpType == PowerUpType.MaxSpeed)
         {
             float activeTime = 2 + (2 * PlayerPrefs.GetInt("GameUpgradeBoost"));
             this.ActivateSpeedBoost(activeTime);

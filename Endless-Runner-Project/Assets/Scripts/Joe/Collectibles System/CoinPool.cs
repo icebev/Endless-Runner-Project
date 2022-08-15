@@ -2,12 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* COIN POOL CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 15/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Commenting pass
+ * 
+ */
+/// <summary>
+/// Object pooling for the coin collectibles - used to reduce
+/// constant creating and destroying of the coin prefab to improve perfomance.
+/// </summary>
+
 public class CoinPool : MonoBehaviour
 {
+    // Public static reference for easy access
     public static CoinPool SharedInstance;
-    public List<GameObject> pooledObjects;
-    public GameObject objectToPool;
-    public int amountToPool;
+
+    [Header("Pool Config")]
+    [SerializeField] private GameObject objectToPool;
+    [SerializeField] private int amountToPool;
+
+    private List<GameObject> pooledObjects;
 
     private void Awake()
     {
@@ -21,6 +38,7 @@ public class CoinPool : MonoBehaviour
         
         GameObject newCoin;
 
+        // Generate a pool of objects on start equal to the amount to pool and set them inactive
         for (int i = 0; i < this.amountToPool; i++)
         {
             newCoin = Instantiate(this.objectToPool);
@@ -30,11 +48,15 @@ public class CoinPool : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Retrieve a pooled coin that is ready to be used (is inactive) from the pool
+    /// </summary>
+    /// <returns>A pooled coin object</returns>
     public GameObject GetPooledObject()
     {
         for (int i = 0; i < this.amountToPool; i++)
         {
-            if (!this.pooledObjects[i].activeInHierarchy)
+            if (this.pooledObjects[i].activeInHierarchy == false)
             {
                 return this.pooledObjects[i];
             }

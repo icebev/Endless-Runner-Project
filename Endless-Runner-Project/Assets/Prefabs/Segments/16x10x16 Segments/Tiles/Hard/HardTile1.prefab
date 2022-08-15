@@ -1870,6 +1870,10 @@ PrefabInstance:
       propertyPath: powerUpTypes.Array.data[0].powerUpRarityWeighting
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5482449973683638793, guid: 80123692b55ed0049ace214a2a91139f, type: 3}
+      propertyPath: powerUpTypeConfigs.Array.data[2].powerUpRarityWeighting
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80123692b55ed0049ace214a2a91139f, type: 3}
 --- !u!4 &2562813188263023930 stripped

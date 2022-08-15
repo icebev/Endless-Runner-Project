@@ -6,11 +6,11 @@ using UnityEngine.InputSystem;
 
 /* SPRINT SYSTEM CLASS
  * Author(s): Joe Bevis & Kris Burgess-James
- * Date last modified: 30/06/2022
+ * Date last modified: 15/08/2022
  *******************************************************************************
  * CHANGE NOTES:
  * Fixed variable name typo - inerpolationSpeed to interpolationSpeed.
- * 
+ * Commenting pass
  */
 
 /// <summary>
@@ -18,44 +18,49 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class SprintSystem : MonoBehaviour
 {
-    public Animator playerAnimator;
-    public CinemachineVirtualCamera playerCamera;
-    private TileSpeedIncrementation tileSpeedIncrementation;
-    public Transform cameraHolder;
-    public TileSpeedManagement tileSpeedManagement;
-    public bool isSprinting;
-    public float sprintCooldown;
 
-    public PlayerControls inputActionsForSprint;
-    public InputAction sprintAction;
+    [Header("Inspector Set References")]
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private CinemachineVirtualCamera playerCamera;
+    [SerializeField] private Transform cameraHolder;
+    [SerializeField] private TileSpeedManagement tileSpeedManagement;
+
     
-    public float camZNormal;
-    public float camZSprinting;
-    public float camZTarget;
+    [Header("Inpsector Config - Camera movement")]
+    [SerializeField] private float camZNormal;
+    [SerializeField] private float camZSprinting;
+    [SerializeField] private float camZTarget;
 
-    public float fovNormal;
-    public float fovSprinting;
-    public float fovSpeedboost;
-    public float fovTarget;
+    [Header("Inpsector Config - Field of view change")]
+    [SerializeField] private float fovNormal;
+    [SerializeField] private float fovSprinting;
+    [SerializeField] private float fovSpeedboost;
+    [SerializeField] private float fovTarget;
 
+    [Header("Inpsector Config - Run animation speed")]
     [SerializeField] private float runAnimSpeedNormal;
     [SerializeField] private float runAnimSpeedSprinting;
     [SerializeField] private float runAnimSpeedCurrent;
     [SerializeField] private float runAnimSpeedTarget;
+    [SerializeField] private float interpolationSpeed;
 
+    // Public variables
     public float tileSpeedChange;
-    public float interpolationSpeed;
-
     public bool speedBoostModeActive;
+    public bool isSprinting;
 
+    // Private variables
+    private TileSpeedIncrementation tileSpeedIncrementation;
+    private PlayerControls inputActionsForSprint;
+    private InputAction sprintAction;
 
     private void Start()
     {
-        // QUICK FIX FOR JOE. (i know this would break in your scene, so I made this to fix itself)
         this.inputActionsForSprint = new PlayerControls();
         this.sprintAction = this.inputActionsForSprint.PlayerCharacter.Sprint;
         this.sprintAction.Enable();
 
+        // To make sure values exist we set them in code if they haven't been configured
         if(this.runAnimSpeedNormal == 0) 
         { 
             this.runAnimSpeedNormal = 1.5f; 
@@ -69,8 +74,6 @@ public class SprintSystem : MonoBehaviour
             this.interpolationSpeed = 0.05f;
         }
 
-        // END OF QUICK FIX
-
         this.tileSpeedIncrementation = FindObjectOfType<TileSpeedIncrementation>();
         this.tileSpeedManagement = FindObjectOfType<TileSpeedManagement>();
         this.fovTarget = this.fovNormal;
@@ -80,9 +83,15 @@ public class SprintSystem : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Process the input when a sprint input button is pressed or released to start or stop sprinting
+    /// </summary>
+    /// <param name="press"></param>
     public void ProcessSprintInput(InputAction.CallbackContext press)
     {
-        if (press.performed && this.tileSpeedManagement.externalSpeedMultiplier == 1)
+        // We only allow the player to start sprinting if they aren't slowed down externally
+        // because it's too easy to recover from a collision otherwise
+        if (press.performed && this.tileSpeedManagement.IsNotSlowed == true)
         {
             this.StartSprinting();
         }
@@ -93,9 +102,13 @@ public class SprintSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Allows the sprint button to be held down during a collision
+    /// so that the player starts sprinting as soon as they are able to
+    /// </summary>
     public void HoldingSprintButtonUpdate()
     {
-        if (this.isSprinting == false && this.sprintAction.IsPressed() == true && this.tileSpeedManagement.externalSpeedMultiplier == 1)
+        if (this.isSprinting == false && this.sprintAction.IsPressed() == true && this.tileSpeedManagement.IsNotSlowed == true)
         {
             this.StartSprinting();
         }
@@ -105,19 +118,21 @@ public class SprintSystem : MonoBehaviour
     {
         this.HoldingSprintButtonUpdate();
 
-        if (this.tileSpeedManagement.externalSpeedMultiplier < 1 && this.isSprinting)
+        // Stop sprinting if the player is being slowed after a collision
+        if (this.tileSpeedManagement.IsNotSlowed == false && this.isSprinting)
         {
             this.StopSprinting();
         }
 
+        // Speed boost powerup override - sprint input is no longer relevant if the speed boost is taking place
         if (this.speedBoostModeActive)
         {
             if(this.tileSpeedChange != 5)
             {
+                // We must start and stop sprinting to ensure that the correct value is used for the speed increas
                 this.StopSprinting();
                 this.tileSpeedChange = 5;
                 this.StartSprinting();
-                
             }
 
             if (this.isSprinting == false)
@@ -131,12 +146,12 @@ public class SprintSystem : MonoBehaviour
         currentFov = Mathf.Lerp(currentFov, this.fovTarget, this.interpolationSpeed);
         this.playerCamera.m_Lens.FieldOfView = currentFov;
 
-        // Camera folder position change
+        // Camera holder position change
         float currentZPos = this.cameraHolder.localPosition.z;
         currentZPos = Mathf.Lerp(currentZPos, this.camZTarget, this.interpolationSpeed);
         this.cameraHolder.transform.localPosition = new Vector3(0, 0, currentZPos);
 
-        // Run Animation speed lerp
+        // Run animation speed lerp
         if (this.runAnimSpeedCurrent != this.runAnimSpeedTarget)
         {
             if (Mathf.Abs(this.runAnimSpeedCurrent - this.runAnimSpeedTarget) < 0.01f)
@@ -144,10 +159,14 @@ public class SprintSystem : MonoBehaviour
                 this.runAnimSpeedCurrent = this.runAnimSpeedTarget;
             }
             this.runAnimSpeedCurrent = Mathf.Lerp(this.runAnimSpeedCurrent, this.runAnimSpeedTarget, this.interpolationSpeed);
+            // The animator will use the RunSpeed float to determine the speed of the run animation
             this.playerAnimator.SetFloat("RunSpeed", this.runAnimSpeedCurrent);
         }
     }
 
+    /// <summary>
+    /// Start the player sprinting and set the lerp targets
+    /// </summary>
     public void StartSprinting()
     {
         if (this.isSprinting == false)
@@ -160,9 +179,11 @@ public class SprintSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Stop the player sprinting and set the lerp targets
+    /// </summary>
     public void StopSprinting()
     {
-
         if (this.isSprinting)
         {
             this.isSprinting = false;

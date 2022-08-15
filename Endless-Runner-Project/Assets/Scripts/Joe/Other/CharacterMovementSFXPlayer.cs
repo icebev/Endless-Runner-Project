@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /* CHARACTER MOVEMENT SFX PLAYER CLASS
  * Author(s): Joe Bevis
  * Date last modified: 14/08/2022

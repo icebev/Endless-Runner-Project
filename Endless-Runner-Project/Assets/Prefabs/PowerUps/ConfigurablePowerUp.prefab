@@ -44,17 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 997c923e7ee38df47a467d357e54da63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpTypes:
-  - powerUpName: CoinMagnet
-    powerUpDuration: 5
+  powerUpTypeConfigs:
+  - powerUpType: 0
     powerUpPrefab: {fileID: 1136871206023155647, guid: 6aed275782efe424da52c2670035024e, type: 3}
     powerUpRarityWeighting: 1
-  - powerUpName: CoinMultiplier
-    powerUpDuration: 5
+  - powerUpType: 1
     powerUpPrefab: {fileID: 7563552641594064408, guid: 85785d490b3b8434db6d76518e9dbcd7, type: 3}
     powerUpRarityWeighting: 1
-  - powerUpName: MaxSpeed
-    powerUpDuration: 5
+  - powerUpType: 2
     powerUpPrefab: {fileID: 1235399144834911883, guid: f3e671f8b3e78cb4db2fdccf11771c94, type: 3}
     powerUpRarityWeighting: 1
   chosenPowerUpIndex: 0
+  overallSpawnChance: 1

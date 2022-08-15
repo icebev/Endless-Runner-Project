@@ -68,9 +68,9 @@ public class TileManager : MonoBehaviour
     private float runPlaytime;
     #endregion
 
-    public float CurrentTileSpeed
+    public float GetCurrentTileSpeed
     {
-        get { return this.tileSpeedManagement.currentTileSpeed; }
+        get { return this.tileSpeedManagement.CurrentTileSpeed; }
     }
 
     private void Start()
@@ -183,16 +183,16 @@ public class TileManager : MonoBehaviour
         switch (this.runDirection)
         {
             case TrackDirection.positiveZ:
-                spawnPos += new Vector3(0, 0, -Time.fixedDeltaTime * this.CurrentTileSpeed);
+                spawnPos += new Vector3(0, 0, -Time.fixedDeltaTime * this.GetCurrentTileSpeed);
                 break;
             case TrackDirection.negativeX:
-                spawnPos += new Vector3(Time.fixedDeltaTime * this.CurrentTileSpeed, 0, 0);
+                spawnPos += new Vector3(Time.fixedDeltaTime * this.GetCurrentTileSpeed, 0, 0);
                 break;
             case TrackDirection.negativeZ:
-                spawnPos += new Vector3(0, 0, Time.fixedDeltaTime * this.CurrentTileSpeed);
+                spawnPos += new Vector3(0, 0, Time.fixedDeltaTime * this.GetCurrentTileSpeed);
                 break;
             case TrackDirection.positiveX:
-                spawnPos += new Vector3(-Time.fixedDeltaTime * this.CurrentTileSpeed, 0, 0);
+                spawnPos += new Vector3(-Time.fixedDeltaTime * this.GetCurrentTileSpeed, 0, 0);
                 break;
         }
         return spawnPos;
