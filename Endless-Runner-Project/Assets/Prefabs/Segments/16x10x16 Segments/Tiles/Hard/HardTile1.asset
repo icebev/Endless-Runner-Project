@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HardTile1
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 922167608503312864, guid: f262a6d8d7649cf45bef056170452cc5, type: 3}
-  difficulty: 4
+  difficulty: 3
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0

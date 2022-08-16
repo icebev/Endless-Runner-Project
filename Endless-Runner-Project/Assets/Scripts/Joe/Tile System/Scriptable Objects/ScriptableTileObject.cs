@@ -2,6 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/* SCRIPTABLE TILE OBJECT (SCRIPTABLE OBJECT) CLASS
+ * Author(s): Joe Bevis
+ * Date last modified: 16/08/2022
+ *******************************************************************************
+ * CHANGE NOTES:
+ * Commenting pass
+ */
+
+/// <summary>
+/// For the creation and cofiguaration of tile objects to avoid 
+/// having unneccesary information on the instantiated tile prefabs themselves 
+/// and to give greater creative freedom to the designers when setting up the tiles.
+/// </summary>
+
 [CreateAssetMenu(fileName = "New Tile", menuName = "ScriptableTileObject")]
 public class ScriptableTileObject : ScriptableObject
 {

@@ -20,6 +20,7 @@ public class GamepadRumbleManager : MonoBehaviour
     // for example on pause where timescale 0 might make the gamepad vibrate indefinitely.
     public static bool disableRumble = false;
 
+    [Tooltip("playerInput is used to get a refence to the gamepad.")]
     [SerializeField] private PlayerInput playerInput;
     private Gamepad gamepad;
     private float remainingRumbleTime;

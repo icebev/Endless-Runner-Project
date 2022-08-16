@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PitTileTest
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 6457794106042632697, guid: 0a4b0d7e6d5aeaf40a57c4941879387b, type: 3}
-  difficulty: 2
+  difficulty: 1
   tileLength: 1
   spawnProbability: 0.05
   hasCorner: 0

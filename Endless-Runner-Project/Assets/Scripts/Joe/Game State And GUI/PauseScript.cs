@@ -35,7 +35,7 @@ public class PauseScript : MonoBehaviour
     public void TogglePause(InputAction.CallbackContext obj)
     {
         // Only toggle if the player is still alive
-        if (GameOverEvent.isPlayerDead == false) return;
+        if (GameOverEvent.isPlayerDead == true) return;
 
         if (Time.timeScale != 0)
         {

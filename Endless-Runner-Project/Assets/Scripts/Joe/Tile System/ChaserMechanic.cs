@@ -104,7 +104,7 @@ public class ChaserMechanic : MonoBehaviour
         }
 
         // Game over trigger when slidervalue reaches the max and the player is still alive
-        if (sliderValue > 0.99f && GameOverEvent.isPlayerDead == false)
+        if (sliderValue > 0.99f && GameOverEvent.isPlayerDead == false && GUIFunctionality.ReturningToMenu == false)
         {
             this.gameOverEvent.playerDeath.Invoke();
             this.ChaserCurrentDistance = 0;

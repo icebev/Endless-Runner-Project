@@ -37,23 +37,21 @@ public class JunctionTurnPositionOverride : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera closeCam;
     [SerializeField] private CinemachineVirtualCamera normalCam;
 
-    
 
     public void ActivateLeftTurn()
     {
         this.leftTurning = true;
         this.disappearingPieces.SetActive(false);
-        float turnTime = this.speedToTurnTimeCurve.Evaluate(this.tileSpeedIncrementation.calculatedTargetTileSpeed);
+        float turnTime = this.speedToTurnTimeCurve.Evaluate(this.tileSpeedIncrementation.CalculatedTargetTileSpeed);
         StartCoroutine(DelayedTurnToggleOff("Left", turnTime));
     }
     public void ActivateRightTurn()
     {
         this.disappearingPieces.SetActive(false);
         this.rightTurning = true;
-        float turnTime = this.speedToTurnTimeCurve.Evaluate(this.tileSpeedIncrementation.calculatedTargetTileSpeed);
+        float turnTime = this.speedToTurnTimeCurve.Evaluate(this.tileSpeedIncrementation.CalculatedTargetTileSpeed);
         StartCoroutine(DelayedTurnToggleOff("Right", turnTime));
     }
-
 
     public IEnumerator DelayedTurnToggleOff(string turn, float delay)
     {

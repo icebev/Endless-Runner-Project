@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EasyTile4
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 859228362636739208, guid: 4fa72340fdc95264b8d1a6fd03d18a9b, type: 3}
-  difficulty: 2
+  difficulty: 1
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0

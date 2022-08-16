@@ -17,6 +17,12 @@ using UnityEngine;
 /// </summary>
 public class GUIFunctionality : MonoBehaviour
 {
+    public static bool ReturningToMenu = false;
+
+    private void Start()
+    {
+        GUIFunctionality.ReturningToMenu = false;
+    }
 
     /// <summary>
     /// Reload the current scene to 'restart' the run
@@ -33,6 +39,8 @@ public class GUIFunctionality : MonoBehaviour
     /// </summary>
     public void ReturnToMenu()
     {
+        // We use this global variable to ensure the player cannot die while returning to menu which could cause coin duplication glitches.
+        GUIFunctionality.ReturningToMenu = true;
         GameObject _loadingManagerObject = GameObject.FindGameObjectWithTag("LoadManager");
         LoadingManager _loadingManagerScript = _loadingManagerObject.GetComponent<LoadingManager>();
         _loadingManagerScript.LoadGameScene1(2, true, 0);

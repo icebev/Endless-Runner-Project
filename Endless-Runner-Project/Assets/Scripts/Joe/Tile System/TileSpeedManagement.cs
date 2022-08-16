@@ -78,7 +78,7 @@ public class TileSpeedManagement : MonoBehaviour
         // We should only have a tile speed greater than zero if the player is still alive
         if (GameOverEvent.isPlayerDead == false)
         {
-            this.CurrentTileSpeed = this.tileSpeedIncrementation.calculatedTargetTileSpeed * this.ExternalSpeedMultiplier;
+            this.CurrentTileSpeed = this.tileSpeedIncrementation.CalculatedTargetTileSpeed * this.ExternalSpeedMultiplier;
             
             // We apply the bonus speed for sprinting if applicable
             if (this.sprintSystem.isSprinting)

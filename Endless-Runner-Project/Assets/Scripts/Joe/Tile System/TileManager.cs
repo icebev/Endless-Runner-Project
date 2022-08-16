@@ -5,10 +5,11 @@ using UnityEngine.Events;
 
 /* TILE MANAGER CLASS
  * Author(s): Joe Bevis
- * Date last modified: 03/07/2022
+ * Date last modified: 16/08/2022
  *******************************************************************************
  * CHANGE NOTES:
  * Added a filler tile list.
+ * Removed the VeryEasy tile list since this difficulty level is no longer used.
  * 
  */
 /// <summary>
@@ -38,7 +39,6 @@ public class TileManager : MonoBehaviour
 
     #region Tile Lists
     private List<ScriptableTileObject> fillerTilesList;
-    private List<ScriptableTileObject> veryEasyTilesList;
     private List<ScriptableTileObject> easyTilesList;
     private List<ScriptableTileObject> mediumTilesList;
     private List<ScriptableTileObject> hardTilesList;
@@ -56,7 +56,6 @@ public class TileManager : MonoBehaviour
     #endregion
 
     #region Private Variables
-    private TileSpeedIncrementation tileSpeedIncrementation;
     private TileSpeedManagement tileSpeedManagement;
     private TileSpawnWeightings tileSpawnWeightings;
     private GameObject finalTile;
@@ -68,6 +67,7 @@ public class TileManager : MonoBehaviour
     private float runPlaytime;
     #endregion
 
+    // Tile speed getter ensures that tile speed is not accidentally changed upon access
     public float GetCurrentTileSpeed
     {
         get { return this.tileSpeedManagement.CurrentTileSpeed; }
@@ -75,16 +75,15 @@ public class TileManager : MonoBehaviour
 
     private void Start()
     {
+        // Run play time is used to select an increasingly difficult spawn probability set as time passes
         this.runPlaytime = 0.0f;
 
-        // Reference speed incrementation script
-        this.tileSpeedIncrementation = FindObjectOfType<TileSpeedIncrementation>();
+        // Get references to other related scripts
         this.tileSpeedManagement = FindObjectOfType<TileSpeedManagement>();
         this.tileSpawnWeightings = FindObjectOfType<TileSpawnWeightings>();
 
         // List instantiation
         this.fillerTilesList = new List<ScriptableTileObject>();
-        this.veryEasyTilesList = new List<ScriptableTileObject>();
         this.easyTilesList = new List<ScriptableTileObject>();
         this.mediumTilesList = new List<ScriptableTileObject>();
         this.hardTilesList = new List<ScriptableTileObject>();
@@ -92,7 +91,7 @@ public class TileManager : MonoBehaviour
         this.junctionTilesList = new List<ScriptableTileObject>();
         this.junctionSpawnedTilesList = new List<GameObject>();
 
-        // Fill each list
+        // Fill each list with the scriptable tile objects of the matching difficulty setting
         foreach (ScriptableTileObject tileObject in this.scriptableTiles)
         {
             if (tileObject.hasCorner == false && tileObject.hasJunction == false)
@@ -101,9 +100,6 @@ public class TileManager : MonoBehaviour
                 {
                     case TileDifficulty.Filler:
                         this.fillerTilesList.Add(tileObject);
-                        break;
-                    case TileDifficulty.VeryEasy:
-                        this.veryEasyTilesList.Add(tileObject);
                         break;
                     case TileDifficulty.Easy:
                         this.easyTilesList.Add(tileObject);
@@ -116,6 +112,7 @@ public class TileManager : MonoBehaviour
                         break;
                 }
             }
+            // Separate lists are used for corner and junction tiles.
             else if (tileObject.hasCorner == true)
             {
                 this.cornerTilesList.Add(tileObject);
@@ -126,32 +123,33 @@ public class TileManager : MonoBehaviour
             }
         }
 
+        // The tiles container will contain the instantiated tiles as children to keep the hierarchy tidy.
         this.tilesContainer = GameObject.FindGameObjectWithTag("TilesContainer");
+        
         this.nextTileSpawnGap = this.squareTileDimension;
 
         this.lastNonFillerTileDifficulty = TileDifficulty.Easy;
+
+        // Instantiate the starting tile at the origin
         this.finalTile = Instantiate(this.startingTile.tilePrefab, this.startingTile.tilePrefab.transform.position, this.startingTile.tilePrefab.transform.rotation);
         
-        this.spawnFillersNextCount = this.initialFillerCount;
+        // Depending on whether the tutorial is complete, set an amount of filler (blank) tiles to spawn next
         if (PlayerPrefs.GetInt("TutorialComplete") != 1)
         {
+            // We need more (5) blank tiles if the tutorial is going to take place
+            // so that the player doesn't encounter obstacles before they have learned the controls.
             this.spawnFillersNextCount = 5;
         }
+        else
+        {
+            this.spawnFillersNextCount = this.initialFillerCount;
+        }
 
-        ///this.finalTile.transform.Translate(new Vector3(0, 4.5f, 0));
-        // Spawn in the starting tile sequence
+        // Spawn in the starting tile sequence based on the configured spawn count paramater
         for (int z = 0; z <= this.tileSpawnCount; z++)
         {
             this.SpawnAdditionalTile();
-            //Vector3 tilePos = this.veryEasyTilesList[0].tilePrefab.transform.position + new Vector3(0, this.spawnHeightChange, (z * this.squareTileDimension));
-            //GameObject newTile = Instantiate(this.veryEasyTilesList[0].tilePrefab, tilePos, this.veryEasyTilesList[0].tilePrefab.transform.rotation);
-            //newTile.transform.parent = this.tilesContainer.transform;
-            //if (z == this.tileSpawnCount)
-            //{
-            //    this.finalTile = newTile;
-            //}fixedUpdate
         }
-        //this.spawnHeightChange = 0;
     }
 
     private void Update()
@@ -159,7 +157,53 @@ public class TileManager : MonoBehaviour
         this.runPlaytime += Time.deltaTime;
     }
 
-    public Vector3 CalculateSpawnPosition()
+    /// <summary>
+    /// Creates an additional tile at the end of the track. 
+    /// To be called at on start and when tiles despawn to create an endless treadmill.
+    /// </summary>
+    public void SpawnAdditionalTile()
+    {
+        // Calculate where the new tile should spawn - at newSpawnPos
+        Vector3 newSpawnPos = CalculateSpawnPosition();
+
+        this.nextTileSpawnGap = this.squareTileDimension;
+        this.spawnHeightChange = 0;
+
+        // Rotation correction based on current track spawn direction
+        Quaternion newSpawnRot = Quaternion.AngleAxis(-90 * (int)this.spawnDirection, Vector3.up);
+
+        // Semi randomised selection of a tile prefab to spawn
+        GameObject newTile = InstantiateSemiRandomTile();
+
+        // Position and rotation are updated after the tile is instantiated but not calculated after since corners will change track spawn direction
+        newTile.transform.position = newSpawnPos;
+        newTile.transform.rotation = newSpawnRot;
+
+        // Final new tile setup
+        // Set as a child of the container gameobject
+        newTile.transform.parent = this.tilesContainer.transform;
+
+        this.finalTile = newTile;
+
+        if (this.currentJunctionTile == null && this.spawningAfterJunction == true)
+        {
+            this.currentJunctionTile = newTile;
+        }
+
+        // Failsafe addition of the tile movement script.
+        if (newTile.GetComponent<TileMovement>() == null)
+        {
+            newTile.AddComponent<TileMovement>();
+        }
+    }
+
+    #region Tile Spawn Subroutines
+    /// <summary>
+    /// Calculates the correct point that the new tile should spawn 
+    /// based on the position of the last tile in the treadmill and the current spawn direction. 
+    /// </summary>
+    /// <returns>The spawn position.</returns>
+    private Vector3 CalculateSpawnPosition()
     {
         Vector3 spawnPos = new Vector3();
 
@@ -179,7 +223,7 @@ public class TileManager : MonoBehaviour
                 break;
         }
 
-        // Account for frame delay caused offset
+        // Account for frame delay caused offset as all of the tiles move against the player's run direction
         switch (this.runDirection)
         {
             case TrackDirection.positiveZ:
@@ -198,20 +242,31 @@ public class TileManager : MonoBehaviour
         return spawnPos;
     }
 
-    public GameObject InstantiateSemiRandomTile()
+    /// <summary>
+    /// Creates a new tile at the origin based on the tile spawn probabilities set up.
+    /// </summary>
+    private GameObject InstantiateSemiRandomTile()
     {
         ScriptableTileObject chosenScriptableTile;
+
         GameObject spawnedTile;
+
         float randomVal = Random.Range(0.0f, 1.0f);
 
-
-        if (randomVal < this.cornerProbability && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false && this.spawnFillersNextCount <= 0)
+        // Only spawn a corner if strict conditions are met.
+        if (randomVal < this.cornerProbability && this.spawnDirection == this.runDirection 
+            && this.spawningAfterJunction == false && this.spawnFillersNextCount <= 0)
         {
             chosenScriptableTile = this.SelectCornerTile();
+
+            // Always spawn a filler tile after a corner because
+            // obstacles would be blocked from view which is unfair.
             this.spawnFillersNextCount = 1;
 
             TurnDirection tileTurnDirection = chosenScriptableTile.tilePrefab.GetComponent<CornerTileBehaviour>().turnDirection;
 
+            // Change spawn direction based on the turn direction so that
+            // new tiles spawn in the correct orientation after the turn
             switch (tileTurnDirection)
             {
                 case TurnDirection.Left:
@@ -222,38 +277,57 @@ public class TileManager : MonoBehaviour
                     break;
             }
 
+            spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
+            this.nextTileSpawnGap = chosenScriptableTile.tileLength * this.squareTileDimension;
+
+            return spawnedTile;
         }
-        else if (randomVal < (this.junctionProbability + this.cornerProbability) && this.spawnDirection == this.runDirection && this.spawningAfterJunction == false && this.spawnFillersNextCount <= 0)
+        // Only spawn a junction tile if strict conditions are met.
+        else if (randomVal < (this.junctionProbability + this.cornerProbability) && this.spawnDirection == this.runDirection 
+            && this.spawningAfterJunction == false && this.spawnFillersNextCount <= 0)
         {
             chosenScriptableTile = this.SelectJunctionTile();
             spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
             this.spawningAfterJunction = true;
+
+            // Always spawn a filler tile after a corner because
+            // obstacles would be blocked from view which is unfair.
             this.spawnFillersNextCount = 1;
             return spawnedTile;
 
         }
+        // Regular tile spawn (not a corner or a junction)
         else
         {
             TileDifficulty newTileDifficulty = this.DetermineNextTileDifficulty(this.lastNonFillerTileDifficulty);
+            if (newTileDifficulty != TileDifficulty.Filler)
+            {
+                this.lastNonFillerTileDifficulty = newTileDifficulty;
+            }
             chosenScriptableTile = this.SelectTileByDifficulty(newTileDifficulty);
+            spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
+            this.nextTileSpawnGap = chosenScriptableTile.tileLength * this.squareTileDimension;
+
+            if (this.spawningAfterJunction)
+            {
+                this.junctionSpawnedTilesList.Add(spawnedTile);
+            }
+            return spawnedTile;
         }
-
-
-        spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
-        this.nextTileSpawnGap = chosenScriptableTile.tileLength * this.squareTileDimension;
-        spawnedTile.transform.parent = this.tilesContainer.transform;
-
-        if (this.spawningAfterJunction)
-        {
-            this.junctionSpawnedTilesList.Add(spawnedTile);
-        }
-
-        return spawnedTile;
+        
     }
 
-    public TileDifficulty DetermineNextTileDifficulty(TileDifficulty lastTileDifficulty)
+    /// <summary>
+    /// Get the semi-random difficulty value of the next tile 
+    /// based on the spawn probabilities set up.
+    /// </summary>
+    /// <param name="lastTileDifficulty">The difficulty of the previous tile.</param>
+    /// <returns>The difficulty the next tile should spawn at.</returns>
+    private TileDifficulty DetermineNextTileDifficulty(TileDifficulty lastTileDifficulty)
     {
         float randomVal = Random.Range(0.0f, 1.0f);
+
+        // Should the next tile be a filler (blank) tile?
         if (randomVal <= this.tileSpawnWeightings.fillerTileChance || this.spawnFillersNextCount > 0)
         {
             if (this.spawnFillersNextCount > 0)
@@ -264,6 +338,8 @@ public class TileManager : MonoBehaviour
         }
         else
         {
+            // Select which set should be used to get the spawn probabilities from -
+            // more difficult sets are chosen later in the game to increase the overall difficulty.
             int currentProbabilitySetIndex = 0;
             while (this.runPlaytime > this.tileSpawnWeightings.spawnProbabilitySets[currentProbabilitySetIndex].maxSetTime)
             {
@@ -276,52 +352,9 @@ public class TileManager : MonoBehaviour
 
     }
 
-
-    public void ResetTilesContainer()
-    {
-        foreach (Transform child in this.transform)
-        {
-            SpawnAdditionalTile();
-            Destroy(child);
-        }
-    }
     /// <summary>
-    /// Creates an additional tile at the end of the track
+    /// Set the track spawn direction to turn left 
     /// </summary>
-    public void SpawnAdditionalTile()
-    {
-        // Calculate where the new tile should spawn - at newSpawnPos
-        Vector3 newSpawnPos = CalculateSpawnPosition();
-
-        this.nextTileSpawnGap = this.squareTileDimension;
-        this.spawnHeightChange = 0;
-        
-        // Rotation correction based on current track spawn direction
-        Quaternion newSpawnRot = Quaternion.AngleAxis(-90 * (int)this.spawnDirection, Vector3.up);
-
-        // Semi randomised selection of a tile prefab to spawn
-        GameObject newTile = InstantiateSemiRandomTile();
-
-        // Position and rotation are updated after the tile is instantiated but not calculated after since corners will change track spawn direction
-        newTile.transform.position = newSpawnPos;
-        newTile.transform.rotation = newSpawnRot;
-
-        // Final new tile setup
-        // Set as a child of the container gameobject
-
-        
-        this.finalTile = newTile;
-        if(this.currentJunctionTile == null && this.spawningAfterJunction == true)
-        {
-            this.currentJunctionTile = newTile;
-        }
-
-        if (newTile.GetComponent<TileMovement>() == null)
-        {
-            newTile.AddComponent<TileMovement>();
-        }
-    }
-
     public void TrackSpawnLeftTurn()
     {
         int currentDirInt = (int)this.spawnDirection;
@@ -335,6 +368,9 @@ public class TileManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set the track spawn direction to turn right 
+    /// </summary>
     public void TrackSpawnRightTurn()
     {
         int currentDirInt = (int)this.spawnDirection;
@@ -347,25 +383,37 @@ public class TileManager : MonoBehaviour
             this.spawnDirection = (TrackDirection)(currentDirInt - 1);
         }
     }
+    #endregion
 
+    #region Tile Scriptable Object Selection Methods
 
+    /// <summary>
+    /// Select a corner tile from the available corner tiles.
+    /// </summary>
+    /// <returns>A corner tile scriptable object.</returns>
     private ScriptableTileObject SelectCornerTile()
     {
-
         ScriptableTileObject selectedScriptableTileObject = this.SelectTileFromWeightedList(this.cornerTilesList);
 
         return selectedScriptableTileObject;
     }
 
-
+    /// <summary>
+    /// Select a junction tile from the available junction tiles.
+    /// </summary>
+    /// <returns>A junction tile scriptable object.</returns>
     private ScriptableTileObject SelectJunctionTile()
     {
-
         ScriptableTileObject selectedScriptableTileObject = this.SelectTileFromWeightedList(this.junctionTilesList);
 
         return selectedScriptableTileObject;
     }
-
+    
+    /// <summary>
+    /// Select a tile at random from a weighted list.
+    /// </summary>
+    /// <param name="scriptableTilesList">The list to select from.</param>
+    /// <returns>A tile scriptable object.</returns>
     private ScriptableTileObject SelectTileFromWeightedList(List<ScriptableTileObject> scriptableTilesList)
     {
         float weightingsTotal = 0.0f;
@@ -387,6 +435,11 @@ public class TileManager : MonoBehaviour
         return scriptableTilesList[selectedIndex];
     }
 
+    /// <summary>
+    /// Select a random tile by difficulty.
+    /// </summary>
+    /// <param name="difficulty">The difficulty of the tile to be selected.</param>
+    /// <returns>A random tile of the passed in difficulty.</returns>
     private ScriptableTileObject SelectTileByDifficulty(TileDifficulty difficulty)
     {
         List<ScriptableTileObject> selectedList = null;
@@ -395,9 +448,6 @@ public class TileManager : MonoBehaviour
         {
             case TileDifficulty.Filler:
                 selectedList = this.fillerTilesList;
-                break;
-            case TileDifficulty.VeryEasy:
-                selectedList = this.veryEasyTilesList;
                 break;
             case TileDifficulty.Easy:
                 selectedList = this.easyTilesList;
@@ -410,14 +460,10 @@ public class TileManager : MonoBehaviour
                 break;
         }
 
-        if (difficulty != TileDifficulty.Filler)
-        {
-            this.lastNonFillerTileDifficulty = difficulty;
-        }
-
         ScriptableTileObject selectedScriptableTileObject = this.SelectTileFromWeightedList(selectedList);
 
         return selectedScriptableTileObject;
     }
 
+    #endregion
 }

@@ -23,7 +23,6 @@ public class SprintSystem : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private CinemachineVirtualCamera playerCamera;
     [SerializeField] private Transform cameraHolder;
-    [SerializeField] private TileSpeedManagement tileSpeedManagement;
 
     
     [Header("Inpsector Config - Camera movement")]
@@ -44,6 +43,7 @@ public class SprintSystem : MonoBehaviour
     [SerializeField] private float runAnimSpeedTarget;
     [SerializeField] private float interpolationSpeed;
 
+    [Header("Other")]
     // Public variables
     public float tileSpeedChange;
     public bool speedBoostModeActive;
@@ -51,6 +51,7 @@ public class SprintSystem : MonoBehaviour
 
     // Private variables
     private TileSpeedIncrementation tileSpeedIncrementation;
+    private TileSpeedManagement tileSpeedManagement;
     private PlayerControls inputActionsForSprint;
     private InputAction sprintAction;
 

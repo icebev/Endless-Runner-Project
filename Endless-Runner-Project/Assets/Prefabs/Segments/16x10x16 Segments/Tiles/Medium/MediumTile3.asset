@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MediumTile3
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1461507260648436506, guid: 1155d2ba9e261bd47876e7148cfbc86b, type: 3}
-  difficulty: 3
+  difficulty: 2
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0

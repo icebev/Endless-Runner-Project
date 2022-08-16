@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LeftRightJunction
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 6457794106042632697, guid: d3e63d1e6cb31e0419f07316a2b6e659, type: 3}
-  difficulty: 3
+  difficulty: 2
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0

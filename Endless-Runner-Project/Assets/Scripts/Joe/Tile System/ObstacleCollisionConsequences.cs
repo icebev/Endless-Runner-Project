@@ -28,8 +28,8 @@ public class ObstacleCollisionConsequences : MonoBehaviour
     private ChaserMechanic chaserMechanic;
     private GamepadRumbleManager gamepadRumbleManager;
 
-    [Header("Inspector Set References")]
     [SerializeField] private ConfigurablePlayerSlowDown[] playerSlowDowns;
+    [Header("Inspector Set References")]
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private ParticleSystem collisionParticles;
     [SerializeField] private AudioSource collisionImpactAudio;

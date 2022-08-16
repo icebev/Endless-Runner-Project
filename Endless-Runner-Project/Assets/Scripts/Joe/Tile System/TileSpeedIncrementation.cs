@@ -4,86 +4,107 @@ using UnityEngine;
 
 public class TileSpeedIncrementation : MonoBehaviour
 {
+    [Header("Tile Speed Incrementation Configuration")]
+    [Tooltip("The mode of speed incrementation.")]
     public SpeedIncrementMode incrementMode;
-    public float calculatedTargetTileSpeed;
+
+    // Speed limit fields
+    [Tooltip("Should there be a limit to the tile movement speed?")]
     public bool useSpeedLimit = false;
+
+    [Tooltip("The maximum speed the tiles can move towards the player excluding sprint bonus.")]
     public float speedLimit;
-
-    private float intervalTargetSpeed;
-
-
 
     [Tooltip("The starting speed of tile movement opposing the run direction.")]
     [SerializeField] private float startingTileSpeed = 6f;
     
-    // Linear fields
+    // Linear mode fields
     [Tooltip("Amount by which the speed increases over 10 seconds of gameplay.")]
     [SerializeField] private float linearIncrementFactor = 0f;
 
-    // Interval 
+    // Interval mode fields
     [Tooltip("Time between each speed increase or target speed increase.")]
     [SerializeField] private float intervalTime = 0f;
     [Tooltip("Amount by which the speed or target speed increases after the interval.")]
     [SerializeField] private float intervalIncreaseFactor = 0f;
 
+    // Private fields
+    [SerializeField] private float _calculatedTargetTileSpeed;
     private float timeUntilInterval = 0.0f;
+    private float intervalTargetSpeed;
+
+    // Property used to protect the calculated target tile speed when accessing it in other scripts
+    /// <summary>
+    /// The absolute value of the tile speed, incremented within FixedUpdate with no speed modifiers applied
+    /// </summary>
+    public float CalculatedTargetTileSpeed
+    {
+        get { return this._calculatedTargetTileSpeed; }
+        private set { this._calculatedTargetTileSpeed = value; }
+    }
 
     private void Start()
     {
         this.intervalTargetSpeed = this.startingTileSpeed;
         this.timeUntilInterval = this.intervalTime;
-        this.calculatedTargetTileSpeed = this.startingTileSpeed;
+        this.CalculatedTargetTileSpeed = this.startingTileSpeed;
     }
-
-
 
     private void FixedUpdate()
     {
         this.IncrementTargetTileSpeed();
-
     }
 
+    /// <summary>
+    /// Increments the target tile speed based on the configuration of the incrementation system
+    /// </summary>
     private void IncrementTargetTileSpeed()
 {
-        if (this.calculatedTargetTileSpeed < this.speedLimit || this.useSpeedLimit == false)
+        if (this.CalculatedTargetTileSpeed < this.speedLimit || this.useSpeedLimit == false)
         {
             switch (this.incrementMode)
             {
+                // Linear mode - constant incrementation over time by a set rate
                 case SpeedIncrementMode.linear:
                     {
-                        this.calculatedTargetTileSpeed += Time.fixedDeltaTime * 0.1f * this.linearIncrementFactor;
+                        this.CalculatedTargetTileSpeed += Time.fixedDeltaTime * 0.1f * this.linearIncrementFactor;
                         break;
                     }
+                // Intervals mode - at set intervals the players speed increases by a set increase amount
                 case SpeedIncrementMode.intervals:
                     {
+                        this.timeUntilInterval -= Time.fixedDeltaTime;
                         if (this.timeUntilInterval <= 0.0f)
                         {
-                            this.timeUntilInterval = this.intervalTime;
-                            this.calculatedTargetTileSpeed += this.intervalIncreaseFactor;
+                            this.timeUntilInterval += this.intervalTime;
+                            this.CalculatedTargetTileSpeed += this.intervalIncreaseFactor;
                         }
-                        this.timeUntilInterval -= Time.fixedDeltaTime;
                         break;
                     }
+                // Linear Mid Interval mode - constant incrementation up to a variable cap which is increased at intervals
                 case SpeedIncrementMode.linearMidInterval:
                     {
+                        this.timeUntilInterval -= Time.fixedDeltaTime;
                         if (this.timeUntilInterval <= 0.0f)
                         {
-                            this.timeUntilInterval = this.intervalTime;
+                            this.timeUntilInterval += this.intervalTime;
                             this.intervalTargetSpeed += this.intervalIncreaseFactor;
                         }
-                        this.timeUntilInterval -= Time.fixedDeltaTime;
 
-                        if (this.calculatedTargetTileSpeed <= this.intervalTargetSpeed)
+                        // Linear incrementation up to the cap of intervalTargetSpeed
+                        if (this.CalculatedTargetTileSpeed <= this.intervalTargetSpeed)
                         {
-                            this.calculatedTargetTileSpeed += Time.fixedDeltaTime * 0.1f * this.linearIncrementFactor;
+                            this.CalculatedTargetTileSpeed += Time.fixedDeltaTime * 0.1f * this.linearIncrementFactor;
                         }
                         break;
                     }
             }
         }
-        else if (this.calculatedTargetTileSpeed > this.speedLimit)
+        // If the current Calculated Target Tile speed exceeds the set speed limit,
+        // we must set it to the speed limit
+        else if (this.CalculatedTargetTileSpeed > this.speedLimit)
         {
-            this.calculatedTargetTileSpeed = this.speedLimit;
+            this.CalculatedTargetTileSpeed = this.speedLimit;
         }
 
     }

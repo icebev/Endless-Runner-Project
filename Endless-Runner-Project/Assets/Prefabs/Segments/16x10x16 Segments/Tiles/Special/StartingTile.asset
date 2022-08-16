@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StartingTile
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 6457794106042632697, guid: d91b8daf427640b4389e7aa648eb4806, type: 3}
-  difficulty: 2
+  difficulty: 1
   tileLength: 1
   spawnProbability: 1
   hasCorner: 0
