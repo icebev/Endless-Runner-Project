@@ -34,7 +34,9 @@ public class CharacterMovementSFXPlayer : MonoBehaviour
         return clipArray[randomIndex];
     }
 
-
+    /// <summary>
+    /// Plays jump sounds selected at random from the banks of jump SFX clips
+    /// </summary>
     public void PlayJumpSound()
     {
         AudioClip selectedJumpClip = this.PickRandomClipFromArray(this.jumpSounds);
@@ -44,6 +46,9 @@ public class CharacterMovementSFXPlayer : MonoBehaviour
         this.jumpGaspSound.PlayOneShot(selectedGaspClip);
     }
 
+    /// <summary>
+    /// Plays the slide sound with varied pitch
+    /// </summary>
     public void PlaySlideSound()
     {
         float newPitch = Random.Range(1.0f - this.whooshPitchVariance, 1.0f + this.whooshPitchVariance);
@@ -51,6 +56,9 @@ public class CharacterMovementSFXPlayer : MonoBehaviour
         this.slideSound.PlayOneShot(this.slideSound.clip);
     }
 
+    /// <summary>
+    /// Plays the lane change whoosh sound with varied pitch
+    /// </summary>
     public void PlayLaneChangeSound()
     {
         float newPitch = Random.Range(1.0f - this.whooshPitchVariance, 1.0f + this.whooshPitchVariance);

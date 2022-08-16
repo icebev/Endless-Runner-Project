@@ -7474,7 +7474,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d308ac5e3b6e5404ea442711dde309e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pooledObjects: []
   objectToPool: {fileID: 1680731165115405906, guid: 6680512313b911b459d27237a864d8ec, type: 3}
   amountToPool: 200
 --- !u!4 &436627025
@@ -13429,7 +13428,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &715599937
 RectTransform:
   m_ObjectHideFlags: 0

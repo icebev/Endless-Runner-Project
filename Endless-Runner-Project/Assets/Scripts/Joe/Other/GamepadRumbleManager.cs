@@ -64,6 +64,9 @@ public class GamepadRumbleManager : MonoBehaviour
         this.rumbling = true;
     }
 
+    /// <summary>
+    /// Stops the rumble by setting the motor speeds back to zero.
+    /// </summary>
     public void StopRumble()
     {
         if (this.gamepad == null)
