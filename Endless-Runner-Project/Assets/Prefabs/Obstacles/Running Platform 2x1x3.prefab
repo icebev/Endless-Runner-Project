@@ -97,7 +97,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2170318365069757899, guid: 2ebfcdb5571092e4ba362f65d32ff553, type: 3}
       propertyPath: FrontLowerCollision.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2170318365069757899, guid: 2ebfcdb5571092e4ba362f65d32ff553, type: 3}
       propertyPath: FrontUpperCollision.Array.size
