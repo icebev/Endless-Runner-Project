@@ -2879,6 +2879,7 @@ MonoBehaviour:
   - {fileID: 1072166186}
   _statsButtons:
   - {fileID: 291692270}
+  _howToButtons: []
 --- !u!1001 &484927121
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15557,7 +15558,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 14.08.2022   x64 Final Build v1.6
+  m_text: 17.08.2022  x64 Final Build v1.7
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b31c9cea14ffb4648a1a1add0cc107d9, type: 2}
   m_sharedMaterial: {fileID: 3379272300965572372, guid: b31c9cea14ffb4648a1a1add0cc107d9, type: 2}

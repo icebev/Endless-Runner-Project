@@ -13,7 +13,8 @@ using System;
  * Variable protection levels pass
  * Commenting pass
  * Refactored power-up type as an enum for readability 
- * and to avoid passing in excess information about the power-up
+ * and to avoid passing in excess information about the power-up.
+ * Replaced if statements with a switch when checking power-up type
  */
 /// <summary>
 /// A class for implementing the results of the player picking up a coin or powerup during their run.
@@ -48,6 +49,11 @@ public class CollectibleEventFunctions : MonoBehaviour
     private const float MAXCOINPITCH = 1.1f;
     private const float MINCOINVOL = 0.04f;
     private const float MAXCOINVOL = 0.06f;
+
+    private const int UPGRADE_DURATION_INCREASE = 2;
+    private const int MAGNET_DURATION_DEFAULT = 3;
+    private const int MULTIPLIER_DURATION_DEFAULT = 3;
+    private const int BOOST_DURATION_DEFAULT = 2;
 
     // Mid-run tracking variables
     private int coinsCollected = 0;
@@ -117,32 +123,33 @@ public class CollectibleEventFunctions : MonoBehaviour
     /// <summary>
     /// Called when a power-up is collected to trigger a power-up effect
     /// </summary>
-    /// <param name="powerUpRef">The power up type used to determine which effect to activate</param>
+    /// <param name="powerUpType">The power up type used to determine which effect to activate</param>
     public void TriggerPowerUp(PowerUpType powerUpType)
     {
         this.powerUpCollectParticles.Play();
         this.powerUpCollectSound.Play();
         this.powerUpsCollected++;
 
-        // Magnet activation
-        if (powerUpType == PowerUpType.CoinMagnet)
+        switch (powerUpType)
         {
-            float activeTime = 3 + (2 * PlayerPrefs.GetInt("GameUpgradeMagnet"));
-            this.ActivateMagnet(activeTime);
-        }
-
-        // Multiplier activation
-        if (powerUpType == PowerUpType.CoinMultiplier)
-        {
-            float activeTime = 3 + (2 * PlayerPrefs.GetInt("GameUpgradeCoin"));
-            this.ActivateMultiplier(activeTime);
-        }
-
-        // Speed boost activation
-        if (powerUpType == PowerUpType.MaxSpeed)
-        {
-            float activeTime = 2 + (2 * PlayerPrefs.GetInt("GameUpgradeBoost"));
-            this.ActivateSpeedBoost(activeTime);
+            case PowerUpType.CoinMagnet:
+                {
+                    float activeTime = MAGNET_DURATION_DEFAULT + (UPGRADE_DURATION_INCREASE * PlayerPrefs.GetInt("GameUpgradeMagnet"));
+                    this.ActivateMagnet(activeTime);
+                    break;
+                }
+            case PowerUpType.CoinMultiplier:
+                {
+                    float activeTime = MULTIPLIER_DURATION_DEFAULT + (UPGRADE_DURATION_INCREASE * PlayerPrefs.GetInt("GameUpgradeCoin"));
+                    this.ActivateMultiplier(activeTime);
+                    break;
+                }
+            case PowerUpType.MaxSpeed:
+                {
+                    float activeTime = BOOST_DURATION_DEFAULT + (UPGRADE_DURATION_INCREASE * PlayerPrefs.GetInt("GameUpgradeBoost"));
+                    this.ActivateSpeedBoost(activeTime);
+                    break;
+                }
         }
     }
 

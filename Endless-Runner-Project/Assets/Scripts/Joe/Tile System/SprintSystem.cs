@@ -117,12 +117,15 @@ public class SprintSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        this.HoldingSprintButtonUpdate();
 
-        // Stop sprinting if the player is being slowed after a collision
-        if (this.tileSpeedManagement.IsNotSlowed == false && this.isSprinting)
+        // Stop sprinting if the player is being slowed after a collision or dead
+        if (this.tileSpeedManagement.IsNotSlowed == false && this.isSprinting || GameOverEvent.isPlayerDead == true)
         {
             this.StopSprinting();
+        }
+        else
+        {
+            this.HoldingSprintButtonUpdate();
         }
 
         // Speed boost powerup override - sprint input is no longer relevant if the speed boost is taking place
