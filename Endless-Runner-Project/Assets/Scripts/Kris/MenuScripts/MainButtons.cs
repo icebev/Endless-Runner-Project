@@ -18,7 +18,6 @@ using UnityEngine.UI;
 /// A class for managing the buttons in the Main Menu.
 /// </summary>
 
-
 public class MainButtons : MonoBehaviour
 {
     [SerializeField] private GameObject fadeObj; //Fade Object used to Fade Out after pressing "Play"
