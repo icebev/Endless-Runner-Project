@@ -292,7 +292,7 @@ public class CharacterManager : MonoBehaviour
                 this.direction -= 1;
 
                 //if (!(this.direction < (int)directions.north)) return;
-                if (this.direction > (int)directions.north) return;
+                if (this.direction >= (int)directions.north) return;
                 this.direction = (int)directions.west;
                 
                 break;
@@ -300,7 +300,7 @@ public class CharacterManager : MonoBehaviour
                 this.direction += 1;
 
                 //if (!(this.direction > (int)directions.west)) return;
-                if (this.direction < (int)directions.west) return;
+                if (this.direction <= (int)directions.west) return;
                 this.direction = (int)directions.north;
                 break;
         }

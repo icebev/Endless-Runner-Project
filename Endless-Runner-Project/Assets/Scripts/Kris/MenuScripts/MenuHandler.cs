@@ -1,25 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
+/* MENU HANDLER CLASS
+ * Author(s): Kris Burgess-James
+ * Date last modified: 17/08/2022
+ *******************************************************************************
+ * Important Note: Some changes have been made using Joe's computer / account by me.
+ * CHANGE NOTES: 
+ * Restarted the code from the beginning due to coming up with more sophisticated solution
+ * Added Store enum
+ * Added Stats enum
+ * Added How To enum
+ */
+/// <summary>
+/// A class for handling the Menu
+/// </summary>
 
 public class MenuHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-    [SerializeField] private Animator blocksAnim;
-    [SerializeField] private GameObject[] _menus;
-    [SerializeField] private Animator[] _menusAnimator;
-    [SerializeField] private MainButtons _buttonManager;
-    private gameMenus _menuState = gameMenus.Main;
-    private gameMenus _previousMenu;
+    [SerializeField] private Animator blocksAnim;    //This is the block transition animation that occurs on the main menu.
+    [SerializeField] private GameObject[] _menus;    //This contains each menu for the main menu.
+    [SerializeField] private Animator[] _menusAnimator; //Unused Legacy Menu Animator (Would have animated the menu)
+    [SerializeField] private MainButtons _buttonManager; //Button manager to perform actions like disabling current buttons.
+    private gameMenus _menuState = gameMenus.Main; //The different menu states
+    private gameMenus _previousMenu; // Stores the previous menu state to go back.
 
     private void Start()
     {
-        this.blocksAnim.gameObject.SetActive(true);
+        this.blocksAnim.gameObject.SetActive(true); //Sets the blocks animation gameobject to active, since it is part of a prefab used everywhere.
     }
 
-    public enum gameMenus
+    public enum gameMenus //The different menus within the game. Names are self-explanatory.
     {
         Main,
         Options,
@@ -30,42 +42,36 @@ public class MenuHandler : MonoBehaviour
         HowTo,
     }
 
-    public void ReturnMenuState()
+    public void ReturnMenuState() //Returns the menu to the previous menu by changin it.
     {
         ChangeMenuState(this._previousMenu);
     }
 
-    public void ChangeMenuState(gameMenus targetMenu)
+    public void ChangeMenuState(gameMenus targetMenu) //Chances the menu state to the target menu that the button manager requested.
     {
-
         if (this._menuState == targetMenu) return;
         StartCoroutine(transitionMenu(targetMenu));
-        /*
-        this._previousMenu = this._menuState;
-        this._menuState = targetMenu;
-        this._buttonManager.ToggleButtons(this._previousMenu, false);
-        this._menus[(int)this._previousMenu].SetActive(false);  //Change this for animation
-        this._buttonManager.ToggleButtons(this._menuState, true);
-        this._menus[(int)this._menuState].SetActive(true); //Change this for animation
-        */
-
     }
 
-    IEnumerator transitionMenu(gameMenus targetMenu)
+    IEnumerator transitionMenu(gameMenus targetMenu) //IEnumerator for doing timed Menu transition.
     {
-        this._previousMenu = this._menuState;
-        this._menuState = targetMenu;
-        this._buttonManager.ToggleButtons(this._previousMenu, false);
-        this.blocksAnim.Play("BlocksOut");
-        yield return new WaitForSeconds(1f);
-        this._menus[(int)this._previousMenu].SetActive(false);
-        this._menus[(int)this._menuState].SetActive(true);
-        this._buttonManager.ToggleButtons(this._menuState, false);
+        this._previousMenu = this._menuState; //Sets the previous menu state
+        this._menuState = targetMenu;   //Sets menu state to target
+        this._buttonManager.ToggleButtons(this._previousMenu, false); //Toggles the buttons for the current state false.
+        this.blocksAnim.Play("BlocksOut"); //Plays transition
+        yield return new WaitForSeconds(1f); //Waits for the transition to finish (1 second)
+        this._menus[(int)this._previousMenu].SetActive(false); //Deactivates the current menu
+        this._menus[(int)this._menuState].SetActive(true); //Activates the new menu
+        this._buttonManager.ToggleButtons(this._menuState, false); //Disables the buttons of new menu until the transition in finishes
         this.blocksAnim.Play("BlocksIn");
         yield return new WaitForSeconds(1f);
-        this._buttonManager.ToggleButtons(this._menuState, true);
-        yield return null;
+        this._buttonManager.ToggleButtons(this._menuState, true); //Enables the buttons of the new menu
+        yield return null;//Ends the IEnumerator.
     }
+}
+
+///////////// Below here is OLD legacy code. It was an inefficient way to code the menu.
+///Left it here incase you'd like to see how I improved from this old system. Sorry for no comments below.
 
     /*
 
@@ -162,4 +168,3 @@ public class MenuHandler : MonoBehaviour
 }
 
     */
-}
