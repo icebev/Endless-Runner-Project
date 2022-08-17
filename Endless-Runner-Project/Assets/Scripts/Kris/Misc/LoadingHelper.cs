@@ -3,6 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/* AUDIO VOLUME SLIDER CLASS
+ * Author(s): Kris Burgess-James
+ * Date last modified: 17/08/2022
+ *******************************************************************************
+ * Important Note: Some changes have been made using Joe's computer / account by me.
+ * CHANGE NOTES: 
+ * 
+ */
+/// <summary>
+/// A class for 
+/// </summary>
 public class LoadingHelper : MonoBehaviour
 {
 

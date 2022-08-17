@@ -101,7 +101,7 @@ public class CharacterManager : MonoBehaviour
 
     [SerializeField] bool moveWhileSliding = false;
 
-    [SerializeField] private bool IgnoreGroundCollision = false;
+    //[SerializeField] private bool IgnoreGroundCollision = false;
 
     private RaycastHit GroundRayHit;
     private RaycastHit FrontUpperRayHit;
