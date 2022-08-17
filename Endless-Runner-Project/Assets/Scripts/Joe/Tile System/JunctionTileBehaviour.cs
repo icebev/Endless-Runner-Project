@@ -27,7 +27,6 @@ public class JunctionTileBehaviour : MonoBehaviour
     [SerializeField] private bool hasRightTurn;
     [SerializeField] private bool hasCenterCorridor;
 
-    [System.Obsolete]
     void Start()
     {
         this.tileManager = FindObjectOfType<TileManager>();
@@ -78,7 +77,6 @@ public class JunctionTileBehaviour : MonoBehaviour
         return false;
     }
 
-
     // A private method containing code that is called regardless of which direction the character has turned.
     // Written to avoid duplicated code.
     /// <summary>
@@ -89,7 +87,6 @@ public class JunctionTileBehaviour : MonoBehaviour
         this.characterManager.SetLanePos(0);
         this.tileManager.spawningAfterJunction = false;
         this.tileManager.junctionSpawnedTilesList.Clear();
-        this.tileManager.currentJunctionTile = null;
         this.hasRotated = true;
     }
 
@@ -117,7 +114,6 @@ public class JunctionTileBehaviour : MonoBehaviour
                 // Begin the position override while the turn is taking place
                 this.positionOverride.ActivateRightTurn();
                 this.CompleteTurn();
-
             }
             // If the player is in the left-hand lane and the junction has a left turn 
             else if (this.characterManager.GetPlayerLaneTarget() == -2 && this.hasLeftTurn)
@@ -132,21 +128,17 @@ public class JunctionTileBehaviour : MonoBehaviour
                 foreach (GameObject tileObject in this.tileManager.junctionSpawnedTilesList)
                 {
                     tileObject.transform.RotateAround(this.transform.position, Vector3.up, -90);
-
                 }
 
                 // Begin the position override while the turn is taking place
                 this.positionOverride.ActivateLeftTurn();
                 this.CompleteTurn();
-
             }
             // Center door taken 
             else
             {
                 this.CompleteTurn();
             }
-
-            
         }
     }
 }

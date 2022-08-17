@@ -5,12 +5,12 @@ using UnityEngine.Events;
 
 /* TILE MANAGER CLASS
  * Author(s): Joe Bevis
- * Date last modified: 16/08/2022
+ * Date last modified: 17/08/2022
  *******************************************************************************
  * CHANGE NOTES:
  * Added a filler tile list.
  * Removed the VeryEasy tile list since this difficulty level is no longer used.
- * 
+ * Removed an unused reference to the current junction tile
  */
 /// <summary>
 /// A class for spawning the tile pieces in the correct position and orientation and then managing them.
@@ -27,6 +27,8 @@ public class TileManager : MonoBehaviour
     [SerializeField] private int tileSpawnCount;
     [Tooltip("The number of filler tiles that spawn in a row at the beginning.")]
     [SerializeField] private int initialFillerCount;
+    [Tooltip("The number of filler tiles that spawn in a row at the beginning if the tutorial is going to play.")]
+    [SerializeField] private int initialTutorialFillerCount;
     [Tooltip("The square size of a single tile.")]
     [SerializeField] private float squareTileDimension;
     [Tooltip("How far behind the player the tile is before being destroyed.")]
@@ -51,17 +53,16 @@ public class TileManager : MonoBehaviour
     [HideInInspector] public List<GameObject> junctionSpawnedTilesList;
     [HideInInspector] public TrackDirection spawnDirection = TrackDirection.positiveZ;
     [HideInInspector] public TrackDirection runDirection = TrackDirection.positiveZ;
-    [HideInInspector] public GameObject tilesContainer;
-    [HideInInspector] public GameObject currentJunctionTile;
     #endregion
 
     #region Private Variables
     private TileSpeedManagement tileSpeedManagement;
     private TileSpawnWeightings tileSpawnWeightings;
     private GameObject finalTile;
+    private GameObject tilesContainer;
+
     private float spawnHeightChange;
     private float nextTileSpawnGap;
-
     private TileDifficulty lastNonFillerTileDifficulty;
     private int spawnFillersNextCount;
     private float runPlaytime;
@@ -132,17 +133,17 @@ public class TileManager : MonoBehaviour
 
         // Instantiate the starting tile at the origin
         this.finalTile = Instantiate(this.startingTile.tilePrefab, this.startingTile.tilePrefab.transform.position, this.startingTile.tilePrefab.transform.rotation);
-        
+
         // Depending on whether the tutorial is complete, set an amount of filler (blank) tiles to spawn next
-        if (PlayerPrefs.GetInt("TutorialComplete") != 1)
+        // We need more blank tiles if the tutorial is going to take place
+        // so that the player doesn't encounter obstacles before they have learned the controls.
+        if (PlayerPrefs.GetInt("TutorialComplete") == 1)
         {
-            // We need more (5) blank tiles if the tutorial is going to take place
-            // so that the player doesn't encounter obstacles before they have learned the controls.
-            this.spawnFillersNextCount = 5;
+            this.spawnFillersNextCount = this.initialFillerCount;
         }
         else
         {
-            this.spawnFillersNextCount = this.initialFillerCount;
+            this.spawnFillersNextCount = this.initialTutorialFillerCount;
         }
 
         // Spawn in the starting tile sequence based on the configured spawn count paramater
@@ -170,9 +171,10 @@ public class TileManager : MonoBehaviour
         this.spawnHeightChange = 0;
 
         // Rotation correction based on current track spawn direction
+        // This works due to how the track direction enum is structured, as each consecutive direction is orthoganal (at 90 degrees)
         Quaternion newSpawnRot = Quaternion.AngleAxis(-90 * (int)this.spawnDirection, Vector3.up);
 
-        // Semi randomised selection of a tile prefab to spawn
+        // Semi randomised selection of a tile prefab to spawn.
         GameObject newTile = InstantiateSemiRandomTile();
 
         // Position and rotation are updated after the tile is instantiated but not calculated after since corners will change track spawn direction
@@ -184,11 +186,6 @@ public class TileManager : MonoBehaviour
         newTile.transform.parent = this.tilesContainer.transform;
 
         this.finalTile = newTile;
-
-        if (this.currentJunctionTile == null && this.spawningAfterJunction == true)
-        {
-            this.currentJunctionTile = newTile;
-        }
 
         // Failsafe addition of the tile movement script.
         if (newTile.GetComponent<TileMovement>() == null)
@@ -253,20 +250,23 @@ public class TileManager : MonoBehaviour
 
         float randomVal = Random.Range(0.0f, 1.0f);
 
-        // Only spawn a corner if strict conditions are met.
+        // Only spawn a corner if strict conditions are met:
+        /* The spawn direction is the same as the current running direction - otherwise the track would become too twisty.
+         * Cannot spawn after a junction until the junction has been passed.
+         * Cannot spawn if a filler tile should spawn next.
+         */
         if (randomVal < this.cornerProbability && this.spawnDirection == this.runDirection 
             && this.spawningAfterJunction == false && this.spawnFillersNextCount <= 0)
         {
             chosenScriptableTile = this.SelectCornerTile();
 
-            // Always spawn a filler tile after a corner because
-            // obstacles would be blocked from view which is unfair.
+            // Always spawn a filler tile after a corner because otherwise
+            // obstacles would be blocked from view which is unfair for the player.
             this.spawnFillersNextCount = 1;
-
-            TurnDirection tileTurnDirection = chosenScriptableTile.tilePrefab.GetComponent<CornerTileBehaviour>().turnDirection;
 
             // Change spawn direction based on the turn direction so that
             // new tiles spawn in the correct orientation after the turn
+            TurnDirection tileTurnDirection = chosenScriptableTile.tilePrefab.GetComponent<CornerTileBehaviour>().turnDirection;
             switch (tileTurnDirection)
             {
                 case TurnDirection.Left:
@@ -278,21 +278,18 @@ public class TileManager : MonoBehaviour
             }
 
             spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
-            this.nextTileSpawnGap = chosenScriptableTile.tileLength * this.squareTileDimension;
-
             return spawnedTile;
         }
-        // Only spawn a junction tile if strict conditions are met.
+        // Only spawn a junction tile if strict conditions are met, similar to a corner.
         else if (randomVal < (this.junctionProbability + this.cornerProbability) && this.spawnDirection == this.runDirection 
             && this.spawningAfterJunction == false && this.spawnFillersNextCount <= 0)
         {
             chosenScriptableTile = this.SelectJunctionTile();
-            spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
+
+            this.spawnFillersNextCount = 1;
             this.spawningAfterJunction = true;
 
-            // Always spawn a filler tile after a corner because
-            // obstacles would be blocked from view which is unfair.
-            this.spawnFillersNextCount = 1;
+            spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
             return spawnedTile;
 
         }
@@ -306,15 +303,18 @@ public class TileManager : MonoBehaviour
             }
             chosenScriptableTile = this.SelectTileByDifficulty(newTileDifficulty);
             spawnedTile = Instantiate(chosenScriptableTile.tilePrefab, chosenScriptableTile.tilePrefab.transform.position, chosenScriptableTile.tilePrefab.transform.rotation);
+            
+            // If the tile has a length greater than 1, the nextTileSpawn gap is used to accommodate it.
             this.nextTileSpawnGap = chosenScriptableTile.tileLength * this.squareTileDimension;
 
+            // The junction spawned tiles list is used to rotate
+            // the tiles around the junction when the player turns at the junction
             if (this.spawningAfterJunction)
             {
                 this.junctionSpawnedTilesList.Add(spawnedTile);
             }
             return spawnedTile;
         }
-        
     }
 
     /// <summary>

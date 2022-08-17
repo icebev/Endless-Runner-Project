@@ -19,7 +19,11 @@ public class TileMovement : MonoBehaviour
 {
     private TileManager tileManager;
     private Rigidbody tileRigidbody;
-    private float correctionMaxVal = 1.0f;
+
+    /// <summary>
+    /// Maximum offset that is corrected as part of the Fixed Update cycle
+    /// </summary>
+    private const float correctionMaxVal = 1.0f;
 
     private void Start()
     {
@@ -45,7 +49,7 @@ public class TileMovement : MonoBehaviour
             // Correction max val is very important, ensuring that
             // faraway tiles that are spawning in a direction other than the run direction
             // are not all centered around the player
-            if (Mathf.Abs(this.transform.position.x) < this.correctionMaxVal && Mathf.Abs(this.transform.position.x) > 0)
+            if (Mathf.Abs(this.transform.position.x) < correctionMaxVal && Mathf.Abs(this.transform.position.x) > 0)
             {
                 this.transform.position = new Vector3(0, this.transform.position.y, this.transform.position.z);
             }
@@ -53,7 +57,7 @@ public class TileMovement : MonoBehaviour
         // The run direction must be x-aligned otherwise
         else
         {
-            if (Mathf.Abs(this.transform.position.z) < this.correctionMaxVal && Mathf.Abs(this.transform.position.z) > 0)
+            if (Mathf.Abs(this.transform.position.z) < correctionMaxVal && Mathf.Abs(this.transform.position.z) > 0)
             {
                 this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0);
             }
@@ -134,7 +138,5 @@ public class TileMovement : MonoBehaviour
                     break;
                 }
         }
-
     }
-
 }

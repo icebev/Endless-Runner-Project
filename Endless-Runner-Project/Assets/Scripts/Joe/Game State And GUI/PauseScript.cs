@@ -11,6 +11,8 @@ using UnityEngine.UI;
  * CHANGE NOTES:
  * Corrected class name typo
  * Commenting pass
+ * Fixed guard clause to enusre that the toggle
+ * can be made in game while the player is still alive
  */
 /// <summary>
 /// A class for pausing the game mid run by setting the timescale to zero.

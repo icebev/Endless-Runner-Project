@@ -22858,7 +22858,7 @@ GameObject:
   - component: {fileID: 1302672987}
   - component: {fileID: 1302672989}
   - component: {fileID: 1302672988}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CollectorRigidbody
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -37917,6 +37917,7 @@ MonoBehaviour:
   startingTile: {fileID: 11400000, guid: 4c9692487ae43034ab5b141653cb50de, type: 2}
   tileSpawnCount: 8
   initialFillerCount: 3
+  initialTutorialFillerCount: 5
   squareTileDimension: 16
   despawnDistance: 30
   cornerProbability: 0.1
@@ -37925,8 +37926,6 @@ MonoBehaviour:
   junctionSpawnedTilesList: []
   spawnDirection: 0
   runDirection: 0
-  tilesContainer: {fileID: 0}
-  currentJunctionTile: {fileID: 0}
 --- !u!4 &2091495361
 Transform:
   m_ObjectHideFlags: 0

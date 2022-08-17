@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 422145568876492193}
-  - component: {fileID: 7153559412894357809}
   m_Layer: 0
   m_Name: Running Platform 2x1x3
   m_TagString: Untagged
@@ -33,29 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7153559412894357809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1754757323016374864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df2ea1abcd2909040ae3bf98600b021c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DownwardsCollision: 01000000
-  UpwardsCollision: 05000000
-  FrontUpperCollision: 
-  FrontLowerCollision: 04000000
-  FrontBothCollision: 
-  LeftUpperCollision: 09000000
-  LeftLowerCollision: 09000000
-  LeftBothCollision: 09000000
-  RightUpperCollision: 08000000
-  RightLowerCollision: 08000000
-  RightBothCollision: 08000000
 --- !u!1001 &5600161733374741306
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121,11 +97,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2170318365069757899, guid: 2ebfcdb5571092e4ba362f65d32ff553, type: 3}
       propertyPath: FrontLowerCollision.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2170318365069757899, guid: 2ebfcdb5571092e4ba362f65d32ff553, type: 3}
+      propertyPath: FrontUpperCollision.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2170318365069757899, guid: 2ebfcdb5571092e4ba362f65d32ff553, type: 3}
       propertyPath: FrontLowerCollision.Array.data[0]
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2170318365069757899, guid: 2ebfcdb5571092e4ba362f65d32ff553, type: 3}
+      propertyPath: FrontLowerCollision.Array.data[1]
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2170318365069757899, guid: 2ebfcdb5571092e4ba362f65d32ff553, type: 3}
+      propertyPath: FrontUpperCollision.Array.data[0]
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ebfcdb5571092e4ba362f65d32ff553, type: 3}
