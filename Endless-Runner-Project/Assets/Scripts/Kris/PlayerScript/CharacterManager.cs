@@ -115,7 +115,6 @@ public class CharacterManager : MonoBehaviour
         west,
         length,
     }
-
     public enum movementDirections
     {
         left,
@@ -140,7 +139,6 @@ public class CharacterManager : MonoBehaviour
         jumping,
         quickfall,
         crouching
-        
     }
 
     public enum WhichRay
@@ -155,8 +153,7 @@ public class CharacterManager : MonoBehaviour
         RightDown,             //Right Down
         RightBoth,              //Right Both
         Up,              //Up
-        Down,              //Down
-                       
+        Down,              //Down                 
     }
 
     private void Start()
@@ -178,12 +175,9 @@ public class CharacterManager : MonoBehaviour
         UpdateLanePositionAndRotation();
         UpdatePhysics();
         this.animManager.ManageAnimation(this.currentState);
-        
-
     }
     private void UpdateCharacterData()
     {
-
         this.targetrotation = Quaternion.Euler(0, rotationIndex[this.direction], 0);
     }
 
@@ -197,12 +191,10 @@ public class CharacterManager : MonoBehaviour
         if (this.targetLane < this.laneBoundaries[(int)movementDirections.left])
         {
             this.targetLane = this.laneBoundaries[(int)movementDirections.left];
-            return;
         }
         else if (this.targetLane > this.laneBoundaries[(int)movementDirections.right])
         {
             this.targetLane = this.laneBoundaries[(int)movementDirections.right];
-            return;
         }
     }
 
@@ -217,7 +209,7 @@ public class CharacterManager : MonoBehaviour
         {
             float Boundary = (this.numberOfLanes / 2) * this.LaneSize;
 
-            switch (evenLaneBias)
+            switch (this.evenLaneBias)
             {
                 case (int)movementDirections.left:
                     this.laneBoundaries = new float[] { -Boundary, (Boundary - 1)};
@@ -254,8 +246,10 @@ public class CharacterManager : MonoBehaviour
 
     public void Move(movementDirections Direction)
     {
-        if (!(!this.lockLaneSwitch && ((this.currentState != playerStates.crouching) || this.moveWhileSliding))) return;
-        this.previousLane = this.targetLane;
+        //if (!(!this.lockLaneSwitch && ((this.currentState != playerStates.crouching) || this.moveWhileSliding))) return;
+        if (this.lockLaneSwitch || (this.currentState == playerStates.crouching && !this.moveWhileSliding)) return;
+
+            this.previousLane = this.targetLane;
         switch (Direction)
         {
             case movementDirections.left:
@@ -296,14 +290,18 @@ public class CharacterManager : MonoBehaviour
         {
             case TurnDirection.Left:
                 this.direction -= 1;
-                if (!(this.direction < (int)directions.north)) return;
+
+                //if (!(this.direction < (int)directions.north)) return;
+                if (this.direction > (int)directions.north) return;
                 this.direction = (int)directions.west;
                 
                 break;
             case TurnDirection.Right:
                 this.direction += 1;
-                if (!(this.direction > (int)directions.west)) return;
-                    this.direction = (int)directions.north;
+
+                //if (!(this.direction > (int)directions.west)) return;
+                if (this.direction < (int)directions.west) return;
+                this.direction = (int)directions.north;
                 break;
         }
     }
@@ -369,7 +367,7 @@ public class CharacterManager : MonoBehaviour
     //This is where the Physics are updated. Within the physics are the raycasts for collision and charactermovement.
     private void UpdatePhysics()
     {
-        if (!doPhysics) return; //Check to see if Physics are enabled.
+        if (!this.doPhysics) return; //Check to see if Physics are enabled.
 
         ApplyGravity();
         
@@ -477,20 +475,23 @@ public class CharacterManager : MonoBehaviour
     
     private void ApplyGravity()
     {
-        if (!(!this.isGrounded || this.IgnoreGroundCollision == true)) return;
+        //if (!(!this.isGrounded || this.IgnoreGroundCollision == true)) return;
+        if (this.isGrounded) return;
         this.playerYSpeed -= this.gravity;
-        if (!(this.playerYSpeed < this.playerMaxDownwardVelocity)) return;
+        //if (!(this.playerYSpeed < this.playerMaxDownwardVelocity)) return;
+        if (this.playerYSpeed > this.playerMaxDownwardVelocity) return;
         this.playerYSpeed = this.playerMaxDownwardVelocity;
     }
 
     public void Slide()
     {
         
-        if (this.slideTick < this.slideTime || this.currentState == playerStates.crouching)
-        {
-            this.slideScheduled = true;
-            return;
-        }
+        //if (this.slideTick < this.slideTime || this.currentState == playerStates.crouching)
+        //{
+        //    this.slideScheduled = true;
+        //    return;
+        //} 
+
         if (!this.isGrounded) return;
         this.characterMovementSFXPlayer.PlaySlideSound();
         this.slideTick = 0;
@@ -540,7 +541,8 @@ public class CharacterManager : MonoBehaviour
 
     public void HopUpCharacter()
     {
-        if (!(this.hopUpTick >= this.hopUpTime)) return;
+        //if (!(this.hopUpTick >= this.hopUpTime)) return;
+        if (this.hopUpTick < this.hopUpTime) return;
         this.isGrounded = false;
         this.playerYSpeed = this.hopUpSpeed;
     }
