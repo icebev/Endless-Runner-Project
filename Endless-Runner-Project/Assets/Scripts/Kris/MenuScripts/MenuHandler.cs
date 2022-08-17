@@ -27,6 +27,7 @@ public class MenuHandler : MonoBehaviour
         Quit,
         Store,
         Stats,
+        HowTo,
     }
 
     public void ReturnMenuState()

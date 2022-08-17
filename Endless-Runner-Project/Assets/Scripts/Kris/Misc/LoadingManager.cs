@@ -4,6 +4,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/* AUDIO VOLUME SLIDER CLASS
+ * Author(s): Kris Burgess-James
+ * Date last modified: 17/08/2022
+ *******************************************************************************
+ * Important Note: Some changes have been made using Joe's computer / account by me.
+ * CHANGE NOTES: 
+ * 
+ */
+/// <summary>
+/// A class for 
+/// </summary>
+
+
 public class LoadingManager : MonoBehaviour
 {
     private int targetScene = 2; //The scene the game will try to load.
