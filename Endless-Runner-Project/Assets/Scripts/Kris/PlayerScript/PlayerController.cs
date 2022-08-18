@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
  * 
  */
 /// <summary>
-/// A class for managing the store
+/// A class for managing the player controller.
 /// </summary>
 
 public class PlayerController : MonoBehaviour

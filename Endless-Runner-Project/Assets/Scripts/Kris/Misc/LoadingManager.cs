@@ -14,7 +14,6 @@ using UnityEngine.UI;
 /// A class for loading scenes through a manager.
 /// </summary>
 
-
 public class LoadingManager : MonoBehaviour
 {
     private int targetScene = 2; //The scene the game will try to load.

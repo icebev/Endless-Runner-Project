@@ -13,6 +13,7 @@ using TMPro;
 /// <summary>
 /// A class for helping the Loading Manager get to the next stage of loading the next scene. It also does stuff in the loading scene.
 /// </summary>
+/// 
 public class LoadingHelper : MonoBehaviour
 {
 

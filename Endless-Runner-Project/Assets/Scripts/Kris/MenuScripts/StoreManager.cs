@@ -8,13 +8,13 @@ using UnityEngine.UI;
  * Author(s): Kris Burgess-James
  * Date last modified: 17/08/2022
  *******************************************************************************
- * Important Note: Some changes have been made using Joe's computer / account by me.
- * CHANGE NOTES: 
+ * Important Note: Some changes have been made using Joe's computer / account by me. 
  * 
  */
 /// <summary>
 /// A class for managing the store
 /// </summary>
+
 public class StoreManager : MonoBehaviour
 {
     private int coins; //Number of coins on display that the player has.

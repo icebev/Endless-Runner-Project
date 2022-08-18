@@ -2,6 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* OLD CHARACTER MANAGER CLASS
+ * Author(s): Kris Burgess-James
+ * Date last modified: 18/08/2022
+ *******************************************************************************
+ * 
+ */
+/// <summary>
+/// THE OLD CHARACTER MANAGER CLASS.
+/// </summary>
+
+//I decided to redo this code from the beginning, though kept this in because this was a fair bit of code.
+//Apologies for the lack of comments, this is old and unused legacy code that I havent touched for a few months.
+//Just here incase you want to compare it with the new one.
+
+
 public class CharacterManagerOld : MonoBehaviour
 {
     [SerializeField] private GameObject _character;
