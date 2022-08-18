@@ -4,8 +4,9 @@ using UnityEngine;
 
 /* CHARACTER MANAGER CLASS
  * Author(s): Kris Burgess-James
- * Date last modified: 16/07/2022
+ * Date last modified: 18/08/2022
  *******************************************************************************
+ * Important Note: Some changes have been made using Joe's computer / account by me.
  * 
  */
 /// <summary>
@@ -15,11 +16,11 @@ using UnityEngine;
 public class CollidableObjects : MonoBehaviour, iCollidable
 {
     //Cooldowns as to not collide every frame
-    public static float stumbleCoolDown = 0.3f;     
-    public static float pushRightCoolDown = 0.3f; //Push is when the character is moved left or right
+    public static float stumbleCoolDown = 0.3f;   //How often the player can stumble
+    public static float pushRightCoolDown = 0.3f; //How often the character can be pushed left and right.
     public static float pushLeftCoolDown = 0.3f;
     
-    //List of the different type of collision behaviours.
+    //List of the different type of collision behaviours. Not all of them are used, but they stay for legacy reasons.
     private enum CollisionBehaviour
     {
         NoCollide,
@@ -34,7 +35,6 @@ public class CollidableObjects : MonoBehaviour, iCollidable
         MoveRight,
         Kill,
     }
-
 
     //Expandable arrays for adding Collision Behaviours
 
@@ -62,24 +62,26 @@ public class CollidableObjects : MonoBehaviour, iCollidable
     private GameObject objCharManager;
 
 
-    //Please Refactor. Ticking the CoolDowns
+    // Ticking the CoolDowns
     public static void TickCooldowns()
     {
-        if (CollidableObjects.stumbleCoolDown >= 0.0f)
+        if (CollidableObjects.stumbleCoolDown >= 0.0f) //Cooldown for stumbling.
         {
             CollidableObjects.stumbleCoolDown -= Time.fixedDeltaTime;
         }
 
-        if (CollidableObjects.pushRightCoolDown >= 0.0f)
+        if (CollidableObjects.pushRightCoolDown >= 0.0f) //Cooldown for being pushed right
         {
             CollidableObjects.pushRightCoolDown -= Time.fixedDeltaTime;
         }
 
-        if (CollidableObjects.pushLeftCoolDown >= 0.0f)
+        if (CollidableObjects.pushLeftCoolDown >= 0.0f) //Cooldown for being pushed left
         {
             CollidableObjects.pushLeftCoolDown -= Time.fixedDeltaTime;
         }
     }
+
+    //Do Collision Function.
     public void DoCollision(CharacterManager.WhichRay whichRay) 
     {
 
@@ -91,170 +93,154 @@ public class CollidableObjects : MonoBehaviour, iCollidable
             this.charManager = this.objCharManager.GetComponent<CharacterManager>();
         }
 
-
-        //Note for future kris: Please Refactor.
-        //Create a temporary CollisionBehaviour and store the current collision.
-        ////EXAMPLE:
-        // case CharacterManager.WhichRay.Down:
-        //  TemporaryColInfo = this.DownwardsCollision
-        //  break;
-        // .... 
-        //  foreach(CollisionBehaviour gameCollision in TemporaryColInfo)
-        //
+        //Switch for doing each type of collision.
 
         switch (whichRay)
         {
-            case CharacterManager.WhichRay.Down:
-                foreach(CollisionBehaviour gameCollision in this.DownwardsCollision)
+            case CharacterManager.WhichRay.Down: //Checks each collision for Downwards Raycast.
+                foreach (CollisionBehaviour gameCollision in this.DownwardsCollision) 
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision); //Does the Down collisions
 
                 }
                 break;
             
-            case CharacterManager.WhichRay.Up:
+            case CharacterManager.WhichRay.Up: //Checks each collision for Upwards Raycast.
                 foreach (CollisionBehaviour gameCollision in this.UpwardsCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision); //Does the Up collisions
                 }
 
                 break;
             
-            case CharacterManager.WhichRay.FrontUp:
+            case CharacterManager.WhichRay.FrontUp: //Checks each collision for Front Up Raycast.
                 foreach (CollisionBehaviour gameCollision in this.FrontUpperCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision); //Does the Front Up collisions
                 }
                 break;
             
-            case CharacterManager.WhichRay.FrontDown:
+            case CharacterManager.WhichRay.FrontDown: //Checks each collision for Front Down Raycast.
                 foreach (CollisionBehaviour gameCollision in this.FrontLowerCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision);//Does the Front Down collisions
                 }
                 break;
 
-            case CharacterManager.WhichRay.FrontBoth:
+            case CharacterManager.WhichRay.FrontBoth: //Checks each collision for Front Both Raycast.
                 foreach (CollisionBehaviour gameCollision in this.FrontBothCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision);//Does the Front Both collisions
                 }
                 break;
 
-            case CharacterManager.WhichRay.LeftUp:
+            case CharacterManager.WhichRay.LeftUp: //Checks each collision for Left Up Raycast.
                 foreach (CollisionBehaviour gameCollision in this.LeftUpperCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision);//Does the Left Upper collisions
                 }
                 break;
             
-            case CharacterManager.WhichRay.LeftDown:
+            case CharacterManager.WhichRay.LeftDown: //Checks each collision for Left Down Raycast.
                 foreach (CollisionBehaviour gameCollision in this.LeftLowerCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision);//Does the Left Lower collisions
                 }
                 break;
             
-            case CharacterManager.WhichRay.LeftBoth:
+            case CharacterManager.WhichRay.LeftBoth: //Checks each collision for Left Both Raycast.
                 foreach (CollisionBehaviour gameCollision in this.LeftBothCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision);//Does the Left Both collisions
                 }
-
                 break;
             
-            case CharacterManager.WhichRay.RightUp:
+            case CharacterManager.WhichRay.RightUp: //Checks each collision for Right Up Raycast.
                 foreach (CollisionBehaviour gameCollision in this.RightUpperCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision);//Does the Right Upper collisions
                 }
                 break;
             
-            case CharacterManager.WhichRay.RightDown:
+            case CharacterManager.WhichRay.RightDown: //Checks each collision for Right Down Raycast.
                 foreach (CollisionBehaviour gameCollision in this.RightLowerCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision);//Does the Right Lower collisions
                 }
                 break;
             
-            case CharacterManager.WhichRay.RightBoth:
+            case CharacterManager.WhichRay.RightBoth: //Checks each collision for Right Both Raycast.
                 foreach (CollisionBehaviour gameCollision in this.RightBothCollision)
                 {
-                    this.CollisionReaction(gameCollision);
+                    this.CollisionReaction(gameCollision); //Does the Right Both collisions
                 }
                 break;
-
         }
-
     }
-
 
     //How the selected collision behaviours react.
     private void CollisionReaction(CollisionBehaviour colBehaviour)
     {
         switch (colBehaviour)
         {
-
-
-            case CollisionBehaviour.NoCollide:
+            case CollisionBehaviour.NoCollide: //Unused "No collide"
 
             break;
-            case CollisionBehaviour.StandOn:
+            case CollisionBehaviour.StandOn: //Used for Standing on objects
                 this.charManager.GroundedCharacter();
 
                 break;
-            case CollisionBehaviour.BurnFeet:
+            case CollisionBehaviour.BurnFeet: //Unused "Burn Feet"
 
                 break;
-            case CollisionBehaviour.FallThrough:
+            case CollisionBehaviour.FallThrough: //Unused "Fall Through"
 
                 break;
-            case CollisionBehaviour.HopUp:
+            case CollisionBehaviour.HopUp: //Used for hopping the character up when stumbling on an object.
                 if (GameOverEvent.isPlayerDead == true) return;
 
-                this.charManager.HopUpCharacter();
+                this.charManager.HopUpCharacter(); //Hops up.
                 break;
-            case CollisionBehaviour.GoDown:
+            case CollisionBehaviour.GoDown: //Unused "Go Down"
 
                 break;
-            case CollisionBehaviour.SlowDown:
+            case CollisionBehaviour.SlowDown: //Unused "Slow Down"
 
                 break;
-            case CollisionBehaviour.Stumble:
+            case CollisionBehaviour.Stumble: //Used for stumbling on objects.
                 if (GameOverEvent.isPlayerDead == true) return;
 
-                if (CollidableObjects.stumbleCoolDown > 0 || GameObject.FindObjectOfType<SprintSystem>().speedBoostModeActive == true) return; 
+                if (CollidableObjects.stumbleCoolDown > 0 || GameObject.FindObjectOfType<SprintSystem>().speedBoostModeActive == true) return; //Character can't stumble during cooldown and speed boost powerup
                 CollidableObjects.stumbleCoolDown = 0.3f;
-                if (GameObject.FindObjectOfType<SprintSystem>().isSprinting == false)
+                if (GameObject.FindObjectOfType<SprintSystem>().isSprinting == false) //Checks to see fi the character is Sprinting
                 {
-                    GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(CollisionConsequenceType.RegularTrip);
+                    GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(CollisionConsequenceType.RegularTrip); //Trips the character lightly when not running
                 }
                 else
                 {
-                    GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(CollisionConsequenceType.SprintingTrip);
+                    GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(CollisionConsequenceType.SprintingTrip);//Trips the character dramatically when running
                 }
                 break;
                 
-            case CollisionBehaviour.MoveLeft:
+            case CollisionBehaviour.MoveLeft: //Used for pushing the character left.
                 if (GameOverEvent.isPlayerDead == true) return;
 
                 if (CollidableObjects.pushLeftCoolDown > 0) return;
                 CollidableObjects.pushLeftCoolDown = 0.3f;
-                this.charManager.AddPlayerLaneTarget(-1);
+                this.charManager.AddPlayerLaneTarget(-1); //Adds the position down a lane to the left.
                 break;
                 
-            case CollisionBehaviour.MoveRight:
+            case CollisionBehaviour.MoveRight: //Used for pushing the character right.
                 if (GameOverEvent.isPlayerDead == true) return;
 
                 if (CollidableObjects.pushLeftCoolDown > 0) return; 
                 CollidableObjects.pushLeftCoolDown = 0.3f;
-                this.charManager.AddPlayerLaneTarget(1);
+                this.charManager.AddPlayerLaneTarget(1); //Adds the position up a lane to the right.
                 break;
                 
-            case CollisionBehaviour.Kill:
+            case CollisionBehaviour.Kill: //Used for killing the character when colliding.
                 if (GameOverEvent.isPlayerDead == true) return;
-                GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(CollisionConsequenceType.LethalCollision);
-
+                GameObject.FindObjectOfType<ObstacleCollisionConsequences>().StumbleSlowDown(CollisionConsequenceType.LethalCollision); //Does a lethal stumble collision that kills instantly.
                 break;
         }
     }
